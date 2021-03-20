@@ -32,7 +32,7 @@ public class Movie
 
     public static Genre ConvertGenre( String _genre )
     {
-        // TODO
+        // TODO: 텍스트로 주어진 장르를 enum Genre로 반환
         return null;
     }
 }

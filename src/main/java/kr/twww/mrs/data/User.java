@@ -52,19 +52,19 @@ public class User
 
     public static Gender ConvertGender( char _gender )
     {
-        // TODO
+        // TODO: 주어진 성별 텍스트를 enum Gender로 반환
         return null;
     }
 
     public static Age ConvertAge( int _age )
     {
-        // TODO
+        // TODO: 주어진 나이 텍스트를 enum Age로 반환
         return null;
     }
 
     public static Occupation ConvertOccupation( int _occupation )
     {
-        // TODO
+        // TODO: 주어진 직업 텍스트를 enum Occupation로 반환
         return null;
     }
 }

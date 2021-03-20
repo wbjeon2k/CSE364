@@ -28,7 +28,7 @@ public class Score
 
     public float GetScore()
     {
-        // TODO
+        // TODO: ratings의 모든 점수 합계를 ratings의 크기로 나눈 값 반환
         return 0f;
     }
 }

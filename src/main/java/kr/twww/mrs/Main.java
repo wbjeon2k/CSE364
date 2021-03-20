@@ -22,7 +22,7 @@ public class Main
 
         // 영화 평점 전처리
         Preprocessor preprocessor = new PreprocessorImpl();
-        var scoreList = preprocessor.GetScores(category, occupation);
+        var scoreList = preprocessor.GetScoreList(category, occupation);
 
         // 결과 출력
         for ( var i : scoreList )
