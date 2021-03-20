@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 public class DataLoaderTest
 {
-    DataLoader dataLoader;
+    DataLoaderImpl dataLoader;
 
     @Before
     public void setUp() throws Exception
