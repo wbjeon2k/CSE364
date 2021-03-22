@@ -78,26 +78,28 @@ public class DataReaderTest {
 
     @Test
     public void parameterTest(){
-
-
         System.out.print("Printing Userlist\n");
 
         //원래 dataloader 과 테스트를 어떻게 연결하면 효율적일까?
+        //원래 dataloader 의 path 에 어떻게 접근 & 수정?
         var userList = dataLoader.GetUserList();
+
+        //지금은 console 창 출력.
+        //나중에는 txt 파일 출력하여 비교.
+        /*
         for (int i=0; i<userList.size(); ++i) {
             printUser(userList.get(i));
             System.out.print("\n");
         }
+        */
 
-
+        //parameter test 확인.
         System.out.println("Parameter1: " + question + " Parameter2: " + answer);
 
         System.out.print("Printing Answer\n");
         //src/test/java/kr/twww/mrs/data/resultUser1.dat
         String testcase_path = "src/test/java/kr/twww/mrs/data/" + question;
         System.out.println("testcase path " + testcase_path + "\n");
-
-
 
         FileInputStream ifstream = null;
         try{
@@ -113,8 +115,8 @@ public class DataReaderTest {
             System.out.println((i+1) + "th: " + Line);
         }
 
+        //나중에는 resultX.dat 과 userList 비교하여 assert.
         assertTrue(true);
-        //assertTrue(true);
     }
 }
 
