@@ -44,8 +44,8 @@ public class DataReaderTest
 */
 
 /**
- *
- *
+ * Parametrized test 초기 시안.
+ * 이런 형태로 다른 테스트들도 진행하면 될지 확인 필요!
  */
 @RunWith(Parameterized.class)
 public class DataReaderTest {
@@ -53,6 +53,7 @@ public class DataReaderTest {
     private String question;
     private String answer;
 
+    //parameter는 테스트 파일, 비교할 결과 파일 2개로 설정.
     @Parameters
     public static Collection<Object[]> testSet(){
         return Arrays.asList(new Object[][]{
@@ -85,7 +86,7 @@ public class DataReaderTest {
         var userList = dataLoader.GetUserList();
 
         //지금은 console 창 출력.
-        //나중에는 txt 파일 출력하여 비교.
+        //나중에는 txt 파일 출력하여 비교 하는 등 자동화 예정.
         /*
         for (int i=0; i<userList.size(); ++i) {
             printUser(userList.get(i));
@@ -93,11 +94,12 @@ public class DataReaderTest {
         }
         */
 
-        //parameter test 확인.
+        //parameter 제대로 들어갔는지 확인.
         System.out.println("Parameter1: " + question + " Parameter2: " + answer);
 
         System.out.print("Printing Answer\n");
-        //src/test/java/kr/twww/mrs/data/resultUser1.dat
+
+        //GetUserList() 를 통해 얻은 결과와 비교하는 코드.
         String testcase_path = "src/test/java/kr/twww/mrs/data/" + question;
         System.out.println("testcase path " + testcase_path + "\n");
 
@@ -116,6 +118,7 @@ public class DataReaderTest {
         }
 
         //나중에는 resultX.dat 과 userList 비교하여 assert.
+        //비교 자동화 하는것이 목표.
         assertTrue(true);
     }
 }
