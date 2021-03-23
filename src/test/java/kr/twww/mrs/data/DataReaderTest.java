@@ -147,6 +147,10 @@ public class DataReaderTest {
         }
     }
 
+
+    //MovieList 로 변환 하는지 테스트.
+    //1::A B C D (E F G) (1998)::Animation|Children's|Comedy
+    //5개 로 구성된 테스트 케이스 통과해야 한다.
     @Test
     public void testToMovieList(String path_movieTest) {
         String read_text = dataReader.ReadTextFromFile(path_movieTest);
@@ -174,6 +178,10 @@ public class DataReaderTest {
 
     }
 
+
+    //RatingList 로 변환 하는지 테스트.
+    //1::A B C D (E F G) (1998)::Animation|Children's|Comedy
+    //5개 로 구성된 테스트 케이스 통과해야 한다.
     @Test
     public void testToRatingList(String path_ratingTest) {
         String read_text = dataReader.ReadTextFromFile(path_ratingTest);
@@ -195,6 +203,10 @@ public class DataReaderTest {
         }
     }
 
+
+    //parameter 로 파일 경로+이름 받으면
+    //user, movie, rating 들어있는지 찾아서
+    //해당 유형 return. 유형별 테스트 위함.
     public DataType testType(String parameter){
         if(parameter.contains("User")){
             return DataType.USER;
@@ -208,16 +220,18 @@ public class DataReaderTest {
         return null;
     }
 
+
+    //parameter 들을 통해 진행.
     @Test
     public void parameterTest(){
-        System.out.println("Printing Userlist");
+        System.out.println("** Parameter Test **");
 
         //parameter 제대로 들어갔는지 확인.
         System.out.println("Parameter1: " + question + " Parameter2: " + answer);
 
-        System.out.print("Printing Answer\n");
+        System.out.println("Printing Answer");
 
-        //GetUserList() 를 통해 얻은 결과와 비교하는 코드.
+        //testcase path 정확히 찍히는지 확인.
         String testcase_path = "data/test/" + question;
         System.out.println("testcase path " + testcase_path + "\n");
 
@@ -228,16 +242,19 @@ public class DataReaderTest {
         testGetPathFromDataType();
         testReadTextFromFile();
 
+        //chk 로 판별한 유형별로 테스트.
         if(chk == DataType.USER){
+            System.out.println("User methods test");
             testToUserList(testcase_path);
         }
         if(chk == DataType.MOVIE){
+            System.out.println("Movie methods test");
             testToMovieList(testcase_path);
         }
         if(chk == DataType.RATING){
+            System.out.println("Rating methods test");
             testToRatingList(testcase_path);
         }
-
 
         //나중에는 resultX.dat 과 userList 비교하여 assert.
         //비교 자동화 하는것이 목표.
