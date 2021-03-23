@@ -16,27 +16,28 @@ import static org.junit.Assert.assertTrue;
 /***
  * 원래 skeleton
  */
+
 /*
 public class DataReaderTest
 {
-    DataReaderImpl dataLoader;
+    DataReaderImpldataReader;
 
     @Before
     public void setUp() throws Exception
     {
-        dataLoader = new DataReaderImpl();
+       dataReader = new DataReaderImpl();
     }
 
     @After
     public void tearDown() throws Exception
     {
-        dataLoader = null;
+       dataReader = null;
     }
 
     @Test
     public void getUserList()
     {
-        var userList = dataLoader.GetUserList();
+        var userList =dataReader.GetUserList();
         assertNull(userList);
     }
 
@@ -49,7 +50,7 @@ public class DataReaderTest
  */
 @RunWith(Parameterized.class)
 public class DataReaderTest {
-    DataReaderImpl dataLoader;
+    DataReaderImpl dataReader;
     private String question;
     private String answer;
 
@@ -64,7 +65,7 @@ public class DataReaderTest {
 
     public DataReaderTest(String Q, String A) {
         System.out.println("Test case started.");
-        this.dataLoader = new DataReaderImpl();
+        this.dataReader = new DataReaderImpl();
         this.question = Q;
         this.answer = A;
     }
@@ -79,20 +80,13 @@ public class DataReaderTest {
 
     @Test
     public void parameterTest(){
-        System.out.print("Printing Userlist\n");
+        System.out.println("Printing Userlist");
 
-        //원래 dataloader 과 테스트를 어떻게 연결하면 효율적일까?
-        //원래 dataloader 의 path 에 어떻게 접근 & 수정?
-        var userList = dataLoader.GetUserList();
+        //원래dataReader 과 테스트를 어떻게 연결하면 효율적일까?
+        //원래dataReader 의 path 에 어떻게 접근 & 수정?
+        //https://github.com/wbjeon2k/CSE364/issues/8#issuecomment-804520940
+        //하위 메소드 바로 접근해서 해결 + 개별 하위 메소드 테스트.
 
-        //지금은 console 창 출력.
-        //나중에는 txt 파일 출력하여 비교 하는 등 자동화 예정.
-        /*
-        for (int i=0; i<userList.size(); ++i) {
-            printUser(userList.get(i));
-            System.out.print("\n");
-        }
-        */
 
         //parameter 제대로 들어갔는지 확인.
         System.out.println("Parameter1: " + question + " Parameter2: " + answer);
@@ -103,19 +97,6 @@ public class DataReaderTest {
         String testcase_path = "src/test/java/kr/twww/mrs/data/" + question;
         System.out.println("testcase path " + testcase_path + "\n");
 
-        FileInputStream ifstream = null;
-        try{
-            ifstream = new FileInputStream(testcase_path);
-        }
-        catch (FileNotFoundException e){
-            System.out.println("File not found error!\n");
-        }
-
-        Scanner scanner = new Scanner(ifstream);
-        for(int i=0;i<5;++i){
-            String Line = scanner.nextLine();
-            System.out.println((i+1) + "th: " + Line);
-        }
 
         //나중에는 resultX.dat 과 userList 비교하여 assert.
         //비교 자동화 하는것이 목표.
