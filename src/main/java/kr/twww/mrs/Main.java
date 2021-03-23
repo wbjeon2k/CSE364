@@ -4,7 +4,7 @@ import kr.twww.mrs.preprocess.Preprocessor;
 import kr.twww.mrs.preprocess.PreprocessorImpl;
 
 public class Main
-{
+{   // args는 input 데이터
     public static void main( String[] args )
     {
         System.out.println("Team Woongbae without Woongbae");
