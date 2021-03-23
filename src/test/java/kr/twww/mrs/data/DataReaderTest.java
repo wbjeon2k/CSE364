@@ -59,6 +59,9 @@ public class DataReaderTest
  * 1. 잘 읽어낸 텍스트 반환
  * 2. 잘못된 파일이라 null 반환
  * 3. 잘못된 파일이라 없는 파일 읽기 시도 -> 오류(크래시)
+ *
+ * TODO: java path class 적용, user/movie/rating 별 test 분리, @Test 붙은 함수에는 parameter 제거.
+ * java path class: https://m.blog.naver.com/horajjan/220484659082
  */
 @RunWith(Parameterized.class)
 public class DataReaderTest {
