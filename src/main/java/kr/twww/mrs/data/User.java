@@ -22,7 +22,7 @@ public class User
     public enum Occupation
     {
         OTHER,
-	    ACADEMIC_OR_EDUCATOR,
+        ACADEMIC_OR_EDUCATOR,
         ARTIST,
         CLERICAL_OR_ADMIN,
         COLLEGE_OR_GRAD_STUDENT,
@@ -48,7 +48,7 @@ public class User
     public Gender gender;
     public Age age;
     public Occupation occupation;
-    public int zipCode;
+    public String zipCode;
 
     public static Gender ConvertGender( char _gender )
     {
