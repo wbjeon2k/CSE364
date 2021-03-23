@@ -65,6 +65,11 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public ArrayList<Rating> ToRatingList( String text )
     {
+        // ratings.dat 파일을 '::' 기준으로 나누면 4개의 요소이므로 list[4] 에 담는다.
+        // ratings.dat 파일에서 UserID 를 뜻하는 list[0] 과 occupation 비교
+        // ratings.dat 파일에서 MovieID 를 뜻하는 list[1] 과 genreList 비교
+        // 이때 세번째 요소 list[2] 는 Rating이다
+        // if list[0] == occupation[i] and list[1] == genreList: TargetScore.append(list[2])
         // TODO: 주어진 텍스트를 Rating 리스트로 반환
         return null;
     }
