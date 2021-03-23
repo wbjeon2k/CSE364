@@ -140,7 +140,7 @@ public class DataReaderTest {
             assertEquals(now.gender, User.Gender.FEMALE);
             assertEquals(now.age, User.Age.UNDER_18);
             assertEquals(now.occupation, User.Occupation.K_12_STUDENT);
-            //zipcode 자료형 String 으로 바꿨다고 가정!
+            //**zipcode 자료형 String**!
             assertEquals( now.zipCode, "48067-100");
             //assertEquals( Integer.toString(now.zipCode), "48067-100");
             //1 F 1 10 48067-100
