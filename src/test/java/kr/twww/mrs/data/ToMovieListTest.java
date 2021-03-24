@@ -2,6 +2,8 @@ package kr.twww.mrs.data;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
@@ -65,6 +67,18 @@ public class ToMovieListTest {
                 assertEquals(now.genres.get(j), genres[j]);
             }
         }
+    }
+
+    @Before
+    public void setUp() throws Exception
+    {
+        dataReader = new DataReaderImpl();
+    }
+
+    @After
+    public void tearDown() throws Exception
+    {
+        dataReader = null;
     }
 
 }

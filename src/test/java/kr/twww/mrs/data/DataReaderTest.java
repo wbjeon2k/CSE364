@@ -1,5 +1,7 @@
 package kr.twww.mrs.data;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -20,7 +22,8 @@ import static org.junit.Assert.*;
  * 원래 skeleton
  */
 
-/*
+
+//기본 datareadertest 는 어떻게 써야하는걸까?
 public class DataReaderTest
 {
     DataReaderImpl dataReader;
@@ -40,12 +43,11 @@ public class DataReaderTest
     @Test
     public void getUserList()
     {
-        var userList =dataReader.GetUserList();
-        assertNull(userList);
+        assertTrue(true);
     }
 
 }
-*/
+
 
 /**
  * Parametrized test 초기 시안.

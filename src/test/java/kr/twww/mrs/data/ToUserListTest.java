@@ -2,6 +2,8 @@ package kr.twww.mrs.data;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
@@ -62,6 +64,18 @@ public class ToUserListTest {
             //assertEquals( Integer.toString(now.zipCode), "48067-100");
             //1 F 1 10 48067-100
         }
+    }
+
+    @Before
+    public void setUp() throws Exception
+    {
+        dataReader = new DataReaderImpl();
+    }
+
+    @After
+    public void tearDown() throws Exception
+    {
+        dataReader = null;
     }
 
 }

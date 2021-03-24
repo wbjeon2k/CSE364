@@ -2,6 +2,8 @@ package kr.twww.mrs.data;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
@@ -59,5 +61,17 @@ public class ToRatingListTest {
             assertEquals(now.rating, i+1);
             assertEquals(now.timestamp, 12345678);
         }
+    }
+
+    @Before
+    public void setUp() throws Exception
+    {
+        dataReader = new DataReaderImpl();
+    }
+
+    @After
+    public void tearDown() throws Exception
+    {
+        dataReader = null;
     }
 }

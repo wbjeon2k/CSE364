@@ -1,6 +1,8 @@
 package kr.twww.mrs.data;
 
 import org.junit.Test;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -60,5 +62,17 @@ public class ReadTextFromFileTest {
         String ans_text = scanner.nextLine();
 
         assertSame(ans_text, testResult);
+    }
+
+    @Before
+    public void setUp() throws Exception
+    {
+        dataReader = new DataReaderImpl();
+    }
+
+    @After
+    public void tearDown() throws Exception
+    {
+        dataReader = null;
     }
 }

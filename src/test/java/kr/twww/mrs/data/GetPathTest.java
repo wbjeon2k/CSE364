@@ -1,5 +1,7 @@
 package kr.twww.mrs.data;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -54,5 +56,17 @@ public class GetPathTest {
         String result = dataReader.GetPathFromDataType(question);
         Path getPath = Paths.get(result);
         assertEquals(getPath, answer);
+    }
+
+    @Before
+    public void setUp() throws Exception
+    {
+        dataReader = new DataReaderImpl();
+    }
+
+    @After
+    public void tearDown() throws Exception
+    {
+        dataReader = null;
     }
 }
