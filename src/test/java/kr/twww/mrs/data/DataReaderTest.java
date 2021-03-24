@@ -6,6 +6,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import java.util.*;
+import java.io.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -63,6 +64,10 @@ public class DataReaderTest
  * TODO: java path class 적용, user/movie/rating 별 test 분리, @Test 붙은 함수에는 parameter 제거.
  * java path class: https://m.blog.naver.com/horajjan/220484659082
  */
+
+/*
+
+//templates.
 @RunWith(Parameterized.class)
 public class DataReaderTest {
     DataReaderImpl dataReader;
@@ -87,129 +92,46 @@ public class DataReaderTest {
         this.answer = A;
     }
 
+ */
+
     //user,movies,rating 들어왔을 때 각각 data/user,movies,rating.dat 으로 경로 만드는지 확인
-    @Test
-    public void testGetPathFromDataType(){
-        DataType[] inputs = {DataType.USER, DataType.MOVIE, DataType.RATING};
-        String[] results = {"data/user.dat", "data/movies.dat", "data/ratings.dat"};
-        for(int i=0;i<3;++i){
-            String result = dataReader.GetPathFromDataType(inputs[i]);
-            assertSame(result, results[i]);
-        }
-    }
+    //@Test
+    //public void testGetPathFromDataType(){
 
     //파싱 형태 맞춰서 한 줄의 string 으로 반환하는지 확인.
     //이 부분은 직접 파일 입출력 통해 확인.
-    @Test
-    public void testReadTextFromFile(){
-        String path = "data/test/testReadText.dat";
-        String testResult = dataReader.ReadTextFromFile(path);
+    //@Test
+    //public void testReadTextFromFile(){
 
-        FileInputStream ifstream = null;
-        try{
-            ifstream = new FileInputStream("data/test/resultReadText.dat");
-        }
-        catch (FileNotFoundException e){
-            System.out.println("Test File data/test/resultReadText.dat not found");
-            return;
-        }
-        Scanner scanner = new Scanner(ifstream);
-
-        String answer = scanner.nextLine();
-
-        assertSame(answer, testResult);
-    }
 
     //UserList 로 변환 하는지 테스트.
     //1 F 1 10 48067-100 5개 로 구성된 테스트 케이스 통과해야 한다.
-    @Test
-    public void testToUserList(String path_userTest){
-        String read_text = dataReader.ReadTextFromFile(path_userTest);
-        ArrayList<User> result = dataReader.ToUserList(read_text);
+    //@Test
+    //public void testToUserList(String path_userTest){
 
-        assertEquals(result.size(), 5);
-
-        /*
-        public int userId;
-        public Gender gender;
-        public Age age;
-        public Occupation occupation;
-        public int zipCode;
-        //1 F 1 10 48067-100 5개.
-         */
-        for(int i=0; i< result.size();++i){
-            User now = result.get(i);
-            assertEquals(now.userId, 1);
-            assertEquals(now.gender, User.Gender.FEMALE);
-            assertEquals(now.age, User.Age.UNDER_18);
-            assertEquals(now.occupation, User.Occupation.K_12_STUDENT);
-            //**zipcode 자료형 String**!
-            assertEquals( now.zipCode, "48067-100");
-            //assertEquals( Integer.toString(now.zipCode), "48067-100");
-            //1 F 1 10 48067-100
-        }
-    }
 
 
     //MovieList 로 변환 하는지 테스트.
     //1::A B C D (E F G) (1998)::Animation|Children's|Comedy
     //5개 로 구성된 테스트 케이스 통과해야 한다.
-    @Test
-    public void testToMovieList(String path_movieTest) {
-        String read_text = dataReader.ReadTextFromFile(path_movieTest);
-        ArrayList<Movie> result = dataReader.ToMovieList(read_text);
+    //@Test
+    //public void testToMovieList(String path_movieTest) {
 
-        assertEquals(result.size(), 5);
-
-        /*
-        public int movieId;
-        public String title;
-        public ArrayList<Genre> genres;
-        1 "A B C D (E F G) (1998)" Animation|Children's|Comedy
-        */
-        Movie.Genre[] genres = {Movie.Genre.Animation, Movie.Genre.Children_s, Movie.Genre.Comedy};
-
-        for(int i=0;i < result.size();++i){
-            Movie now = result.get(i);
-            assertEquals(now.movieId, i+1);
-            assertEquals(now.title, "A B C D (E F G) (1998)");
-            assertEquals(now.genres.size(), 3);
-            for(int j=0;j<now.genres.size();++j){
-                assertEquals(now.genres.get(j), genres[j]);
-            }
-        }
-
-    }
 
 
     //RatingList 로 변환 하는지 테스트.
     //1::A B C D (E F G) (1998)::Animation|Children's|Comedy
     //5개 로 구성된 테스트 케이스 통과해야 한다.
-    @Test
-    public void testToRatingList(String path_ratingTest) {
-        String read_text = dataReader.ReadTextFromFile(path_ratingTest);
-        ArrayList<Rating> result = dataReader.ToRatingList(read_text);
+    //@Test
+    //public void testToRatingList(String path_ratingTest) {
 
-        assertEquals(result.size(), 5);
-        /*
-        public int userId;
-        public int movieId;
-        public int rating;
-        public int timestamp;
-        */
-        for(int i=0;i< result.size();++i){
-            Rating now = result.get(i);
-            assertEquals(now.userId, 1);
-            assertEquals(now.movieId, i+1);
-            assertEquals(now.rating, i+1);
-            assertEquals(now.timestamp, 12345678);
-        }
-    }
 
 
     //parameter 로 파일 경로+이름 받으면
     //user, movie, rating 들어있는지 찾아서
     //해당 유형 return. 유형별 테스트 위함.
+
+    /*
     public DataType testType(String parameter){
         if(parameter.contains("User")){
             return DataType.USER;
@@ -222,46 +144,10 @@ public class DataReaderTest {
         }
         return null;
     }
+    */
+
 
 
     //parameter 들을 통해 진행.
-    @Test
-    public void parameterTest(){
-        System.out.println("** Parameter Test **");
-
-        //parameter 제대로 들어갔는지 확인.
-        System.out.println("Parameter1: " + question + " Parameter2: " + answer);
-
-        System.out.println("Printing Answer");
-
-        //testcase path 정확히 찍히는지 확인.
-        String testcase_path = "data/test/" + question;
-        System.out.println("testcase path " + testcase_path + "\n");
-
-        //chk: User, Movie, Rating 테스트 유형 결정.
-        DataType chk = testType(testcase_path);
-
-        //GetPathFromDataType(), ReadTextFromFile() 2개는 default 로 진행.
-        testGetPathFromDataType();
-        testReadTextFromFile();
-
-        //chk 로 판별한 유형별로 테스트.
-        if(chk == DataType.USER){
-            System.out.println("User methods test");
-            testToUserList(testcase_path);
-        }
-        if(chk == DataType.MOVIE){
-            System.out.println("Movie methods test");
-            testToMovieList(testcase_path);
-        }
-        if(chk == DataType.RATING){
-            System.out.println("Rating methods test");
-            testToRatingList(testcase_path);
-        }
-
-        //나중에는 resultX.dat 과 userList 비교하여 assert.
-        //비교 자동화 하는것이 목표.
-        assertTrue(true);
-    }
-}
+//}
 
