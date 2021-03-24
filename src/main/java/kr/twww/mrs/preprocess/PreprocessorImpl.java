@@ -51,14 +51,14 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor, 
     @Override
     public ArrayList<Movie.Genre> GetGenreList( String genreText )
     {
-        // TODO: 주어진 텍스트를 enum Genre 리스트로 반환
+        // TODO: 주어진 텍스트를 enum Movie.Genre 리스트로 반환
         return null;
     }
 
     @Override
     public User.Occupation GetOccupation( String occupationText )
     {
-        // TODO: 주어진 텍스트를 enum Occupation으로 반환
+        // TODO: 주어진 텍스트를 enum User.Occupation으로 반환
         return null;
     }
 
@@ -77,10 +77,6 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor, 
          * 2. 해당하는 영화 및 동일한 직업의 유저들의 평가 필터링
          * 3. 영화마다 새로운 Score에 설정 및 해당하는 모든 평가 추가
          * 4. Score 리스트를 반환
-         *
-         * 참고:
-         * +. User.ConvertOccupation()
-         * +. Movie.ConvertGenre()
          */
         return null;
     }
