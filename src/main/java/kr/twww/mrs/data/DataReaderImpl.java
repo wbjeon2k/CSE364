@@ -92,40 +92,56 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     }
 
     @Override
-    public ArrayList<User> ToUserList( String text )
+    public ArrayList<String[]> ToUserList(String text )
     {
+        //2차원 배열
+        ArrayList<String[]> MyListUser = new ArrayList<>();
+
         for(String i : text ){
             //i 는 users.dat 파일 한 줄씩임
             //i의 순서는 userid, gender, age, occupation, zip-code 임
             ConvertGender(i[1]);
             ConvertAge(i[2]);
             ConvertOccupation(i[3]);
+            MyListUser.add(i);
         }
+        //User 리스트 반환
+        return (ArrayList<String[]>) MyListUser;
         // TODO: 주어진 텍스트를 User 리스트로 반환
         return null;
     }
 
     @Override
-    public ArrayList<Movie> ToMovieList( String text )
+    public ArrayList<String[]> ToMovieList(String text )
     {
+        //2차원 배열
+        ArrayList<String[]> MyListMovies = new ArrayList<>();
+
         for(String i : text ){
             //i 는 movies.dat 파일 한 줄씩임
             //i 의 세번째 값은 Genres 임
             ConvertGenre(i[2]);
+            MyListMovies.add(i);
         }
+        //User 리스트 반환
+        return (ArrayList<String[]>) MyListMovies;
 
         // TODO: 주어진 텍스트를 Movie 리스트로 반환
         return null;
     }
 
     @Override
-    public ArrayList<Rating> ToRatingList( String text )
+    public ArrayList<String[]> ToRatingList(String text )
     {
-        // ratings.dat 파일을 '::' 기준으로 나누면 4개의 요소이므로 list[4] 에 담는다.
-        // ratings.dat 파일에서 UserID 를 뜻하는 list[0] 과 occupation 비교
-        // ratings.dat 파일에서 MovieID 를 뜻하는 list[1] 과 genreList 비교
-        // 이때 세번째 요소 list[2] 는 Rating이다
-        // if list[0] == occupation[i] and list[1] == genreList: TargetScore.append(list[2])
+        //2차원 배열
+        ArrayList<String[]> MyListRating = new ArrayList<>();
+        for(String i : text ){
+            //i 는 ratings.dat 파일 한 줄씩임
+            //i 의 세번째 값은 rating 임
+            MyListRating.add(i);
+        }
+        //User 리스트 반환
+        return (ArrayList<String[]>) MyListRating;
         // TODO: 주어진 텍스트를 Rating 리스트로 반환
         return null;
     }
