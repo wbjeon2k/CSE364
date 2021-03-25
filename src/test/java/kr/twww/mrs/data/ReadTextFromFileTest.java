@@ -23,13 +23,16 @@ import static org.junit.Assert.*;
 public class ReadTextFromFileTest {
     DataReaderImpl dataReader;
     Path base = Paths.get("data/test/");
-    Path question, answer;
+    Path question;
+    String answer;
     //parameter 는 테스트 파일, 비교할 결과 파일 2개로 설정.
-
+    //잘못된 입력 들어오면 공백 string 반환.
     @Parameters
     public static Collection<Object[]> testSet(){
         return Arrays.asList(new Object[][]{
-                {"testReadText.dat", "resultReadText.dat" },
+                {"testReadText.dat", "TEST READ TEST READ" },
+                {"NODATA.dat", ""},
+                {"NoData2.dat", ""}
         });
     }
 
@@ -37,7 +40,7 @@ public class ReadTextFromFileTest {
         System.out.println("GetPathTest: Test case started.");
         this.dataReader = new DataReaderImpl();
         question = base.resolve(Q);
-        answer = base.resolve(A);
+        answer = A;
     }
 
     //파싱 형태 맞춰서 한 줄의 string 으로 반환하는지 확인.
@@ -45,34 +48,25 @@ public class ReadTextFromFileTest {
     @Test
     public void testReadTextFromFile(){
         String path = question.toString();
-        String result_path = answer.toString();
-        System.out.println("testpath: " + path + "result path: " + result_path);
+        //String result_path = answer.toString();
+        System.out.println("testpath: " + path + "expected result: " + answer);
 
         String testResult = dataReader.ReadTextFromFile(path);
 
-        FileInputStream ifstream;
-        try{
-            ifstream = new FileInputStream(result_path);
-        }
-        catch (FileNotFoundException e){
-            System.out.println("Test File " + result_path+ " not found");
-            return;
-        }
-        Scanner scanner = new Scanner(ifstream);
-        String ans_text = scanner.nextLine();
-
-        assertSame(ans_text, testResult);
+        assertSame(answer, testResult);
     }
 
     @Before
     public void setUp() throws Exception
     {
+        System.out.println("Start ReadTextFromFileTest!");
         dataReader = new DataReaderImpl();
     }
 
     @After
     public void tearDown() throws Exception
     {
+        System.out.println("Finish ReadTextFromFileTest!");
         dataReader = null;
     }
 }

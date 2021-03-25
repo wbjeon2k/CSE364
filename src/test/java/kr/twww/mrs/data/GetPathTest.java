@@ -34,12 +34,18 @@ public class GetPathTest {
 
 
     //parameter는 테스트 파일, 비교할 결과 파일 2개로 설정.
+    //feature-data 참조. 경로 없는경우 "NO_DATA" 반환.
     @Parameters
     public static Collection<Object[]> testSet(){
         return Arrays.asList(new Object[][]{
                 {DataType.USER, users_dat},
                 {DataType.MOVIE, movies_dat},
                 {DataType.RATING, ratings_dat},
+                {"NON_DATATYPE_STRING", "NO_DATA"},
+                {" ", "NO_DATA"},
+                {123, "NO_DATA"},
+                {true, "NO_DATA"},
+                {DataType.values(), "NO_DATA"}
         });
     }
 
@@ -61,12 +67,14 @@ public class GetPathTest {
     @Before
     public void setUp() throws Exception
     {
+        System.out.println("Start GetPathTest!");
         dataReader = new DataReaderImpl();
     }
 
     @After
     public void tearDown() throws Exception
     {
+        System.out.println("Finish GetPathTest!");
         dataReader = null;
     }
 }
