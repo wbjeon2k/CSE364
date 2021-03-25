@@ -132,6 +132,8 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor, 
             ArrayList<Rating> ratingList
     )
     {
+
+        ArrayList<Integer> score_list = new ArrayList<Integer>();   // score_list를 정수형 리스트로 선언
         /**
          * TODO:
          * 1. 카테고리(장르)에 해당하는 모든 영화 필터링
