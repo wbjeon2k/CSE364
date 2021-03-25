@@ -115,16 +115,17 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             BufferedReader brMovie = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = brMovie.readLine()) != null) {
-                //한 줄씩 받으면서 MyUser 객체에 변수를 넣는다.
+                //한 줄씩 받으면서 MyMovie 객체에 변수를 넣는다.
                 String[] strMovie = line.split("::");
                 MyMovie.movieId = Integer.parseInt(strMovie[0]);
                 MyMovie.title = strMovie[1];
-                //잠시대기
+                //MyMovie 객체의 genres 변수가 ArrayList<Genre> 이다
+                //따라서 데이터를 "|" 기준 파싱하고 각각을 Enum Genre로 변환 후
+                //ArrayList<Genre>에 add 함
                 var resultGenreList = new ArrayList<Movie.Genre>();
-                //_genre를 받고 파싱하고 각각의 요소을 enum으로 변환
                 String[] strGenre = strMovie[2].split("|");
                 for(String i : strGenre){
-                    //사실 convert함수 써야되는 어떻게 하는지 모르겠다.
+                    //사실 convert 함수 써야되는 어떻게 하는지 모르겠다.
                     resultGenreList.add(Movie.Genre.valueOf(i));
                 }
                 MyMovie.genres = resultGenreList;
@@ -143,7 +144,31 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public ArrayList<Rating> ToRatingList( String text )
     {
+        var resultRatingList = new ArrayList<Rating>();
+        var MyRating = new Rating();
+        String str = text;
+        // convert String into InputStream
+        InputStream is = new ByteArrayInputStream(str.getBytes());
+        // read it with BufferedReader
+        try {
+            BufferedReader brUser = new BufferedReader(new InputStreamReader(is));
+            String line;
+            while ((line = brUser.readLine()) != null) {
+                //한 줄씩 받으면서 MyRating 객체에 변수를 넣는다.
+                String[] strRating = line.split("::");
+                MyRating.userId = Integer.parseInt(strRating[0]);
+                MyRating.movieId = Integer.parseInt(strRating[1]);
+                MyRating.rating = Integer.parseInt(strRating[2]);
+                MyRating.timestamp = Integer.parseInt(strRating[3]);
+
+                resultRatingList.add(MyRating);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return resultRatingList;
         // TODO: 주어진 텍스트를 Rating 리스트로 반환
-        return null;
     }
 }
