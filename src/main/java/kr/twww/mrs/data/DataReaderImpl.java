@@ -1,5 +1,9 @@
 package kr.twww.mrs.data;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static kr.twww.mrs.data.DataType.*;
@@ -54,6 +58,20 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public String ReadTextFromFile( String path )
     {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            // 데이터 전체 string 타입으로 반환
+            return br.readLine();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+        출처: https://yeolco.tistory.com/106 [열코의 프로그래밍 일기]
         // TODO: 주어진 경로의 파일을 읽어 String으로 반환
         return null;
     }
