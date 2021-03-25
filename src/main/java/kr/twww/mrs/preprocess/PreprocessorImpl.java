@@ -52,8 +52,28 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor, 
     public ArrayList<Movie.Genre> GetGenreList( String genreText )
     {
         // TODO: 주어진 텍스트를 enum Genre 리스트로 반환
+        String s = genreText;
+        s = s.replaceAll("\\p{Z}","");  //  공백제거
+        //s = s.replaceAll();  // '|' 이거 제외한 특수문자를 제거해야함.
+        s = s.toLowerCase();    // 소문자로 통일
 
+        ArrayList<String> list = new ArrayList<String>();
+        String[] getstr1 = s.split("|");
 
+        for(int i=0; i<getstr1.length;i++){
+            list.add(getstr1[i]);
+        }
+        for(int j=0; j<list.size();j++){    // 주어진 장르에 포함되는것이 없으면 에러
+            if(!(list.get(j).equals("action") || list.get(j).equals("adventure") || list.get(j).equals("animation")
+                    || list.get(j).equals("childrens") || list.get(j).equals("comedy") || list.get(j).equals("crime")
+                    || list.get(j).equals("documentary") || list.get(j).equals("drama") || list.get(j).equals("fantasy")
+                    || list.get(j).equals("filmnoir") || list.get(j).equals("horror") || list.get(j).equals("musical")
+                    || list.get(j).equals("mystery") || list.get(j).equals("romance") || list.get(j).equals("scifi")
+                    || list.get(j).equals("thriller") || list.get(j).equals("war") || list.get(j).equals("western")))
+                return null;
+        }
+
+        // list.get으로 장르 구분한거 따로따로 받을순있는데 직업때처럼 조건문으로 각각 찾아서 리턴하는건 안됨 방법필요
 
         return null;
     }
@@ -64,9 +84,9 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor, 
         // TODO: 주어진 텍스트를 enum Occupation으로 반환
 
         String s = occupationText;
-        s = s.replaceAll("\\p{Z}","");
-        s = s.replaceAll("\\p{Punct}","");
-        s = s.toUpperCase();
+        s = s.replaceAll("\\p{Z}","");  // 공백제거
+        s = s.replaceAll("\\p{Punct}","");  // 특수문자제거
+        s = s.toUpperCase();    // 대문자로 통일
 
         if(!(s.equals("OTHER") || s.equals("ACADEMIC") || s.equals("EDUCATOR") || s.equals("ARTIST") || s.equals("CLERICAL")
                 || s.equals("GRADSTUDENT") || s.equals("COLLEGE") || s.equals("ADMIN") || s.equals("CUSTOMERSERVICE")
@@ -79,7 +99,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor, 
         }
 
         if(s.equals("OTHER")){ return User.Occupation.OTHER; }
-        if(s.equals("ACADEMIC" || s.equals("EDUCATOR"))){ return User.Occupation.ACADEMIC_OR_EDUCATOR; }
+        if(s.equals("ACADEMIC") || s.equals("EDUCATOR")){ return User.Occupation.ACADEMIC_OR_EDUCATOR; }
         if(s.equals("ARTIST")){ return User.Occupation.ARTIST; }
         if(s.equals("CLERICAL") || s.equals("ADMIN")){ return User.Occupation.CLERICAL_OR_ADMIN; }
         if(s.equals("COLLEGE") || s.equals("GRADSTUDENT")){ return User.Occupation.COLLEGE_OR_GRAD_STUDENT; }
