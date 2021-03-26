@@ -53,12 +53,12 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor, 
     {
         // TODO: 주어진 텍스트를 enum Genre 리스트로 반환
         String s = genreText;
-        s = s.replaceAll("\\p{Z}","");  //  공백제거
-        //s = s.replaceAll();  // '|' 이거 제외한 특수문자를 제거해야함.
         s = s.toLowerCase();    // 소문자로 통일
+        s = s.replaceAll("\\p{Z}","");  //  공백제거
+        s = s.replaceAll("|","A"); // '|' 를 대문자 A로 치환
 
         ArrayList<String> list = new ArrayList<String>();
-        String[] getstr1 = s.split("|");
+        String[] getstr1 = s.split("A");
 
         for(int i=0; i<getstr1.length;i++){
             list.add(getstr1[i]);
@@ -72,10 +72,30 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor, 
                     || list.get(j).equals("thriller") || list.get(j).equals("war") || list.get(j).equals("western")))
                 return null;
         }
+        ArrayList<Movie.Genre> movie_list = new ArrayList<Movie.Genre>();
+        for(int k=0; k<list.size();k++){
+            if(list.get(k).equals("action")){ movie_list.add(Movie.Genre.Action);}
+            if(list.get(k).equals("adventure")){ movie_list.add(Movie.Genre.Adventure);}
+            if(list.get(k).equals("animation")){ movie_list.add(Movie.Genre.Animation);}
+            if(list.get(k).equals("children_s")){ movie_list.add(Movie.Genre.Children_s);}
+            if(list.get(k).equals("comedy")){ movie_list.add(Movie.Genre.Comedy);}
+            if(list.get(k).equals("crime")){ movie_list.add(Movie.Genre.Crime);}
+            if(list.get(k).equals("documentary")){ movie_list.add(Movie.Genre.Documentary);}
+            if(list.get(k).equals("drama")){ movie_list.add(Movie.Genre.Drama);}
+            if(list.get(k).equals("fantasy")){ movie_list.add(Movie.Genre.Fantasy);}
+            if(list.get(k).equals("filmnoir")){ movie_list.add(Movie.Genre.Film_Noir);}
+            if(list.get(k).equals("horror")){ movie_list.add(Movie.Genre.Horror);}
+            if(list.get(k).equals("musical")){ movie_list.add(Movie.Genre.Musical);}
+            if(list.get(k).equals("mystery")){ movie_list.add(Movie.Genre.Mystery);}
+            if(list.get(k).equals("romance")){ movie_list.add(Movie.Genre.Romance);}
+            if(list.get(k).equals("scifi")){ movie_list.add(Movie.Genre.Sci_Fi);}
+            if(list.get(k).equals("thriller")){ movie_list.add(Movie.Genre.Thriller);}
+            if(list.get(k).equals("war")){ movie_list.add(Movie.Genre.War);}
+            if(list.get(k).equals("western")){ movie_list.add(Movie.Genre.Western);}
+        }
 
-        // list.get으로 장르 구분한거 따로따로 받을순있는데 직업때처럼 조건문으로 각각 찾아서 리턴하는건 안됨 방법필요
+        return movie_list;
 
-        return null;
     }
 
     @Override
@@ -134,6 +154,8 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor, 
     {
 
         ArrayList<Integer> score_list = new ArrayList<Integer>();   // score_list를 정수형 리스트로 선언
+
+
         /**
          * TODO:
          * 1. 카테고리(장르)에 해당하는 모든 영화 필터링
