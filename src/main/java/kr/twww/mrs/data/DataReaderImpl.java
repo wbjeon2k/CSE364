@@ -93,9 +93,9 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 //한 줄씩 받으면서 MyUser 객체에 변수를 넣는다.
                 String[] strUser = line.split("::");
                 MyUser.userId = Integer.parseInt(strUser[0]);
-                MyUser.gender = User.Gender.valueOf(strUser[1]);
-                MyUser.age = User.Age.valueOf(strUser[2]);
-                MyUser.occupation = User.Occupation.valueOf(strUser[3]);
+                MyUser.gender = MyUser.ConvertGender(strUser[1].charAt(0));
+                MyUser.age = MyUser.ConvertAge(Integer.parseInt(strUser[2]));
+                MyUser.occupation = MyUser.ConvertOccupation(Integer.parseInt(strUser[3]));
                 MyUser.zipCode = Integer.parseInt(strUser[4]);
                 //객체를 리스트에 add
                 resultUserList.add(MyUser);

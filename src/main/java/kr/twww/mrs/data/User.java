@@ -52,25 +52,54 @@ public class User
 
     public static Gender ConvertGender( char _gender )
     {
+        //M,F 을 Enum 으로 변경
+        if(_gender == 'M'){
+            return Gender.MALE;
+        }
+        else if(_gender == 'F'){
+            return Gender.FEMALE;
+        }
+        else{
+            System.out.println("WRONG DATA IN GENDER!");
+            return null;
+        }
         // TODO: 주어진 성별 텍스트를 enum Gender로 반환
-        return null;
     }
 
     public static Age ConvertAge( int _age )
     {
+        //나이 범위 나누기
+        if(_age < 18){
+            return Age.UNDER_18;
+        }
+        else if(_age >= 18 && _age < 25 ){
+            return Age.BETWEEN_18_24;
+        }
+        else if(_age >= 25 && _age < 35){
+            return Age.BETWEEN_25_34;
+        }
+        else if(_age >= 35 && _age < 45){
+            return Age.BETWEEN_35_44;
+        }
+        else if(_age >= 45 && _age < 50){
+            return Age.BETWEEN_45_49;
+        }
+        else if(_age >= 50 && _age < 56){
+            return Age.BETWEEN_50_55;
+        }
+        else if(_age >= 56){
+            return Age.OVER_55;
+        }
+        else{
+            System.out.println("WRONG DATA IN AGE!");
+            return null;
+        }
         // TODO: 주어진 나이 텍스트를 enum Age로 반환
-        return null;
     }
 
     public static Occupation ConvertOccupation( int _occupation )
     {
-        // users.dat 파일 불러오기
-        // users.dat 파일을 '::' 기준으로 나누고, 4번째 요소인 Occupation 을 enum Occupation으로 반환 후 List[5] 크기 리스트에 담기
-        // 리스트 4번째 요소가 Occupation 이므로 List[3] == occupationText 와 비교
-        // 둘이 같다면, UserID인 List[0]를 새로운 리스트에 어펜드 TargetUser.append(List[0])
-        // return TargetUser
-        // ****질문**** 아예 occupationText 를 숫자로 반환하는게 더 효율적이지 않나요?
+        return Occupation.values()[_occupation];
         // TODO: 주어진 직업 텍스트를 enum Occupation로 반환
-        return null;
     }
 }
