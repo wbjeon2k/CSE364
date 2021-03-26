@@ -135,7 +135,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 String[] strGenre = strMovie[2].split("|");
                 for(String i : strGenre){
                     //사실 convert 함수 써야되는 어떻게 하는지 모르겠다.
-                    resultGenreList.add(Movie.Genre.valueOf(i));
+                    resultGenreList.add(Movie.ConvertGenre(i));
                 }
                 MyMovie.genres = resultGenreList;
                 //객체를 리스트에 add

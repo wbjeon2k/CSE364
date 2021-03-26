@@ -32,7 +32,18 @@ public class Movie
 
     public static Genre ConvertGenre( String _genre )
     {
-        return Genre.valueOf(_genre);
+        if(_genre == "Children's"){
+            return Genre.Children_s;
+        }
+        else if(_genre == "Film-Noir"){
+            return Genre.Film_Noir;
+        }
+        else if(_genre == "Sci-Fi"){
+            return Genre.Sci_Fi;
+        }
+        else {
+            return Genre.valueOf(_genre);
+        }
         // TODO: 텍스트로 주어진 장르를 enum Genre로 반환
     }
 }
