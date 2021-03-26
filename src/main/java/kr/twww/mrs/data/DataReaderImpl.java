@@ -42,11 +42,11 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     {
         // 데이터 타입 별 경로 설정
         if (dataType == USER)
-            return "../../../data/users.dat";
+            return "./data/users.dat";
         else if (dataType == MOVIE)
-            return "../../../data/movies.dat";
+            return "./data/movies.dat";
         else if  (dataType == RATING)
-            return "../../../data/ratings.dat";
+            return "./data/ratings.dat";
         else
             return "NO DATA";
         // TODO: 데이터 타입에 따른 데이터파일 경로 반환
@@ -57,8 +57,13 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     {
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
-            // 데이터 전체 string 타입으로 반환
-            String resultRead = br.readLine();
+            // 데이터 전체 다 받도록 코드 수정함
+            String line = br.readLine();
+            String resultRead = null;
+            while (line != null){
+                resultRead += line;
+                line = br.readLine();
+            }
             return resultRead;
 
         } catch (FileNotFoundException e) {
@@ -74,7 +79,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     public ArrayList<User> ToUserList( String text )
     {
         var resultUserList = new ArrayList<User>();
-        var MyUser = new User();
+
         String str = text;
         // convert String into InputStream
         InputStream is = new ByteArrayInputStream(str.getBytes());
@@ -83,6 +88,8 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             BufferedReader brUser = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = brUser.readLine()) != null) {
+                // MyUser 선언을 반복문 안으로 오도록 수정했습니다.
+                var MyUser = new User();
                 //한 줄씩 받으면서 MyUser 객체에 변수를 넣는다.
                 String[] strUser = line.split("::");
                 MyUser.userId = Integer.parseInt(strUser[0]);
@@ -106,7 +113,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     public ArrayList<Movie> ToMovieList( String text )
     {
         var resultMovieList = new ArrayList<Movie>();
-        var MyMovie = new Movie();
+
         String str = text;
         // convert String into InputStream
         InputStream is = new ByteArrayInputStream(str.getBytes());
@@ -115,6 +122,8 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             BufferedReader brMovie = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = brMovie.readLine()) != null) {
+                //MyMovie를 반복문 안에서 선언하도록 수정했습니다.
+                var MyMovie = new Movie();
                 //한 줄씩 받으면서 MyMovie 객체에 변수를 넣는다.
                 String[] strMovie = line.split("::");
                 MyMovie.movieId = Integer.parseInt(strMovie[0]);
@@ -145,7 +154,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     public ArrayList<Rating> ToRatingList( String text )
     {
         var resultRatingList = new ArrayList<Rating>();
-        var MyRating = new Rating();
+
         String str = text;
         // convert String into InputStream
         InputStream is = new ByteArrayInputStream(str.getBytes());
@@ -154,6 +163,8 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             BufferedReader brUser = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = brUser.readLine()) != null) {
+                // MyRating 을 반복문 안에서 선언하도록 수정했습니다.
+                var MyRating = new Rating();
                 //한 줄씩 받으면서 MyRating 객체에 변수를 넣는다.
                 String[] strRating = line.split("::");
                 MyRating.userId = Integer.parseInt(strRating[0]);
