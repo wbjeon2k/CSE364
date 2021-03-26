@@ -69,6 +69,7 @@ public class GetScoreListTest {
         args1 = scanner.next();
         args2 = scanner.next();
 
+        //GetScoreList 에 필요한 pameter 5개 순서대로 구한다.
         ArrayList<Movie.Genre> genres_list = dataPreprocessor.GetGenreList(args1);
         User.Occupation occupation = dataPreprocessor.GetOccupation(args2);
         ArrayList<User> user_list = dataReader.ToUserList(dataReader.ReadTextFromFile(user_dat.toString()));
@@ -85,6 +86,7 @@ public class GetScoreListTest {
             sum /= (float)(scores_list.size());
         }
 
+        //assert average
         assertEquals(sum, answer);
     }
 
@@ -96,6 +98,20 @@ public class GetScoreListTest {
     ArrayList<Movie> movieList,
     ArrayList<Rating> ratingList
     */
+
+    @Before
+    public void setUp() throws Exception
+    {
+        System.out.println("Starting GetScoreList test!");
+        dataPreprocessor = new PreprocessorImpl();
+    }
+
+    @After
+    public void tearDown() throws Exception
+    {
+        System.out.println("Finishing GetScoreList test!");
+        dataPreprocessor = null;
+    }
 
 
 }

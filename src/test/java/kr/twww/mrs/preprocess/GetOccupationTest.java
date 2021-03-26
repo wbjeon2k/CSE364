@@ -52,14 +52,14 @@ public class GetOccupationTest {
     @Before
     public void setUp() throws Exception
     {
-        System.out.println("Starting GetGenreList test!");
+        System.out.println("Starting GetOccupation test!");
         dataPreprocessor = new PreprocessorImpl();
     }
 
     @After
     public void tearDown() throws Exception
     {
-        System.out.println("Finishing GetGenreList test!");
+        System.out.println("Finishing GetOccupation test!");
         dataPreprocessor = null;
     }
 }
