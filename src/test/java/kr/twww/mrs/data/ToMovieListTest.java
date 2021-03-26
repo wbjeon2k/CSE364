@@ -33,6 +33,8 @@ public class ToMovieListTest {
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
                 {"testMovie1.dat", "resultMovie1.dat"},
+                {"error_path1.dat", ""},
+                {"error_data_movie1", ""}
         });
     }
 
@@ -44,7 +46,31 @@ public class ToMovieListTest {
     }
 
     @Test
+    public void error_path_Test(){
+        String q = question.toString();
+        if(!q.contains("error_path")) return;
+
+        String read_text = dataReader.ReadTextFromFile(question.toString());
+        ArrayList<Movie> result = dataReader.ToMovieList(read_text);
+        assertNull(result);
+    }
+
+    @Test
+    public void error_data_Test(){
+        String q = question.toString();
+        if(!q.contains("error_data")) return;
+
+        String read_text = dataReader.ReadTextFromFile(question.toString());
+        ArrayList<Movie> result = dataReader.ToMovieList(read_text);
+        assertNull(result);
+    }
+
+
+    @Test
     public void parameterTest(){
+        String q = question.toString();
+        if(!q.contains("test")) return;
+
         String read_text = dataReader.ReadTextFromFile(question.toString());
         ArrayList<Movie> result = dataReader.ToMovieList(read_text);
 
