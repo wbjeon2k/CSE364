@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 @RunWith(Parameterized.class)
 public class ReadTextFromFileTest {
     DataReaderImpl dataReader;
-    Path base = Paths.get("data/test/");
+    Path base = Paths.get("data/test/test_data");
     Path question;
     String answer;
     //parameter 는 테스트 파일, 비교할 결과 파일 2개로 설정.
@@ -31,8 +31,9 @@ public class ReadTextFromFileTest {
     public static Collection<Object[]> testSet(){
         return Arrays.asList(new Object[][]{
                 {"testReadText.dat", "TEST READ TEST READ" },
-                {"NODATA.dat", ""},
-                {"NoData2.dat", ""}
+                {"testReadTextBlank.dat", "" },
+                {"NODATA.dat", null},
+                {"NoData2.dat", null}
         });
     }
 

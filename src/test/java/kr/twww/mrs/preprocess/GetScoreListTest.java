@@ -26,68 +26,108 @@ public class GetScoreListTest {
     PreprocessorImpl dataPreprocessor;
     DataReaderImpl dataReader;
 
-    static Path base = Paths.get("data/test/pre_test/");
-    String question;
-    float answer;
+    String input_genres, input_occupation;
 
-    Path input, user_dat, movies_dat, ratings_dat;
+    static User user_gen(){
+        //1::F::1::4::48067
+        User ret = new User();
+        ret.userId = 1;
+        ret.gender = User.Gender.FEMALE;
+        ret.age = User.Age.UNDER_18;
+        ret.occupation = User.Occupation.COLLEGE_OR_GRAD_STUDENT;
+        ret.zipCode = "48067";
+        return ret;
+    }
 
+    static ArrayList<User> user_list_gen(){
+        ArrayList<User> ret = new ArrayList<>();
+        ret.add(user_gen());
+        return ret;
+    }
+
+    /*
+    1::Toy Story (1995)::Animation|Drama
+    2::Jumanji (1995)::Animation|Drama
+     */
+
+    static Movie toystory_gen(){
+        Movie ret = new Movie();
+        ret.title = "Toy Story (1995)";
+        ret.movieId = 1;
+        ret.genres.add(Movie.Genre.Animation);
+        ret.genres.add(Movie.Genre.Drama);
+        return ret;
+    }
+
+    static Movie jumanji_gen(){
+        Movie ret = new Movie();
+        ret.title = "Jumanji (1995)";
+        ret.movieId = 2;
+        ret.genres.add(Movie.Genre.Animation);
+        ret.genres.add(Movie.Genre.Drama);
+        return ret;
+    }
+
+    static ArrayList<Movie> movie_list_gen(){
+        ArrayList<Movie> ret = new ArrayList<>();
+        ret.add(toystory_gen());
+        ret.add(jumanji_gen());
+        return ret;
+    }
+
+    /*
+    1::1::4::978300760
+    1::2::3::978302109
+     */
+    static Rating toy_rating_gen(){
+        Rating ret = new Rating();
+        ret.userId = 1;
+        ret.movieId = 1;
+        ret.rating = 4;
+        ret.timestamp = 978300760;
+        return ret;
+    }
+
+    static Rating jumanji_rating_gen(){
+        Rating ret = new Rating();
+        ret.userId = 1;
+        ret.movieId = 2;
+        ret.rating = 3;
+        ret.timestamp = 978302109;
+        return ret;
+    }
+
+    static ArrayList<Rating> ratings_list_gen(){
+        ArrayList<Rating> ret = new ArrayList<>();
+        ret.add(toy_rating_gen());
+        ret.add(jumanji_rating_gen());
+        return ret;
+    }
+
+    //parameter 2개 :
     @Parameters
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
-                {"pre_test1_", 3.5},
+                {"Animation|Drama","grad_student"},
         });
     }
 
-    public GetScoreListTest(String Q, float A){
+    public GetScoreListTest(String A, String B){
         this.dataPreprocessor = new PreprocessorImpl();
         this.dataReader = new DataReaderImpl();
 
-        question = Q;
-        answer = A;
-
-        input = base.resolve(Q + "input.dat");
-        user_dat = base.resolve(Q + "user.dat");
-        movies_dat = base.resolve(Q + "movies.dat");
-        ratings_dat = base.resolve(Q + "ratings.dat");
+        input_genres = A;
+        input_occupation = B;
     }
 
     @Test
     public void parametrizedTest(){
-        FileInputStream ifstream;
-        try{
-            ifstream = new FileInputStream(input.toString());
-        }
-        catch (FileNotFoundException e){
-            System.out.println("There is no " + input.toString() + " file!");
-            return;
-        }
-
-        Scanner scanner = new Scanner(ifstream);
-
-        String args1, args2;
-        args1 = scanner.next();
-        args2 = scanner.next();
-
-        //GetScoreList 에 필요한 pameter 5개 순서대로 구한다.
-        ArrayList<Movie.Genre> genres_list = dataPreprocessor.GetGenreList(args1);
-        User.Occupation occupation = dataPreprocessor.GetOccupation(args2);
-        ArrayList<User> user_list = dataReader.ToUserList(dataReader.ReadTextFromFile(user_dat.toString()));
-        ArrayList<Movie> movies_list = dataReader.ToMovieList(dataReader.ReadTextFromFile(movies_dat.toString()));
-        ArrayList<Rating> ratings_list = dataReader.ToRatingList(dataReader.ReadTextFromFile(ratings_dat.toString()));
-
-        ArrayList<Score> scores_list = dataPreprocessor.GetScoreList(genres_list, occupation, user_list, movies_list, ratings_list);
-
-        float sum = 0;
-        if(!scores_list.isEmpty()){
-            for(int i=0;i<scores_list.size();++i){
-                sum += scores_list.get(i).GetScore();
-            }
-            sum /= (float)(scores_list.size());
-        }
-
-        //assert average
-        assertEquals(sum, answer);
+        ArrayList<Movie.Genre> genreList = dataPreprocessor.GetGenreList(input_genres);
+        User.Occupation occupation = dataPreprocessor.GetOccupation(input_occupation);
+        ArrayList<User> userList = user_list_gen();
+        ArrayList<Movie> movieList = movie_list_gen();
+        ArrayList<Rating> ratingList = ratings_list_gen();
+        ArrayList<Score> result = dataPreprocessor.GetScoreList(genreList,occupation,userList,movieList,ratingList);
     }
 
 

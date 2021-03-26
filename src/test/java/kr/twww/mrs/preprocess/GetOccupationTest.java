@@ -34,6 +34,7 @@ public class GetOccupationTest {
                 {"gradstudent", User.Occupation.COLLEGE_OR_GRAD_STUDENT},
                 {"grad_student", User.Occupation.COLLEGE_OR_GRAD_STUDENT},
                 {"grad student", User.Occupation.COLLEGE_OR_GRAD_STUDENT},
+                {"gra,", null}
         });
     }
 

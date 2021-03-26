@@ -30,11 +30,10 @@ public class GetPathTest {
     //question: 주어지는 질문
     //answer: 예상되는 답변
 
-    Path base = Paths.get("data/");
-    static Path users_dat = Paths.get("data/users.dat");
-    static Path movies_dat = Paths.get("data/movies.dat");
-    static Path ratings_dat = Paths.get("data/ratings.dat");
-
+    //Path base = Paths.get("data/test_data/");
+    static Path users_dat = Paths.get("data/test_data/users.dat");
+    static Path movies_dat = Paths.get("data/test_data/movies.dat");
+    static Path ratings_dat = Paths.get("data/test_data/ratings.dat");
 
     //parameter는 테스트 파일, 비교할 결과 파일 2개로 설정.
     //feature-data 참조. 경로 없는경우 "NO_DATA" 반환.

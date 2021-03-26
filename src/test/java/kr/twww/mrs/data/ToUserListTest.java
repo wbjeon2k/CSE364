@@ -1,5 +1,7 @@
 package kr.twww.mrs.data;
 
+import kr.twww.mrs.*;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.After;
@@ -22,79 +24,57 @@ import static org.junit.Assert.*;
 @RunWith(Parameterized.class)
 public class ToUserListTest {
     DataReaderImpl dataReader;
-    String original_parameter1, original_parameter2;
-    Path base = Paths.get("data/test/");
-    Path question, answer;
+    String question;
+    ArrayList<User> answer;
+
+    static User TCtemplate(){
+        User tmp = new User();
+        tmp.userId = 1;
+        tmp.gender = User.Gender.FEMALE;
+        tmp.age = User.Age.UNDER_18;
+        tmp.occupation = User.Occupation.K_12_STUDENT;
+        tmp.zipCode = "48067-100";
+        return tmp;
+    }
+
+    static ArrayList<User> tcgen(int x){
+        ArrayList<User> ret = new ArrayList<User>();
+        for(int i=0;i<x;++i) ret.add(TCtemplate());
+        return ret;
+    }
 
     @Parameters
     public static Collection<Object[]> testSet(){
         return Arrays.asList(new Object[][]{
-                {"testUser1.dat", "resultUser1.dat" },
-                {"error_path1.dat", "" },
-                {"error_data_user1.dat", "" },
+                {"", tcgen(0) },
+                {"1::F::1::10::48067-100 1::F::1::10::48067-100 1::F::1::10::48067-100", tcgen(3)},
+                {"1::F::1::10::48067-100 1::F::1::10::48067-100 1 F", null},
         });
     }
 
-    public ToUserListTest(String Q, String A) {
+    public ToUserListTest(String Q, ArrayList<User> A) {
         System.out.println("GetPathTest: Test case started.");
         this.dataReader = new DataReaderImpl();
-        this.question = base.resolve(Q);
-        this.answer = base.resolve(A);
-    }
-
-    //잘못된 경로 들어오면 ToUserList 는 null return.
-    @Test
-    public void error_path_Test(){
-        String q = question.toString();
-        if(!q.contains("error_path")) return;
-
-        String read_text = dataReader.ReadTextFromFile(question.toString());
-        ArrayList<User> result = dataReader.ToUserList(read_text);
-        assertNull(result);
-    }
-
-
-    //형식 맞지 않는 들어오면 ToUserList 는 null return.
-    @Test
-    public void error_data_Test(){
-        String q = question.toString();
-        if(!q.contains("error_data")) return;
-
-        String read_text = dataReader.ReadTextFromFile(question.toString());
-        ArrayList<User> result = dataReader.ToUserList(read_text);
-        assertNull(result);
+        this.question = Q;
+        this.answer = A;
     }
 
     @Test
     public void parameterTest(){
-        String q = question.toString();
-        if(!q.contains("test")) return;
-
-        String read_text = dataReader.ReadTextFromFile(question.toString());
+        //question: ReadTextFromFile 을 통해 정상적으로 처리 되었다면 주어질 input
+        //answer: ToUserList 가 정상적으로 작동하면 만들 UserList.
+        String read_text = question;
         ArrayList<User> result = dataReader.ToUserList(read_text);
-
-        assertEquals(result.size(), 5);
-
-        /*
-        public int userId;
-        public Gender gender;
-        public Age age;
-        public Occupation occupation;
-        public int zipCode;
-        //1 F 1 10 48067-100 5개.
-         */
-        for(int i=0; i< result.size();++i){
-            User now = result.get(i);
-            assertEquals(now.userId, 1);
-            assertEquals(now.gender, User.Gender.FEMALE);
-            assertEquals(now.age, User.Age.UNDER_18);
-            assertEquals(now.occupation, User.Occupation.K_12_STUDENT);
-            //**zipcode 자료형 String**!
-            assertEquals( now.zipCode, "48067-100");
-            //assertEquals( Integer.toString(now.zipCode), "48067-100");
-            //1 F 1 10 48067-100
-        }
+        assertEquals(result, answer);
     }
+    /*
+    public int userId;
+    public Gender gender;
+    public Age age;
+    public Occupation occupation;
+    public int zipCode;
+    //1 F 1 10 48067-100 5개.
+     */
 
     @Before
     public void setUp() throws Exception
