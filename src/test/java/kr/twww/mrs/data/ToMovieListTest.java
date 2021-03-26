@@ -41,10 +41,12 @@ public class ToMovieListTest {
     public ToMovieListTest(String Q, String A) {
         System.out.println("GetPathTest: Test case started.");
         this.dataReader = new DataReaderImpl();
-        question = base.resolve(Q);
-        answer = base.resolve(A);
+        this.question = base.resolve(Q);
+        this.answer = base.resolve(A);
     }
 
+
+    //잘못된 경로 들어오면 ToMovieList 는 null return.
     @Test
     public void error_path_Test(){
         String q = question.toString();
@@ -55,6 +57,7 @@ public class ToMovieListTest {
         assertNull(result);
     }
 
+    //파싱 형태 안맞는 데이터 들어오면 ToMovieList 는 null return.
     @Test
     public void error_data_Test(){
         String q = question.toString();
@@ -98,12 +101,14 @@ public class ToMovieListTest {
     @Before
     public void setUp() throws Exception
     {
+        System.out.println("Starting ToMovieListTest!");
         dataReader = new DataReaderImpl();
     }
 
     @After
     public void tearDown() throws Exception
     {
+        System.out.println("Finishing ToMovieListTest!");
         dataReader = null;
     }
 

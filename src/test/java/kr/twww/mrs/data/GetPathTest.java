@@ -27,6 +27,9 @@ public class GetPathTest {
     DataReaderImpl dataReader;
     private DataType question;
     private Path answer;
+    //question: 주어지는 질문
+    //answer: 예상되는 답변
+
     Path base = Paths.get("data/");
     static Path users_dat = Paths.get("data/users.dat");
     static Path movies_dat = Paths.get("data/movies.dat");
@@ -56,6 +59,8 @@ public class GetPathTest {
         this.answer = A;
     }
 
+
+    //순차적으로 @Parameters 에 정의된 parameter 넣어서 진행.
     @Test
     public void parameterTest(){
         System.out.println("Parameter test started\n");

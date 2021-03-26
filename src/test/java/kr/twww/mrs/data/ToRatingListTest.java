@@ -40,10 +40,11 @@ public class ToRatingListTest {
     public ToRatingListTest(String Q, String A) {
         System.out.println("GetPathTest: Test case started.");
         this.dataReader = new DataReaderImpl();
-        question = base.resolve(Q);
-        answer = base.resolve(A);
+        this.question = base.resolve(Q);
+        this.answer = base.resolve(A);
     }
 
+    //잘못된 경로 들어오면 ToRatingList 는 null return.
     @Test
     public void error_path_Test(){
         String q = question.toString();
@@ -54,6 +55,7 @@ public class ToRatingListTest {
         assertNull(result);
     }
 
+    //잘못된 데이터 들어오면 ToRatingList null return.
     @Test
     public void error_data_Test() {
         String q = question.toString();
@@ -92,12 +94,14 @@ public class ToRatingListTest {
     @Before
     public void setUp() throws Exception
     {
+        System.out.println("Starting ToRatingListTest!");
         dataReader = new DataReaderImpl();
     }
 
     @After
     public void tearDown() throws Exception
     {
+        System.out.println("Starting ToRatingListTest!");
         dataReader = null;
     }
 }

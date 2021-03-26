@@ -38,12 +38,11 @@ public class ToUserListTest {
     public ToUserListTest(String Q, String A) {
         System.out.println("GetPathTest: Test case started.");
         this.dataReader = new DataReaderImpl();
-        question = base.resolve(Q);
-        answer = base.resolve(A);
-        original_parameter1 = Q;
-        original_parameter2 = A;
+        this.question = base.resolve(Q);
+        this.answer = base.resolve(A);
     }
 
+    //잘못된 경로 들어오면 ToUserList 는 null return.
     @Test
     public void error_path_Test(){
         String q = question.toString();
@@ -54,6 +53,8 @@ public class ToUserListTest {
         assertNull(result);
     }
 
+
+    //형식 맞지 않는 들어오면 ToUserList 는 null return.
     @Test
     public void error_data_Test(){
         String q = question.toString();
