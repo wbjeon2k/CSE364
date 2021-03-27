@@ -96,7 +96,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 MyUser.gender = MyUser.ConvertGender(strUser[1].charAt(0));
                 MyUser.age = MyUser.ConvertAge(Integer.parseInt(strUser[2]));
                 MyUser.occupation = MyUser.ConvertOccupation(Integer.parseInt(strUser[3]));
-                MyUser.zipCode = Integer.parseInt(strUser[4]);
+                MyUser.zipCode = MyUser.zipCode.valueOf(strUser[4]);
                 //객체를 리스트에 add
                 resultUserList.add(MyUser);
             }

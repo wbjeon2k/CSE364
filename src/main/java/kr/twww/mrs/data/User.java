@@ -48,7 +48,7 @@ public class User
     public Gender gender;
     public Age age;
     public Occupation occupation;
-    public int zipCode;
+    public String zipCode;
 
     public static Gender ConvertGender( char _gender )
     {
