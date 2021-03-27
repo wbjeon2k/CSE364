@@ -3,6 +3,7 @@ package kr.twww.mrs.preprocess;
 import kr.twww.mrs.data.*;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class PreprocessorImpl extends PreprocessorBase implements Preprocessor, DataReader
 {
@@ -153,24 +154,15 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor, 
     )
     {
         ArrayList<Movie> movie_list = new ArrayList<Movie>();   // 장르에 맞는 movie 넣을 list
-        ArrayList<Integer> movie_id = new ArrayList<Integer>(); // 그중에서 movieid만 모을 list
         ArrayList<User> user_list = new ArrayList<User>();      // 직업맞는 user 넣을 list
-        ArrayList<Integer> user_id = new ArrayList<Integer>();  // 그중에서 userid만 모을 list
         ArrayList<Rating> rating_list = new ArrayList<Rating>(); // userid movieid rating이 전부 들어있는 list
-        ArrayList<Integer> score_list = new ArrayList<Integer>(); // 그중에서 rating만 모을 list
 
-        // genreList에서 get으로 한개씩 불러와서 movieList에서 장르가 일치하면 movie_list에 넣으려고했는데
-        // 자꾸 안됨.. movie_list에 장르로 걸러서 모을수만있으면 그중에서 movie_id만 모을 예정
+        ArrayList<Movie> movie_list = movieList.stream()
+                .filter(a->{
 
-        // 위와 마찬가지 이유로 UserList에서 user_list로 직업이 맞을때 나머지 정보를 포함해서 넣는게 안됨.
-        // user_list에 직업이 일치하는 user 정보가 전부 들어오면 그중에서 user_id만 모으면 될듯
+                })
+                .collect(Collectors.toList());
 
-        // user_id와 movie_id가 겹치는 것에 해당되는 ratingList의 userid movieid rating timestamp전체를 다 들고와서
-        // rating_list에 넣으면 그중에서 rating만 모아서 score_list에 넣으면되는데 ...
-
-        //모든 문제의 원인 단순 배열이면 get()함수를 통해서 숫자를 늘려가면 전체탐색을 할텐데
-        //우리가 선언한 User Movie Rating 처럼 여러자료형의 변수가 같이 들어있을경우 탐색을 어떻게하고
-        //찾은 자료형 이외에 같은 정보인 다른 자료형의 데이터를 같이 추가할수있는지 모르겠음.
 
             /**
              * TODO:
