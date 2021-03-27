@@ -30,6 +30,8 @@ public class ToUserListTest {
     String question;
     ArrayList<User> answer;
 
+    //UserId = 1, gender = female, age = under_18, occupation = K_12_student, zipcode = "48067-100"
+    //들어가는 user 객체 만드는  함수.
     static User TCtemplate(){
         User tmp = new User();
         tmp.userId = 1;
@@ -40,18 +42,24 @@ public class ToUserListTest {
         return tmp;
     }
 
+    //위에서 만든 user 객체 x개 만큼 넣은 ArrayList 만드는 함수.
     static ArrayList<User> tcgen(int x){
         ArrayList<User> ret = new ArrayList<User>();
         for(int i=0;i<x;++i) ret.add(TCtemplate());
         return ret;
     }
 
+    /*
+    1번째: User 정보 3개 넣었을때 정상적으로 출력되는지 확인.
+    2번째: 잘못된 파일 형식 들어오면 null 반환 하는지 확인.
+
+     */
     @Parameters
     public static Collection<Object[]> testSet(){
         return Arrays.asList(new Object[][]{
                 {"", tcgen(0) },
-                {"1::F::1::10::48067-100 1::F::1::10::48067-100 1::F::1::10::48067-100", tcgen(3)},
-                {"1::F::1::10::48067-100 1::F::1::10::48067-100 1 F", null},
+                {"1::F::1::10::48067-100\n1::F::1::10::48067-100\n1::F::1::10::48067-100", tcgen(3)},
+                {"1::F::1::10::48067-100\n1::F::1::10::48067-100 1 F", null},
         });
     }
 

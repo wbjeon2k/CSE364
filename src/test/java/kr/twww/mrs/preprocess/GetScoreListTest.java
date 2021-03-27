@@ -33,6 +33,8 @@ public class GetScoreListTest {
     String input_genres, input_occupation;
     double answer;
 
+    //UserId = 1, gender = female, age = under_18, occupation = COLLEGE_OR_GRAD_STUDENT, zipcode = "48067"
+    //들어가는 user 객체 만드는  함수.
     static User user_gen(){
         //1::F::1::4::48067
         User ret = new User();
@@ -44,6 +46,7 @@ public class GetScoreListTest {
         return ret;
     }
 
+    //User 1개 넣은 userlist 만드는 함수.
     static ArrayList<User> user_list_gen(){
         ArrayList<User> ret = new ArrayList<>();
         ret.add(user_gen());
@@ -55,24 +58,31 @@ public class GetScoreListTest {
     2::Jumanji (1995)::Animation|Drama
      */
 
+    //1::Toy Story (1995)::Animation|Drama
+    //들어간 Movie 객체 만드는 함수.
     static Movie toystory_gen(){
         Movie ret = new Movie();
         ret.title = "Toy Story (1995)";
         ret.movieId = 1;
+        ret.genres = new ArrayList<>();
         ret.genres.add(Movie.Genre.Animation);
         ret.genres.add(Movie.Genre.Drama);
         return ret;
     }
 
+    //2::Jumanji (1995)::Animation|Drama
+    //들어간 Movie 객체 만드는 함수.
     static Movie jumanji_gen(){
         Movie ret = new Movie();
         ret.title = "Jumanji (1995)";
         ret.movieId = 2;
+        ret.genres = new ArrayList<>();
         ret.genres.add(Movie.Genre.Animation);
         ret.genres.add(Movie.Genre.Drama);
         return ret;
     }
 
+    //토이스토리, 쥬만지 영화 2개 넣은 movielist 반환.
     static ArrayList<Movie> movie_list_gen(){
         ArrayList<Movie> ret = new ArrayList<>();
         ret.add(toystory_gen());
@@ -84,6 +94,8 @@ public class GetScoreListTest {
     1::1::4::978300760
     1::2::3::978302109
      */
+
+    //토이스토리에 4점 준 Rating 객체 반환.
     static Rating toy_rating_gen(){
         Rating ret = new Rating();
         ret.userId = 1;
@@ -93,6 +105,7 @@ public class GetScoreListTest {
         return ret;
     }
 
+    //쥬만지에 4점 준 Rating 객체 반환.
     static Rating jumanji_rating_gen(){
         Rating ret = new Rating();
         ret.userId = 1;
@@ -102,6 +115,8 @@ public class GetScoreListTest {
         return ret;
     }
 
+    //토이스토리에 4점, 쥬만지에 3점 준
+    //Rating 2개 들어간 리스트 반환.
     static ArrayList<Rating> ratings_list_gen(){
         ArrayList<Rating> ret = new ArrayList<>();
         ret.add(toy_rating_gen());
@@ -109,7 +124,10 @@ public class GetScoreListTest {
         return ret;
     }
 
-    //parameter 2개 :
+    //parameter
+    /*
+    1번째: 장르, 2번째: 직업, 3번째: 예상 점수
+     */
     @Parameters
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
@@ -134,6 +152,9 @@ public class GetScoreListTest {
         ArrayList<Movie> movieList = movie_list_gen();
         ArrayList<Rating> ratingList = ratings_list_gen();
         ArrayList<Rating> result = dataPreprocessor.GetScoreList(genreList,occupation,userList,movieList,ratingList);
+
+        //rating 2개 넣었으므로 개수 2개 나오는지 확인.
+        assertEquals(result.size(), 2);
         double sum=0.0;
         if(result.size() != 0){
             for(int i=0;i<result.size();++i){
@@ -141,6 +162,7 @@ public class GetScoreListTest {
             }
             sum /= result.size();
         }
+        //예상 점수 같은지 확인.
         assertThat(sum, is(answer));
     }
 

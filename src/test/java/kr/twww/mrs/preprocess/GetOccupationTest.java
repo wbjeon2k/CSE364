@@ -28,6 +28,8 @@ public class GetOccupationTest {
     String question;
     User.Occupation answer;
 
+    //현재는 grad student 만 확인함.
+    //나머지는 추가 예정.
     @Parameters
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
