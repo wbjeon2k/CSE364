@@ -31,9 +31,9 @@ public class GetPathTest {
     //answer: 예상되는 답변
 
     //Path base = Paths.get("data/test_data/");
-    static Path users_dat = Paths.get("data/test_data/users.dat");
-    static Path movies_dat = Paths.get("data/test_data/movies.dat");
-    static Path ratings_dat = Paths.get("data/test_data/ratings.dat");
+    static Path users_dat = Paths.get("data/users.dat");
+    static Path movies_dat = Paths.get("data/movies.dat");
+    static Path ratings_dat = Paths.get("data/ratings.dat");
 
     //parameter는 테스트 파일, 비교할 결과 파일 2개로 설정.
     //feature-data 참조. 경로 없는경우 "NO_DATA" 반환.
@@ -43,11 +43,11 @@ public class GetPathTest {
                 {DataType.USER, users_dat},
                 {DataType.MOVIE, movies_dat},
                 {DataType.RATING, ratings_dat},
-                {"NON_DATATYPE_STRING", "NO_DATA"},
-                {" ", "NO_DATA"},
-                {123, "NO_DATA"},
-                {true, "NO_DATA"},
-                {DataType.values(), "NO_DATA"}
+                {"NON_DATATYPE_STRING", null},
+                {" ", null},
+                {123, null},
+                {true, null},
+                {DataType.values(), null}
         });
     }
 
