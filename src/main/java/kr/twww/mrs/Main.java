@@ -24,9 +24,9 @@ public class Main
         Preprocessor preprocessor = new PreprocessorImpl();
         var scoreList = preprocessor.GetScoreList(category, occupation);
 
+        // 결과 출력
         var sum = 0.0;
 
-        // 결과 출력
         for ( var i : scoreList )
         {
             sum += i.rating;
