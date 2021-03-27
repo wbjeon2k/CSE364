@@ -4,7 +4,7 @@ import kr.twww.mrs.data.*;
 
 import java.util.ArrayList;
 
-public class PreprocessorImpl extends PreprocessorBase implements Preprocessor, DataReader
+public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 {
     DataReader dataReader;
 
@@ -14,7 +14,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor, 
     }
 
     @Override
-    public ArrayList<Score> GetScoreList( String _category, String _occupation )
+    public ArrayList<Rating> GetScoreList( String _category, String _occupation )
     {
         var genreList = GetGenreList(_category);
         var occupation = GetOccupation(_occupation);
@@ -22,30 +22,12 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor, 
         var result = GetScoreList(
                 genreList,
                 occupation,
-                GetUserList(),
-                GetMovieList(),
-                GetRatingList()
+                dataReader.GetUserList(),
+                dataReader.GetMovieList(),
+                dataReader.GetRatingList()
         );
 
         return result;
-    }
-
-    @Override
-    public ArrayList<User> GetUserList()
-    {
-        return dataReader.GetUserList();
-    }
-
-    @Override
-    public ArrayList<Movie> GetMovieList()
-    {
-        return dataReader.GetMovieList();
-    }
-
-    @Override
-    public ArrayList<Rating> GetRatingList()
-    {
-        return dataReader.GetRatingList();
     }
 
     @Override
@@ -63,7 +45,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor, 
     }
 
     @Override
-    public ArrayList<Score> GetScoreList(
+    public ArrayList<Rating> GetScoreList(
             ArrayList<Movie.Genre> genreList,
             User.Occupation occupation,
             ArrayList<User> userList,
@@ -71,13 +53,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor, 
             ArrayList<Rating> ratingList
     )
     {
-        /**
-         * TODO:
-         * 1. 카테고리(장르)에 해당하는 모든 영화 필터링
-         * 2. 해당하는 영화 및 동일한 직업의 유저들의 평가 필터링
-         * 3. 영화마다 새로운 Score에 설정 및 해당하는 모든 평가 추가
-         * 4. Score 리스트를 반환
-         */
+        // TODO
         return null;
     }
 }
