@@ -38,7 +38,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         String s = genreText;
         s = s.toLowerCase();    // 소문자로 통일
         s = s.replaceAll("\\p{Z}","");  //  공백제거
-        s = s.replaceAll("|","A"); // '|' 를 대문자 A로 치환
+        s = s.replaceAll("\\|","A"); // '|' 를 대문자 A로 치환
 
         ArrayList<String> list = new ArrayList<String>();   // 장르를 여러개 받을수있는 리스트선언
         String[] getstr1 = s.split("A");        // 장르를 대문자 A를 기준으로 구분해서 배열에 담음
