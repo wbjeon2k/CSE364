@@ -36,7 +36,11 @@ public class GetPathTest {
     static Path ratings_dat = Paths.get("data/ratings.dat");
 
     //parameter는 테스트 파일, 비교할 결과 파일 2개로 설정.
-    //feature-data 참조. 경로 없는경우 "NO_DATA" 반환.
+    //feature-data 참조. 경로 없는경우 null 반환.
+    /*
+    1~3번째: user,movie,rating 넣었을때 각각 dat 파일에 연결되는지 확인.
+    4~ 끝: 적절하지 않은 데이터 들어왔을때 null 반환하는지 확인.
+     */
     @Parameters
     public static Collection<Object[]> testSet(){
         return Arrays.asList(new Object[][]{

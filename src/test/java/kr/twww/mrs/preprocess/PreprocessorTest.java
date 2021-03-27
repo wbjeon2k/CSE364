@@ -13,12 +13,14 @@ public class PreprocessorTest
     @Before
     public void setUp() throws Exception
     {
+        System.out.println("starting 전체 Preprocess TEST");
         preprocessor = new PreprocessorImpl();
     }
 
     @After
     public void tearDown() throws Exception
     {
+        System.out.println("finishing 전체 Preprocess TEST");
         preprocessor = null;
     }
 
@@ -29,8 +31,6 @@ public class PreprocessorTest
     @Test
     public void getScores()
     {
-        //var scoreList = preprocessor.GetScoreList(null, null);
-        //assertNull(scoreList);
-        assertTrue(true);
+
     }
 }

@@ -32,6 +32,8 @@ public class ToMovieListTest {
     ArrayList<Movie> answer;
 
     //movie TC template.
+    //ID:1, title: "A B C D é(E F G) (1998)", genres: Animation|Children's|Comedy
+    //들어가는 Movie 케이스 만드는 함수.
     static Movie TCtemplate(){
         Movie tmp = new Movie();
         tmp.genres = new ArrayList<Movie.Genre>();
@@ -43,13 +45,19 @@ public class ToMovieListTest {
         return tmp;
     }
 
-    //tctemplate 을 x개 만큼 채운 ArrayList를 정답으로 만들기.
+    //위 tctemplate 을 x개 만큼 채운 ArrayList를 정답으로 만들기.
     static ArrayList<Movie> tcgen(int x){
         ArrayList<Movie> ret = new ArrayList<Movie>();
         for(int i=0;i<x;++i) ret.add(TCtemplate());
         return ret;
     }
 
+    /*
+    1번째: 영화 1개 넣었을때 확인.
+    2번째: 빈 문자열 넣었을때 빈 리스트 반환하는지 확인.
+    3번째: 영화 2개 넣었을때 확인.
+    4번째: 잘못된 파일 형식 들어오면 null 반환하는지 확인.
+     */
     @Parameters
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
