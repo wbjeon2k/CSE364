@@ -53,8 +53,7 @@ public class ReadTextFromFileTest {
         System.out.println("testpath: " + path + "expected result: " + answer);
 
         String testResult = dataReader.ReadTextFromFile(path);
-
-        assertSame(answer, testResult);
+        assertEquals(answer, testResult);
     }
 
     @Before

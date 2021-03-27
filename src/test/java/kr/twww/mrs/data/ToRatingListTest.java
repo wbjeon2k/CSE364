@@ -56,7 +56,7 @@ public class ToRatingListTest {
         return Arrays.asList(new Object[][]{
                 {"1::10::1::12345678",tcgen(1)},
                 {"",tcgen(0)},
-                {"1::10::1::12345678 1::10::1::12345678", tcgen(2)}
+                {"1::10::1::12345678\n1::10::1::12345678", tcgen(2)}
         });
     }
 

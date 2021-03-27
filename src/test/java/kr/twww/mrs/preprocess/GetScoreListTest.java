@@ -59,6 +59,7 @@ public class GetScoreListTest {
         Movie ret = new Movie();
         ret.title = "Toy Story (1995)";
         ret.movieId = 1;
+        ret.genres = new ArrayList<>();
         ret.genres.add(Movie.Genre.Animation);
         ret.genres.add(Movie.Genre.Drama);
         return ret;
@@ -68,6 +69,7 @@ public class GetScoreListTest {
         Movie ret = new Movie();
         ret.title = "Jumanji (1995)";
         ret.movieId = 2;
+        ret.genres = new ArrayList<>();
         ret.genres.add(Movie.Genre.Animation);
         ret.genres.add(Movie.Genre.Drama);
         return ret;

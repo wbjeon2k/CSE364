@@ -55,7 +55,7 @@ public class ToMovieListTest {
         return Arrays.asList(new Object[][]{
                 {"1::A B C D é(E F G) (1998)::Animation|Children's|Comedy", tcgen(1)},
                 {"", tcgen(0)},
-                {"1::A B C D é(E F G) (1998)::Animation|Children's|Comedy 1::A B C D é(E F G) (1998)::Animation|Children's|Comedy", tcgen(2)},
+                {"1::A B C D é(E F G) (1998)::Animation|Children's|Comedy\n1::A B C D é(E F G) (1998)::Animation|Children's|Comedy", tcgen(2)},
                 {"1::A B C D é(E F G) (1998)::Animat", null}
         });
     }

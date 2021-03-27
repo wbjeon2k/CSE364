@@ -43,8 +43,6 @@ public class GetPathTest {
                 {DataType.USER, users_dat},
                 {DataType.MOVIE, movies_dat},
                 {DataType.RATING, ratings_dat},
-                {"NON_DATATYPE_STRING", null},
-                {" ", null},
                 {123, null},
                 {true, null},
                 {DataType.values(), null}
@@ -65,6 +63,10 @@ public class GetPathTest {
         System.out.println("Parameter test started\n");
         String result = dataReader.GetPathFromDataType(question);
         Path getPath = Paths.get(result);
+
+        Path getPathAbs = getPath.toAbsolutePath();
+        Path answerAbs = answer.toAbsolutePath();
+
         assertEquals(getPath, answer);
     }
 

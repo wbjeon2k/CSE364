@@ -28,6 +28,8 @@ public class GetOccupationTest {
     String question;
     User.Occupation answer;
 
+
+
     @Parameters
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
