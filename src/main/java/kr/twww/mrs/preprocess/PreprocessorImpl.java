@@ -135,16 +135,26 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             ArrayList<Rating> ratingList
     )
     {
-        ArrayList<Movie> movie_list = new ArrayList<Movie>();   // 장르에 맞는 movie 넣을 list
-        ArrayList<User> user_list = new ArrayList<User>();      // 직업맞는 user 넣을 list
-        ArrayList<Rating> rating_list = new ArrayList<Rating>(); // userid movieid rating이 전부 들어있는 list
-
-        ArrayList<Movie> movie_list = movieList.stream()
-                .filter(a->{
-
+        var filtered_movielist = movieList.stream()
+                .filter(a -> {
+                    for(var i : genreList){
+                        if(!(a.genres.contains(i))){
+                            return false;
+                        }
+                    }return true;
                 })
                 .collect(Collectors.toList());
 
+        var filtered_userlist = userList.stream()
+                .filter(b -> b.occupation == occupation).collect(Collectors.toList());
+
+        var filtered_ratinglist = ratingList.stream().filter(c -> {
+            var found1 = filtered_movielist.stream().filter(d -> d.movieId == c.movieId)
+                    .collect(Collectors.toList()).isEmpty();
+            var found2 = filtered_userlist.stream().filter(e -> e.userId == c.userId)
+                    .collect(Collectors.toList()).isEmpty();
+            return (!found1) && (!found2);
+        }).collect(Collectors.toList());
 
             /**
              * TODO:
@@ -157,7 +167,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
              * +. User.ConvertOccupation()
              * +. Movie.ConvertGenre()
              */
-        return null;
+        return new ArrayList<>(filtered_ratinglist);
     }
 }
 
