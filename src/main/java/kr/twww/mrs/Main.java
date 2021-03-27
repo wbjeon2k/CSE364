@@ -27,7 +27,6 @@ public class Main
         // 결과 출력
         var sum = 0.0;
 
-        // 결과 출력
         for ( var i : scoreList )
         {
             sum += i.rating;
