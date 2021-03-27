@@ -25,7 +25,7 @@ import kr.twww.mrs.data.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
-
+//User,movie 필터링 하는 부분이 preprocessimpl GetScoreList 에 함수로 분리되지 않고 통합 되어있음.
 //getratingtest 와 user 수를 직업이 다른 2명으로 늘린것 외에 동일한 테스트.
 @RunWith(Parameterized.class)
 public class MovieFilterTest {
