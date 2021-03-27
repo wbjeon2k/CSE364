@@ -19,6 +19,8 @@ import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
 
 //MovieList 로 변환 하는지 테스트.
 //1::A B C D é(E F G) (1998)::Animation|Children's|Comedy
@@ -70,7 +72,9 @@ public class ToMovieListTest {
 
         String read_text = question;
         ArrayList<Movie> result = dataReader.ToMovieList(read_text);
-        assertEquals(result, answer);
+        //assertThat 적용
+        //https://mkyong.com/unittest/junit-how-to-test-a-list/
+        assertThat(result, is(answer));
         /*
         public int movieId;
         public String title;

@@ -19,6 +19,9 @@ import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
+
 //RatingList 로 변환 하는지 테스트.
 //1::A B C D (E F G) (1998)::Animation|Children's|Comedy
 //5개 로 구성된 테스트 케이스 통과해야 한다.
@@ -68,7 +71,7 @@ public class ToRatingListTest {
     public void parameterTest(){
         String read_text = question;
         ArrayList<Rating> result = dataReader.ToRatingList(read_text);
-        assertEquals(result, answer);
+        assertThat(result, is(answer));
     }
 
     @Before

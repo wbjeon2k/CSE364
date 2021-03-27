@@ -21,12 +21,17 @@ import static org.junit.Assert.*;
 
 import kr.twww.mrs.data.*;
 
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
+
 @RunWith(Parameterized.class)
 public class GetScoreListTest {
     PreprocessorImpl dataPreprocessor;
     DataReaderImpl dataReader;
 
     String input_genres, input_occupation;
+    double answer;
 
     static User user_gen(){
         //1::F::1::4::48067
@@ -108,16 +113,17 @@ public class GetScoreListTest {
     @Parameters
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
-                {"Animation|Drama","grad_student"},
+                {"Animation|Drama","grad_student", 3.5},
         });
     }
 
-    public GetScoreListTest(String A, String B){
+    public GetScoreListTest(String A, String B, double C){
         this.dataPreprocessor = new PreprocessorImpl();
         this.dataReader = new DataReaderImpl();
 
-        input_genres = A;
-        input_occupation = B;
+        this.input_genres = A;
+        this.input_occupation = B;
+        this.answer =  C;
     }
 
     @Test
@@ -127,7 +133,15 @@ public class GetScoreListTest {
         ArrayList<User> userList = user_list_gen();
         ArrayList<Movie> movieList = movie_list_gen();
         ArrayList<Rating> ratingList = ratings_list_gen();
-        ArrayList<Score> result = dataPreprocessor.GetScoreList(genreList,occupation,userList,movieList,ratingList);
+        ArrayList<Rating> result = dataPreprocessor.GetScoreList(genreList,occupation,userList,movieList,ratingList);
+        double sum=0.0;
+        if(result.size() != 0){
+            for(int i=0;i<result.size();++i){
+                sum += result.get(i).rating;
+            }
+            sum /= result.size();
+        }
+        assertThat(sum, is(answer));
     }
 
 

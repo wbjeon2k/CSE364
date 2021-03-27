@@ -21,6 +21,9 @@ import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
+
 @RunWith(Parameterized.class)
 public class ToUserListTest {
     DataReaderImpl dataReader;
@@ -65,7 +68,7 @@ public class ToUserListTest {
         //answer: ToUserList 가 정상적으로 작동하면 만들 UserList.
         String read_text = question;
         ArrayList<User> result = dataReader.ToUserList(read_text);
-        assertEquals(result, answer);
+        assertThat(result, is(answer));
     }
     /*
     public int userId;

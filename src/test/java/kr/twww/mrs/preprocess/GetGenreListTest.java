@@ -22,6 +22,10 @@ import static org.junit.Assert.*;
 
 import kr.twww.mrs.data.*;
 
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
+
 @RunWith(Parameterized.class)
 public class GetGenreListTest {
     PreprocessorImpl dataPreprocessor;
@@ -46,7 +50,7 @@ public class GetGenreListTest {
     @Test
     public void parameterTest(){
         ArrayList<Movie.Genre> result = dataPreprocessor.GetGenreList(question);
-        assertEquals(result, answer);
+        assertThat(result, is(answer));
     }
 
     @Before
