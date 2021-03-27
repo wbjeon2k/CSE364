@@ -139,13 +139,6 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         ArrayList<User> user_list = new ArrayList<User>();      // 직업맞는 user 넣을 list
         ArrayList<Rating> rating_list = new ArrayList<Rating>(); // userid movieid rating이 전부 들어있는 list
 
-        ArrayList<Movie> movie_list = movieList.stream()
-                .filter(a->{
-
-                })
-                .collect(Collectors.toList());
-
-
             /**
              * TODO:
              * 1. 카테고리(장르)에 해당하는 모든 영화 필터링

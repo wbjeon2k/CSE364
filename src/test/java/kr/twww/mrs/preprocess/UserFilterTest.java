@@ -25,13 +25,15 @@ import kr.twww.mrs.data.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
+
+//getratingtest 와 user 수를 직업이 다른 2명으로 늘린것 외에 동일한 테스트.
 @RunWith(Parameterized.class)
-public class GetScoreListTest {
+public class UserFilterTest {
     PreprocessorImpl dataPreprocessor;
     DataReaderImpl dataReader;
 
     String input_genres, input_occupation;
-    double answer;
+    ArrayList<Rating> answer;
 
     //UserId = 1, gender = female, age = under_18, occupation = COLLEGE_OR_GRAD_STUDENT, zipcode = "48067"
     //들어가는 user 객체 만드는  함수.
@@ -46,10 +48,22 @@ public class GetScoreListTest {
         return ret;
     }
 
+    //Userid = 2, 직업 = Artist 인 user 2 만드는 함수.
+    static User user2_gen(){
+        User ret = new User();
+        ret.userId = 2;
+        ret.gender = User.Gender.FEMALE;
+        ret.age = User.Age.UNDER_18;
+        ret.occupation = User.Occupation.ARTIST;
+        ret.zipCode = "48067";
+        return ret;
+    }
+
     //User 1개 넣은 userlist 만드는 함수.
     static ArrayList<User> user_list_gen(){
         ArrayList<User> ret = new ArrayList<>();
         ret.add(user_gen());
+        ret.add(user2_gen());
         return ret;
     }
 
@@ -96,46 +110,51 @@ public class GetScoreListTest {
      */
 
     //토이스토리에 4점 준 Rating 객체 반환.
-    static Rating toy_rating_gen(){
+    static Rating toy_rating_gen(int userid, int rating){
         Rating ret = new Rating();
-        ret.userId = 1;
+        ret.userId = userid;
         ret.movieId = 1;
-        ret.rating = 4;
+        ret.rating = rating;
         ret.timestamp = 978300760;
         return ret;
     }
 
     //쥬만지에 4점 준 Rating 객체 반환.
-    static Rating jumanji_rating_gen(){
+    static Rating jumanji_rating_gen(int userid, int rating){
         Rating ret = new Rating();
-        ret.userId = 1;
+        ret.userId = userid;
         ret.movieId = 2;
-        ret.rating = 3;
+        ret.rating = rating;
         ret.timestamp = 978302109;
         return ret;
     }
 
-    //토이스토리에 4점, 쥬만지에 3점 준
-    //Rating 2개 들어간 리스트 반환.
+    //user1 이 2개, user2가 2개 평가한
+    //Rating 4개 들어간 리스트 반환.
     static ArrayList<Rating> ratings_list_gen(){
         ArrayList<Rating> ret = new ArrayList<>();
-        ret.add(toy_rating_gen());
-        ret.add(jumanji_rating_gen());
+        ret.add(toy_rating_gen(1,3));
+        ret.add(toy_rating_gen(2,4));
+        ret.add(jumanji_rating_gen(1,3));
+        ret.add(jumanji_rating_gen(2,4));
         return ret;
     }
 
     //parameter
     /*
     1번째: 장르, 2번째: 직업, 3번째: 예상 점수
+    직업이 맞는 사람은 user1 1명,
+    따라서 user1 이 평가한 rating 만 포함 되어야 한다.
+    토이스토리, 쥬만지 rating 이 들어간 길이 2인 리스트가 정답.
      */
     @Parameters
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
-                {"Animation|Drama","grad_student", 3.5},
+                {"Animation|Drama","grad_student", new ArrayList<Rating>(Arrays.asList(toy_rating_gen(1,3),jumanji_rating_gen(1,3)) ) },
         });
     }
 
-    public GetScoreListTest(String A, String B, double C){
+    public UserFilterTest(String A, String B, ArrayList<Rating> C){
         this.dataPreprocessor = new PreprocessorImpl();
         this.dataReader = new DataReaderImpl();
 
@@ -152,18 +171,8 @@ public class GetScoreListTest {
         ArrayList<Movie> movieList = movie_list_gen();
         ArrayList<Rating> ratingList = ratings_list_gen();
         ArrayList<Rating> result = dataPreprocessor.GetScoreList(genreList,occupation,userList,movieList,ratingList);
-
-        //rating 2개 넣었으므로 개수 2개 나오는지 확인.
-        assertEquals(result.size(), 2);
-        double sum=0.0;
-        if(result.size() != 0){
-            for(int i=0;i<result.size();++i){
-                sum += result.get(i).rating;
-            }
-            sum /= result.size();
-        }
-        //예상 점수 같은지 확인.
-        assertThat(sum, is(answer));
+        //
+        assertThat(result, is(answer));
     }
 
 
@@ -178,14 +187,14 @@ public class GetScoreListTest {
     @Before
     public void setUp() throws Exception
     {
-        System.out.println("Starting GetScoreList test!");
+        System.out.println("Starting userfilter test!");
         dataPreprocessor = new PreprocessorImpl();
     }
 
     @After
     public void tearDown() throws Exception
     {
-        System.out.println("Finishing GetScoreList test!");
+        System.out.println("Finishing userfilter test!");
         dataPreprocessor = null;
     }
 
