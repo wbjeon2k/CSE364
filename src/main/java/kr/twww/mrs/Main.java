@@ -25,9 +25,16 @@ public class Main
         var scoreList = preprocessor.GetScoreList(category, occupation);
 
         // 결과 출력
+        var sum = 0.0;
+
+        // 결과 출력
         for ( var i : scoreList )
         {
-            System.out.println(i.GetMovie().title + "::" + i.GetScore());
+            sum += i.rating;
         }
+
+        sum /= scoreList.size();
+
+        System.out.println(sum);
     }
 }
