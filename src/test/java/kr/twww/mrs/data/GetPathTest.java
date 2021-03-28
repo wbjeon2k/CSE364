@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import java.io.IOException;
 import java.nio.file.*;
 
 import java.util.*;
@@ -36,18 +37,18 @@ public class GetPathTest {
     static Path ratings_dat = Paths.get("data/ratings.dat");
 
     //parameter는 테스트 파일, 비교할 결과 파일 2개로 설정.
-    //feature-data 참조. 경로 없는경우 "NO_DATA" 반환.
+    //feature-data 참조. 경로 없는경우 null 반환.
+    /*
+    1~3번째: user,movie,rating 넣었을때 각각 dat 파일에 연결되는지 확인.
+    4~ 끝: 적절하지 않은 데이터 들어왔을때 null 반환하는지 확인.
+     */
     @Parameters
     public static Collection<Object[]> testSet(){
         return Arrays.asList(new Object[][]{
                 {DataType.USER, users_dat},
                 {DataType.MOVIE, movies_dat},
                 {DataType.RATING, ratings_dat},
-                {"NON_DATATYPE_STRING", null},
-                {" ", null},
-                {123, null},
-                {true, null},
-                {DataType.values(), null}
+                {null, null}
         });
     }
 
@@ -60,12 +61,36 @@ public class GetPathTest {
 
 
     //순차적으로 @Parameters 에 정의된 parameter 넣어서 진행.
+    //path 경로 비교 Files.isSameFile 로 교체.
     @Test
-    public void parameterTest(){
+    public void parameterTest() throws IOException {
         System.out.println("Parameter test started\n");
         String result = dataReader.GetPathFromDataType(question);
+        if(result == null && answer == null) return;
+
         Path getPath = Paths.get(result);
-        assertEquals(getPath, answer);
+        Path getPathAbs = getPath.toAbsolutePath();
+        Path answerAbs = answer.toAbsolutePath();
+
+        var a = Files.exists(getPath);
+        var b = Files.exists(answer);
+
+        // 파일 존재 동일한지 확인
+        assertEquals(a, b);
+
+        if ( a && b ) {
+            var test = false;
+
+            try{
+                test = Files.isSameFile(getPath, answer);
+            }
+            catch ( IOException e ) {
+                e.printStackTrace();
+            }
+
+            // 동일한 파일인지 확인
+            assertTrue(test);
+        }
     }
 
     @Before

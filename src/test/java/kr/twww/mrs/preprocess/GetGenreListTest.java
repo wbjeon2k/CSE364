@@ -31,12 +31,20 @@ public class GetGenreListTest {
     PreprocessorImpl dataPreprocessor;
     String question;
     ArrayList<Movie.Genre> answer;
+    //1번째 파라미터= question: 정상적으로 처리 되었다면 주어질 input
+    //2번째 파라미터= answer: 정상적으로 작동하면 만들 결과.
 
+
+
+    /*
+    1번째: comedy, action 두 개 들어간 리스트 만드는지 확인.
+    2번째~: 형태가 맞지 않으면 null return 확인.
+     */
     @Parameters
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
-                {"comedy|animation", Arrays.asList(Movie.Genre.Comedy, Movie.Genre.Animation)},
-                {"", Arrays.asList()},
+                {"comedy|animation", new ArrayList<>(Arrays.asList(Movie.Genre.Comedy, Movie.Genre.Animation))},
+                {"", null},
                 {"com|ani", null}
         });
     }
@@ -50,7 +58,9 @@ public class GetGenreListTest {
     @Test
     public void parameterTest(){
         ArrayList<Movie.Genre> result = dataPreprocessor.GetGenreList(question);
-        assertThat(result, is(answer));
+        for(int i=0;i<answer.size();++i){
+            assert(result.contains(answer.get(i)));
+        }
     }
 
     @Before

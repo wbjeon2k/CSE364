@@ -36,6 +36,8 @@ public class ToRatingListTest {
     1::10::1::12345678
     */
 
+    //UserID = 1, 평가한 영화 id = 10, 평가 별점 1, timestamp
+    //넣은 rating 케이스 만드는 함수.
     static Rating TCtemplate(){
         Rating tmp = new Rating();
         tmp.userId = 1;
@@ -45,18 +47,25 @@ public class ToRatingListTest {
         return tmp;
     }
 
+    //위 Rating 객체를 x 개 만큼 넣은 ArrayList 만들어주는 함수.
     static ArrayList<Rating> tcgen(int x){
         ArrayList<Rating> ret = new ArrayList<Rating>();
         for(int i=0;i<x;++i) ret.add(TCtemplate());
         return ret;
     }
 
+    /*
+    1번째: Rating 1개 넣었을 때 확인.
+    2번째: 파일 비었을 때 빈 리스트 반환 확인.
+    3번째: Rating 2개 넣었을 때 확인.
+
+     */
     @Parameters
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
                 {"1::10::1::12345678",tcgen(1)},
                 {"",tcgen(0)},
-                {"1::10::1::12345678 1::10::1::12345678", tcgen(2)}
+                {"1::10::1::12345678\n1::10::1::12345678", tcgen(2)}
         });
     }
 
@@ -71,7 +80,9 @@ public class ToRatingListTest {
     public void parameterTest(){
         String read_text = question;
         ArrayList<Rating> result = dataReader.ToRatingList(read_text);
-        assertThat(result, is(answer));
+        for(int i=0;i<answer.size();++i){
+            assert(result.contains(answer.get(i)));
+        }
     }
 
     @Before
