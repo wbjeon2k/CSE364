@@ -156,17 +156,6 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             return (!found1) && (!found2);
         }).collect(Collectors.toList());
 
-            /**
-             * TODO:
-             * 1. 카테고리(장르)에 해당하는 모든 영화 필터링
-             * 2. 해당하는 영화 및 동일한 직업의 유저들의 평가 필터링
-             * 3. 영화마다 새로운 Score에 설정 및 해당하는 모든 평가 추가
-             * 4. Score 리스트를 반환
-             *
-             * 참고:
-             * +. User.ConvertOccupation()
-             * +. Movie.ConvertGenre()
-             */
         return new ArrayList<>(filtered_ratinglist);
     }
 }
