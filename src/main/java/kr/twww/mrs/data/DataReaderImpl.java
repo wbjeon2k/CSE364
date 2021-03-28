@@ -1,5 +1,7 @@
 package kr.twww.mrs.data;
 
+import org.apache.maven.shared.utils.StringUtils;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -59,12 +61,12 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             BufferedReader br = new BufferedReader(new FileReader(path));
             // 데이터 전체 다 받도록 코드 수정함
             String line = br.readLine();
-            String resultRead = null;
+            String resultRead = "";
             while (line != null){
-                resultRead += line;
+                resultRead = resultRead + (line + '\n');
                 line = br.readLine();
             }
-            return resultRead;
+            return StringUtils.chop(resultRead);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
