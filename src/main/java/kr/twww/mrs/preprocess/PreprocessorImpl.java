@@ -139,17 +139,6 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         ArrayList<User> user_list = new ArrayList<User>();      // 직업맞는 user 넣을 list
         ArrayList<Rating> rating_list = new ArrayList<Rating>(); // userid movieid rating이 전부 들어있는 list
 
-            /**
-             * TODO:
-             * 1. 카테고리(장르)에 해당하는 모든 영화 필터링
-             * 2. 해당하는 영화 및 동일한 직업의 유저들의 평가 필터링
-             * 3. 영화마다 새로운 Score에 설정 및 해당하는 모든 평가 추가
-             * 4. Score 리스트를 반환
-             *
-             * 참고:
-             * +. User.ConvertOccupation()
-             * +. Movie.ConvertGenre()
-             */
         return null;
     }
 }
