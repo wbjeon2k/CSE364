@@ -71,7 +71,7 @@ public class GetPathTest {
         Path getPathAbs = getPath.toAbsolutePath();
         Path answerAbs = answer.toAbsolutePath();
 
-        assertEquals(getPath, answer);
+        assertEquals(getPathAbs, answerAbs);
     }
 
     @Before

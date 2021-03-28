@@ -76,7 +76,9 @@ public class ToUserListTest {
         //answer: ToUserList 가 정상적으로 작동하면 만들 UserList.
         String read_text = question;
         ArrayList<User> result = dataReader.ToUserList(read_text);
-        assertThat(result, is(answer));
+        for(int i=0;i<answer.size();++i){
+            assert(result.contains(answer.get(i)));
+        }
     }
     /*
     public int userId;

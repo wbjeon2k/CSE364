@@ -142,14 +142,19 @@ public class MovieFilterTest {
     //parameter
     /*
     1번째: 장르, 2번째: 직업, 3번째: 예상 점수
-    장르 Animation, Drama 모두 만족하는 영화는 토이스토리 1개
-    직업이 맞는 user 는 userID:1 인 사람 1명.
-    따라서 정답으로는 userID:1 인 사람이 토이스토리에 3점을 준 데이터 1개만 나오는게 정답.
+
+    1: 장르 animation, drama, 직업 grad student 모두 만족시키는건 user1 이 토이스토리 3점 평가한것 1개.
+    2: 장르 animation, 직업 artist 모두 만족시키는건 user2 가 토이스토리, 쥬만지 4점 평가한것.
+    3: 세 가지 영화 장르 모두 만족시키는 경우는 없으므로 빈 리스트.
+    4: 입력 오류 -> null
      */
     @Parameters
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
                 {"Animation|Drama","grad_student", new ArrayList<Rating>(Arrays.asList(toy_rating_gen(1,3)) ) },
+                {"Animation","artist", new ArrayList<Rating>(Arrays.asList(toy_rating_gen(2,4), jumanji_rating_gen(2,4)) ) },
+                {"Animation|Drama|Comedy","grad_student", new ArrayList<Rating>() },
+                {"Animation|Drama|Com","grad_student", new ArrayList<Rating>() },
         });
     }
 
@@ -171,7 +176,10 @@ public class MovieFilterTest {
         ArrayList<Rating> ratingList = ratings_list_gen();
         ArrayList<Rating> result = dataPreprocessor.GetScoreList(genreList,occupation,userList,movieList,ratingList);
         //
-        assertThat(result, is(answer));
+        //assertThat(result, is(answer));
+        for(int i=0;i<answer.size();++i){
+            assert(result.contains(answer.get(i)));
+        }
     }
 
 

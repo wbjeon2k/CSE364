@@ -143,14 +143,19 @@ public class UserFilterTest {
     //parameter
     /*
     1번째: 장르, 2번째: 직업, 3번째: 예상 점수
-    직업이 맞는 사람은 user1 1명,
-    따라서 user1 이 평가한 rating 만 포함 되어야 한다.
-    토이스토리, 쥬만지 rating 이 들어간 길이 2인 리스트가 정답.
+
+    1: 직업 grad student 인 사람은 user1, user1 이 평가한 rating 2개
+    2: 직업 artist 인 사람은 user2, user2가 평가한 rating 2개
+    3: 직업 K_12_student 인 사람은 없음, 빈 리스트
+    4: 입력 오류, null
      */
     @Parameters
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
                 {"Animation|Drama","grad_student", new ArrayList<Rating>(Arrays.asList(toy_rating_gen(1,3),jumanji_rating_gen(1,3)) ) },
+                {"Animation","artist", new ArrayList<Rating>(Arrays.asList(toy_rating_gen(2,4),jumanji_rating_gen(2,4)) ) },
+                {"Animation|Drama","K_12_student", new ArrayList<Rating>() },
+                {"Animation|Drama","K_12_stu", new ArrayList<Rating>() },
         });
     }
 
@@ -172,7 +177,10 @@ public class UserFilterTest {
         ArrayList<Rating> ratingList = ratings_list_gen();
         ArrayList<Rating> result = dataPreprocessor.GetScoreList(genreList,occupation,userList,movieList,ratingList);
         //
-        assertThat(result, is(answer));
+        //assertThat(result, is(answer));
+        for(int i=0;i<answer.size();++i){
+            assert(result.contains(answer.get(i)));
+        }
     }
 
 

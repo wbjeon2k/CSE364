@@ -127,11 +127,17 @@ public class GetRatingListTest {
     //parameter
     /*
     1번째: 장르, 2번째: 직업, 3번째: 예상 점수
+    1: 토이스토리, 쥬만지 2개 들어간 리스트 반환
+    2: 1과 똑같은 결과. 장르 순서만 바뀐것
      */
     @Parameters
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
                 {"Animation|Drama","grad_student", ratings_list_gen() },
+                {"Drama|Animation","grad_student", ratings_list_gen() },
+                {"Animation|Drama","grad student", ratings_list_gen() },
+                {"Animation|Drama","K_12_student", new ArrayList<Rating>() },
+                {"Animation|Drama","JeonWoongbae", null }
         });
     }
 
@@ -153,7 +159,9 @@ public class GetRatingListTest {
         ArrayList<Rating> ratingList = ratings_list_gen();
         ArrayList<Rating> result = dataPreprocessor.GetScoreList(genreList,occupation,userList,movieList,ratingList);
         //
-        assertThat(result, is(answer));
+        for(int i=0;i<answer.size();++i){
+            assert(result.contains(answer.get(i)));
+        }
     }
 
 

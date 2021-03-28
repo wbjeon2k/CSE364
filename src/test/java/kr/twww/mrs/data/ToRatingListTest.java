@@ -80,7 +80,9 @@ public class ToRatingListTest {
     public void parameterTest(){
         String read_text = question;
         ArrayList<Rating> result = dataReader.ToRatingList(read_text);
-        assertThat(result, is(answer));
+        for(int i=0;i<answer.size();++i){
+            assert(result.contains(answer.get(i)));
+        }
     }
 
     @Before
