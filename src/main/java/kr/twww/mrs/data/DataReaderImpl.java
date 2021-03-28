@@ -50,7 +50,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         else if  (dataType == RATING)
             return "./data/ratings.dat";
         else
-            return "NO DATA";
+            return null;
         // TODO: 데이터 타입에 따른 데이터파일 경로 반환
     }
 
@@ -134,7 +134,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 //따라서 데이터를 "|" 기준 파싱하고 각각을 Enum Genre로 변환 후
                 //ArrayList<Genre>에 add 함
                 var resultGenreList = new ArrayList<Movie.Genre>();
-                String[] strGenre = strMovie[2].split("|");
+                String[] strGenre = strMovie[2].split("\\|");
                 for(String i : strGenre){
                     //사실 convert 함수 써야되는 어떻게 하는지 모르겠다.
                     resultGenreList.add(Movie.ConvertGenre(i));

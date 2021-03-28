@@ -32,13 +32,14 @@ public class Movie
 
     public static Genre ConvertGenre( String _genre )
     {
-        if(_genre == "Children's"){
+
+        if(_genre.equals("Children's")){
             return Genre.Children_s;
         }
-        else if(_genre == "Film-Noir"){
+        else if(_genre.equals("Film-Noir")){
             return Genre.Film_Noir;
         }
-        else if(_genre == "Sci-Fi"){
+        else if(_genre.equals("Sci-Fi")){
             return Genre.Sci_Fi;
         }
         else {
