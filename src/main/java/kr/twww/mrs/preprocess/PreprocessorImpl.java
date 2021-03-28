@@ -38,7 +38,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         String s = genreText;
         s = s.toLowerCase();    // 소문자로 통일
         s = s.replaceAll("\\p{Z}","");  //  공백제거
-        s = s.replaceAll("|","A"); // '|' 를 대문자 A로 치환
+        s = s.replaceAll("\\|","A"); // '|' 를 대문자 A로 치환
 
         ArrayList<String> list = new ArrayList<String>();   // 장르를 여러개 받을수있는 리스트선언
         String[] getstr1 = s.split("A");        // 장르를 대문자 A를 기준으로 구분해서 배열에 담음
@@ -135,11 +135,29 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             ArrayList<Rating> ratingList
     )
     {
-        ArrayList<Movie> movie_list = new ArrayList<Movie>();   // 장르에 맞는 movie 넣을 list
-        ArrayList<User> user_list = new ArrayList<User>();      // 직업맞는 user 넣을 list
-        ArrayList<Rating> rating_list = new ArrayList<Rating>(); // userid movieid rating이 전부 들어있는 list
+   
+        var filtered_movielist = movieList.stream()
+                .filter(a -> {
+                    for(var i : genreList){
+                        if(!(a.genres.contains(i))){
+                            return false;
+                        }
+                    }return true;
+                })
+                .collect(Collectors.toList());
 
-        return null;
+        var filtered_userlist = userList.stream()
+                .filter(b -> b.occupation == occupation).collect(Collectors.toList());
+
+        var filtered_ratinglist = ratingList.stream().filter(c -> {
+            var found1 = filtered_movielist.stream().filter(d -> d.movieId == c.movieId)
+                    .collect(Collectors.toList()).isEmpty();
+            var found2 = filtered_userlist.stream().filter(e -> e.userId == c.userId)
+                    .collect(Collectors.toList()).isEmpty();
+            return (!found1) && (!found2);
+        }).collect(Collectors.toList());
+
+        return new ArrayList<>(filtered_ratinglist);
     }
 }
 
