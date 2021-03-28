@@ -48,6 +48,7 @@ public class GetPathTest {
                 {DataType.USER, users_dat},
                 {DataType.MOVIE, movies_dat},
                 {DataType.RATING, ratings_dat},
+                {null, null}
         });
     }
 
