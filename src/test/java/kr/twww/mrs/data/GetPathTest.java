@@ -48,9 +48,6 @@ public class GetPathTest {
                 {DataType.USER, users_dat},
                 {DataType.MOVIE, movies_dat},
                 {DataType.RATING, ratings_dat},
-                {123, null},
-                {true, null},
-                {DataType.values(), null}
         });
     }
 
@@ -68,12 +65,31 @@ public class GetPathTest {
     public void parameterTest() throws IOException {
         System.out.println("Parameter test started\n");
         String result = dataReader.GetPathFromDataType(question);
-        Path getPath = Paths.get(result);
+        if(result == null && answer == null) return;
 
+        Path getPath = Paths.get(result);
         Path getPathAbs = getPath.toAbsolutePath();
         Path answerAbs = answer.toAbsolutePath();
 
-        assert(Files.isSameFile(getPathAbs, answerAbs));
+        var a = Files.exists(getPath);
+        var b = Files.exists(answer);
+
+        // 파일 존재 동일한지 확인
+        assertEquals(a, b);
+
+        if ( a && b ) {
+            var test = false;
+
+            try{
+                test = Files.isSameFile(getPath, answer);
+            }
+            catch ( IOException e ) {
+                e.printStackTrace();
+            }
+
+            // 동일한 파일인지 확인
+            assertTrue(test);
+        }
     }
 
     @Before
