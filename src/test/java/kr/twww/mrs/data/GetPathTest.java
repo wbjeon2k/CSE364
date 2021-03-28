@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import java.io.IOException;
 import java.nio.file.*;
 
 import java.util.*;
@@ -62,8 +63,9 @@ public class GetPathTest {
 
 
     //순차적으로 @Parameters 에 정의된 parameter 넣어서 진행.
+    //path 경로 비교 Files.isSameFile 로 교체.
     @Test
-    public void parameterTest(){
+    public void parameterTest() throws IOException {
         System.out.println("Parameter test started\n");
         String result = dataReader.GetPathFromDataType(question);
         Path getPath = Paths.get(result);
@@ -71,7 +73,7 @@ public class GetPathTest {
         Path getPathAbs = getPath.toAbsolutePath();
         Path answerAbs = answer.toAbsolutePath();
 
-        assertEquals(getPathAbs, answerAbs);
+        assert(Files.isSameFile(getPathAbs, answerAbs));
     }
 
     @Before
