@@ -197,6 +197,10 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 //            e.printStackTrace();
 //        }
 
+        if ( text == null ) return null;
+
+        if ( text.isEmpty() ) return new ArrayList<>();
+
         var splitRating = text.split("\\r?\\n");
 
         for ( var i : splitRating )
