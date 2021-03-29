@@ -38,3 +38,4 @@
   * Implemented JUnit test code, generated test cases for every methods in `dataReader` and `dataPreprocess` class.
   * `dataReaderTest`: 5 tests (`dataReaderTest`: `GetPathTest`, `ReadTextFromFileTest`, `ToUserListTest`, `ToMovieListTest`, `ToRatingListTest`)
   * `dataPreprocesTest`: 5 tests (`GetGenreListTest`, `GetOccupationTest`, `GetScoreListTest`, `MovieFilterTest`, `UserFilterTest`)
+  * FYI: Wrote this file!
