@@ -75,17 +75,43 @@ public class ToMovieListTest {
         this.answer = A;
     }
 
+    public boolean sameMovie(Movie a, Movie b){
+        if(a.movieId != b.movieId) return false;
+        if(!a.title.equals(b.title)) return false;
+        if(a.genres.size() != b.genres.size()) return false;
+        for(int i=0;i<a.genres.size();++i){
+            if(!b.genres.contains(a.genres.get(i))) return false;
+        }
+        return true;
+    }
+
+    public boolean compareAnsRes(ArrayList<Movie> answer, ArrayList<Movie> result){
+        if(answer == null){
+            return result == null;
+        }
+
+        if(answer.size() == 0){
+            return result.size() == 0;
+        }
+
+        for (Movie movie : answer) {
+            boolean chk = false;
+            for (Movie value : result) {
+                if (sameMovie(movie, value)) chk = true;
+            }
+            if (!chk) return false;
+        }
+
+        return true;
+    }
+
     @Test
     public void parameterTest(){
 
         String read_text = question;
         ArrayList<Movie> result = dataReader.ToMovieList(read_text);
-        //assertThat 적용
-        //https://mkyong.com/unittest/junit-how-to-test-a-list/
-        //assertThat(result, is(answer));
-        for(int i=0;i<answer.size();++i){
-            assert(result.contains(answer.get(i)));
-        }
+
+        assertTrue(compareAnsRes(answer,result));
         /*
         public int movieId;
         public String title;

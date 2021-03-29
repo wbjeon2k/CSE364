@@ -168,6 +168,35 @@ public class UserFilterTest {
         this.answer =  C;
     }
 
+    boolean sameRating(Rating a, Rating b){
+        if(a.userId != b.userId) return false;
+        if(a.movieId != b.movieId) return false;
+        if(a.timestamp != b.timestamp) return false;
+        if(a.rating != b.rating) return false;
+
+        return true;
+    }
+
+    public boolean compareRatingList(ArrayList<Rating> answer, ArrayList<Rating> result){
+        if(answer == null){
+            return result == null;
+        }
+
+        if(answer.size() == 0){
+            return result.size() == 0;
+        }
+
+        for (Rating rating : answer) {
+            boolean chk = false;
+            for (Rating value : result) {
+                if (sameRating(rating, value)) chk = true;
+            }
+            if (!chk) return false;
+        }
+
+        return true;
+    }
+
     @Test
     public void parametrizedTest(){
         ArrayList<Movie.Genre> genreList = dataPreprocessor.GetGenreList(input_genres);
@@ -178,9 +207,7 @@ public class UserFilterTest {
         ArrayList<Rating> result = dataPreprocessor.GetScoreList(genreList,occupation,userList,movieList,ratingList);
         //
         //assertThat(result, is(answer));
-        for(int i=0;i<answer.size();++i){
-            assert(result.contains(answer.get(i)));
-        }
+        assertTrue(compareRatingList(answer,result));
     }
 
 
