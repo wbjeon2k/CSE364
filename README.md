@@ -17,8 +17,8 @@
 - Kim Taeyoung
   * Enabled Docker setting, distrubuted the devloping environment for the team.
   * *Project design*:
-    - Designed and implemented Milestone 1 project high-level scheme,  
-      categorized development tasks into 3 parts: *data parsing, data preprocessing, and unit test.*
+    - Designed and Milestone 1 project scheme, implemented primitive structure.
+    - Categorized development tasks into 3 parts: *data parsing, data preprocessing, and unit test.*
   * *Project Manager*:
     - Divided and distributed the development role into 3 parts: data parsing, data preprocessing, and unit test.
     - Managed the development process, helped other 3 teammates when there is a devlopment issue.
