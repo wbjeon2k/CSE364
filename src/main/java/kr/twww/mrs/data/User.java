@@ -22,7 +22,7 @@ public class User
     public enum Occupation
     {
         OTHER,
-	    ACADEMIC_OR_EDUCATOR,
+        ACADEMIC_OR_EDUCATOR,
         ARTIST,
         CLERICAL_OR_ADMIN,
         COLLEGE_OR_GRAD_STUDENT,
@@ -48,23 +48,58 @@ public class User
     public Gender gender;
     public Age age;
     public Occupation occupation;
-    public int zipCode;
+    public String zipCode;
 
     public static Gender ConvertGender( char _gender )
     {
-        // TODO
-        return null;
+        //M,F 을 Enum 으로 변경
+        if(_gender == 'M'){
+            return Gender.MALE;
+        }
+        else if(_gender == 'F'){
+            return Gender.FEMALE;
+        }
+        else{
+            System.out.println("WRONG DATA IN GENDER!");
+            return null;
+        }
+        // TODO: 주어진 성별 텍스트를 enum Gender로 반환
     }
 
     public static Age ConvertAge( int _age )
     {
-        // TODO
-        return null;
+        //나이 범위 나누기
+        if(_age < 18){
+            return Age.UNDER_18;
+        }
+        else if(_age >= 18 && _age < 25 ){
+            return Age.BETWEEN_18_24;
+        }
+        else if(_age >= 25 && _age < 35){
+            return Age.BETWEEN_25_34;
+        }
+        else if(_age >= 35 && _age < 45){
+            return Age.BETWEEN_35_44;
+        }
+        else if(_age >= 45 && _age < 50){
+            return Age.BETWEEN_45_49;
+        }
+        else if(_age >= 50 && _age < 56){
+            return Age.BETWEEN_50_55;
+        }
+        else if(_age >= 56){
+            return Age.OVER_55;
+        }
+        else{
+            System.out.println("WRONG DATA IN AGE!");
+            return null;
+        }
+        // TODO: 주어진 나이 텍스트를 enum Age로 반환
     }
 
     public static Occupation ConvertOccupation( int _occupation )
     {
-        // TODO
-        return null;
+        return Occupation.values()[_occupation];
+        // TODO: 주어진 직업 텍스트를 enum Occupation로 반환
     }
 }

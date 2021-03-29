@@ -3,6 +3,8 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+
+
     <groupId>kr.twww.mrs</groupId>
     <!-- 2. Packaging the complied source code to a jar file named cse364-project-1.0-SNAPSHOT-jar in target directory under target directory. -->
     <!--<artifactId>Movie Recommendation System</artifactId>-->
@@ -13,6 +15,8 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
+
+
 
     <dependencies>
         <!-- 1. Downloading all dependent libraries of your project. You should have at least junit4 configured as a dependent library. -->
@@ -30,6 +34,8 @@
             <artifactId>maven-assembly-plugin</artifactId>
             <version>3.3.0</version>
         </dependency>
+
+
     </dependencies>
 
     <!-- 3. Including binary of all dependent libraries in a project jar file named cse364-project-1.0-SNAPSHOT-jar-with-dependencies.jar under target directory. -->
