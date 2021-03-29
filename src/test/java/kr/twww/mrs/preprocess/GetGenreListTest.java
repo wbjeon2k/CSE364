@@ -44,6 +44,7 @@ public class GetGenreListTest {
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
                 {"comedy|animation", new ArrayList<>(Arrays.asList(Movie.Genre.Comedy, Movie.Genre.Animation))},
+                {"animation|comedy", new ArrayList<>(Arrays.asList(Movie.Genre.Comedy, Movie.Genre.Animation))},
                 {"", null},
                 {"com|ani", null}
         });

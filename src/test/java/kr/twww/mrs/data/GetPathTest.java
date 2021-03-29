@@ -66,11 +66,13 @@ public class GetPathTest {
     public void parameterTest() throws IOException {
         System.out.println("Parameter test started\n");
         String result = dataReader.GetPathFromDataType(question);
-        if(result == null && answer == null) return;
+
+        if(answer == null){
+            assertEquals(answer,result);
+            return;
+        }
 
         Path getPath = Paths.get(result);
-        Path getPathAbs = getPath.toAbsolutePath();
-        Path answerAbs = answer.toAbsolutePath();
 
         var a = Files.exists(getPath);
         var b = Files.exists(answer);

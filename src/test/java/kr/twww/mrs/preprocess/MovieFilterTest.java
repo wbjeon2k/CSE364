@@ -152,6 +152,7 @@ public class MovieFilterTest {
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
                 {"Animation|Drama","grad_student", new ArrayList<Rating>(Arrays.asList(toy_rating_gen(1,3)) ) },
+                {"Drama|Animation","grad_student", new ArrayList<Rating>(Arrays.asList(toy_rating_gen(1,3)) ) },
                 {"Animation","artist", new ArrayList<Rating>(Arrays.asList(toy_rating_gen(2,4), jumanji_rating_gen(2,4)) ) },
                 {"Animation|Drama|Comedy","grad_student", new ArrayList<Rating>() },
                 {"Animation|Drama|Com","grad_student", new ArrayList<Rating>() },
@@ -167,6 +168,35 @@ public class MovieFilterTest {
         this.answer =  C;
     }
 
+    boolean sameRating(Rating a, Rating b){
+        if(a.userId != b.userId) return false;
+        if(a.movieId != b.movieId) return false;
+        if(a.timestamp != b.timestamp) return false;
+        if(a.rating != b.rating) return false;
+
+        return true;
+    }
+
+    public boolean compareRatingList(ArrayList<Rating> answer, ArrayList<Rating> result){
+        if(answer == null){
+            return result == null;
+        }
+
+        if(answer.size() == 0){
+            return result.size() == 0;
+        }
+
+        for (Rating rating : answer) {
+            boolean chk = false;
+            for (Rating value : result) {
+                if (sameRating(rating, value)) chk = true;
+            }
+            if (!chk) return false;
+        }
+
+        return true;
+    }
+
     @Test
     public void parametrizedTest(){
         ArrayList<Movie.Genre> genreList = dataPreprocessor.GetGenreList(input_genres);
@@ -177,9 +207,7 @@ public class MovieFilterTest {
         ArrayList<Rating> result = dataPreprocessor.GetScoreList(genreList,occupation,userList,movieList,ratingList);
         //
         //assertThat(result, is(answer));
-        for(int i=0;i<answer.size();++i){
-            assert(result.contains(answer.get(i)));
-        }
+        assertTrue(compareRatingList(answer,result));
     }
 
 
