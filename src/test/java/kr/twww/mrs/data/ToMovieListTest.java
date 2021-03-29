@@ -23,7 +23,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 //MovieList 로 변환 하는지 테스트.
-//1::A B C D é(E F G) (1998)::Animation|Children's|Comedy
+//1::A B C D eee(E F G) (1998)::Animation|Children's|Comedy
 //5개 로 구성된 테스트 케이스 통과해야 한다.
 @RunWith(Parameterized.class)
 public class ToMovieListTest {
@@ -32,7 +32,7 @@ public class ToMovieListTest {
     ArrayList<Movie> answer;
 
     //movie TC template.
-    //ID:1, title: "A B C D é(E F G) (1998)", genres: Animation|Children's|Comedy
+    //ID:1, title: "A B C D eee(E F G) (1998)", genres: Animation|Children's|Comedy
     //들어가는 Movie 케이스 만드는 함수.
     static Movie TCtemplate(){
         Movie tmp = new Movie();
@@ -41,7 +41,7 @@ public class ToMovieListTest {
         tmp.genres.add(Movie.Genre.Children_s);
         tmp.genres.add(Movie.Genre.Comedy);
         tmp.movieId = 1;
-        tmp.title = "A B C D é(E F G) (1998)";
+        tmp.title = "A B C D eee(E F G) (1998)";
         return tmp;
     }
 
@@ -61,10 +61,10 @@ public class ToMovieListTest {
     @Parameters
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
-                {"1::A B C D é(E F G) (1998)::Animation|Children's|Comedy", tcgen(1)},
                 {"", tcgen(0)},
-                {"1::A B C D é(E F G) (1998)::Animation|Children's|Comedy\n1::A B C D é(E F G) (1998)::Animation|Children's|Comedy", tcgen(2)},
-                {"1::A B C D é(E F G) (1998)::Animat", null}
+                {"1::A B C D eee(E F G) (1998)::Animation|Children's|Comedy", tcgen(1)},
+                {"1::A B C D eee(E F G) (1998)::Animation|Children's|Comedy\n1::A B C D eee(E F G) (1998)::Animation|Children's|Comedy", tcgen(2)},
+                {"1::A B C D eee(E F G) (1998)::Animat", null}
         });
     }
 
@@ -116,7 +116,7 @@ public class ToMovieListTest {
         public int movieId;
         public String title;
         public ArrayList<Genre> genres;
-        1 A B C D é(E F G) (1998) Animation|Children's|Comedy
+        1 A B C D eee(E F G) (1998) Animation|Children's|Comedy
         */
 
     }

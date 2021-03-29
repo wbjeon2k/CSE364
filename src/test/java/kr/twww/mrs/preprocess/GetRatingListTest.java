@@ -135,8 +135,10 @@ public class GetRatingListTest {
         return Arrays.asList(new Object[][]{
                 {"Animation|Drama","grad_student", ratings_list_gen() },
                 {"Drama|Animation","grad_student", ratings_list_gen() },
+                {"Animation|Drama","gRaD Student", ratings_list_gen() },
                 {"Animation|Drama","grad student", ratings_list_gen() },
-                {"Animation|Drama","K_12_student", new ArrayList<Rating>() },
+                {"Animation|Drama","K-12 student", new ArrayList<Rating>() },
+                {"Animation|Drama","K-12student", new ArrayList<Rating>() },
                 {"Animation|Drama","JeonWoongbae", null }
         });
     }

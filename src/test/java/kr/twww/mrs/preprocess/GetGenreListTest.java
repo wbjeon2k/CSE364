@@ -59,6 +59,13 @@ public class GetGenreListTest {
     @Test
     public void parameterTest(){
         ArrayList<Movie.Genre> result = dataPreprocessor.GetGenreList(question);
+
+        if ( result == null || answer == null )
+        {
+            assertEquals(result, answer);
+            return;
+        }
+
         for(int i=0;i<answer.size();++i){
             assert(result.contains(answer.get(i)));
         }
