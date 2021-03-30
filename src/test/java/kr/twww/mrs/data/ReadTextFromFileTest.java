@@ -31,7 +31,7 @@ public class ReadTextFromFileTest {
     @Parameters
     public static Collection<Object[]> testSet(){
         return Arrays.asList(new Object[][]{
-                {"testReadText.dat", "TEST::READ\r\nTEST::READ" },
+                {"testReadText.dat", "TEST::READ\nTEST::READ" },
                 {"testReadTextBlank.dat", "" },
                 {"NODATA.dat", null},
                 {"NoData2.dat", null}
@@ -54,6 +54,12 @@ public class ReadTextFromFileTest {
         System.out.println("testpath: " + path + "expected result: " + answer);
 
         String testResult = dataReader.ReadTextFromFile(path);
+
+        if ( testResult != null )
+        {
+            testResult = testResult.replaceAll("\r", "");
+        }
+
         assertEquals(answer, testResult);
     }
 
