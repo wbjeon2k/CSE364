@@ -1,5 +1,6 @@
 package kr.twww.mrs.data;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.After;
@@ -105,6 +106,7 @@ public class ToMovieListTest {
         return true;
     }
 
+    @Ignore
     @Test
     public void parameterTest(){
 
@@ -112,13 +114,6 @@ public class ToMovieListTest {
         ArrayList<Movie> result = dataReader.ToMovieList(read_text);
 
         assertTrue(compareAnsRes(answer,result));
-        /*
-        public int movieId;
-        public String title;
-        public ArrayList<Genre> genres;
-        1 A B C D é(E F G) (1998) Animation|Children's|Comedy
-        */
-
     }
 
     @Before
