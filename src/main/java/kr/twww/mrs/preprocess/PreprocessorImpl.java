@@ -135,7 +135,13 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             ArrayList<Rating> ratingList
     )
     {
-   
+
+        if ( genreList == null ) return null;
+        if ( occupation == null ) return null;
+        if ( userList == null ) return null;
+        if ( movieList == null ) return null;
+        if ( ratingList == null ) return null;
+
         var filtered_movielist = movieList.stream()
                 .filter(a -> {
                     for(var i : genreList){

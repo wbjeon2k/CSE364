@@ -43,7 +43,16 @@ public class Movie
             return Genre.Sci_Fi;
         }
         else {
-            return Genre.valueOf(_genre);
+            try
+            {
+                return Genre.valueOf(_genre);
+            }
+            catch ( IllegalArgumentException e )
+            {
+                e.printStackTrace();
+
+                return null;
+            }
         }
         // TODO: 텍스트로 주어진 장르를 enum Genre로 반환
     }

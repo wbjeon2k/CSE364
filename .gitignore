@@ -1,6 +1,3 @@
 /.idea/
 /target/
 /*.iml
-
-#ignore preprocess directory
-src/main/java/kr/twww/mrs/preprocess

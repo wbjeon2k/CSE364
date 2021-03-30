@@ -155,7 +155,7 @@ public class MovieFilterTest {
                 {"Drama|Animation","grad_student", new ArrayList<Rating>(Arrays.asList(toy_rating_gen(1,3)) ) },
                 {"Animation","artist", new ArrayList<Rating>(Arrays.asList(toy_rating_gen(2,4), jumanji_rating_gen(2,4)) ) },
                 {"Animation|Drama|Comedy","grad_student", new ArrayList<Rating>() },
-                {"Animation|Drama|Com","grad_student", new ArrayList<Rating>() },
+                {"Animation|Drama|Com","grad_student", null },
         });
     }
 

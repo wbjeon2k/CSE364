@@ -58,15 +58,24 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     public String ReadTextFromFile( String path )
     {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(path));
-            // 데이터 전체 다 받도록 코드 수정함
-            String line = br.readLine();
-            String resultRead = "";
-            while (line != null){
-                resultRead = resultRead + (line + '\n');
-                line = br.readLine();
-            }
-            return StringUtils.chop(resultRead);
+//            BufferedReader br = new BufferedReader(new FileReader(path));
+//            // 데이터 전체 다 받도록 코드 수정함
+//            String line = br.readLine();
+//            String resultRead = "";
+//            while (line != null){
+//                resultRead = resultRead + (line + '\n');
+//                line = br.readLine();
+//            }
+//            return StringUtils.chop(resultRead);
+
+            File file = new File(path);
+            FileInputStream fis = new FileInputStream(file);
+            byte[] data = new byte[(int)file.length()];
+            fis.read(data);
+            fis.close();
+
+            String str = new String(data);
+            return str;
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -137,7 +146,13 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 String[] strGenre = strMovie[2].split("\\|");
                 for(String i : strGenre){
                     //사실 convert 함수 써야되는 어떻게 하는지 모르겠다.
-                    resultGenreList.add(Movie.ConvertGenre(i));
+//                    resultGenreList.add(Movie.ConvertGenre(i));
+                    var convertedGenre = Movie.ConvertGenre(i);
+
+                    // 잘못된 장르
+                    if ( convertedGenre == null ) return null;
+
+                    resultGenreList.add(convertedGenre);
                 }
                 MyMovie.genres = resultGenreList;
                 //객체를 리스트에 add
@@ -157,30 +172,50 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     {
         var resultRatingList = new ArrayList<Rating>();
 
-        String str = text;
-        // convert String into InputStream
-        InputStream is = new ByteArrayInputStream(str.getBytes());
-        // read it with BufferedReader
-        try {
-            BufferedReader brUser = new BufferedReader(new InputStreamReader(is));
-            String line;
-            while ((line = brUser.readLine()) != null) {
-                // MyRating 을 반복문 안에서 선언하도록 수정했습니다.
-                var MyRating = new Rating();
-                //한 줄씩 받으면서 MyRating 객체에 변수를 넣는다.
-                String[] strRating = line.split("::");
-                MyRating.userId = Integer.parseInt(strRating[0]);
-                MyRating.movieId = Integer.parseInt(strRating[1]);
-                MyRating.rating = Integer.parseInt(strRating[2]);
-                MyRating.timestamp = Integer.parseInt(strRating[3]);
+//        String str = text;
+//        // convert String into InputStream
+//        InputStream is = new ByteArrayInputStream(str.getBytes());
+//        // read it with BufferedReader
+//        try {
+//            BufferedReader brUser = new BufferedReader(new InputStreamReader(is));
+//            String line;
+//            while ((line = brUser.readLine()) != null) {
+//                // MyRating 을 반복문 안에서 선언하도록 수정했습니다.
+//                var MyRating = new Rating();
+//                //한 줄씩 받으면서 MyRating 객체에 변수를 넣는다.
+//                String[] strRating = line.split("::");
+//                MyRating.userId = Integer.parseInt(strRating[0]);
+//                MyRating.movieId = Integer.parseInt(strRating[1]);
+//                MyRating.rating = Integer.parseInt(strRating[2]);
+//                MyRating.timestamp = Integer.parseInt(strRating[3]);
+//
+//                resultRatingList.add(MyRating);
+//            }
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-                resultRatingList.add(MyRating);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if ( text == null ) return null;
+
+        if ( text.isEmpty() ) return new ArrayList<>();
+
+        var splitRating = text.split("\\r?\\n");
+
+        for ( var i : splitRating )
+        {
+            var splitData = i.split("::");
+
+            var newRating = new Rating();
+            newRating.userId = Integer.parseInt(splitData[0]);
+            newRating.movieId = Integer.parseInt(splitData[1]);
+            newRating.rating = Integer.parseInt(splitData[2]);
+            newRating.timestamp = Integer.parseInt(splitData[3]);
+
+            resultRatingList.add(newRating);
         }
+
         return resultRatingList;
         // TODO: 주어진 텍스트를 Rating 리스트로 반환
     }

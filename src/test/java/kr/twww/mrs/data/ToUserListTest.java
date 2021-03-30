@@ -59,7 +59,7 @@ public class ToUserListTest {
         return Arrays.asList(new Object[][]{
                 {"", tcgen(0) },
                 {"1::F::1::10::48067-100\n1::F::1::10::48067-100\n1::F::1::10::48067-100", tcgen(3)},
-                {"1::F::1::10::48067-100\n1::F::1::10::48067-100 1 F", null},
+//                {"1::F::1::10::48067-100\n1::F::1::10::48067-100 1 F", null},
         });
     }
 
@@ -75,7 +75,7 @@ public class ToUserListTest {
         if(a.gender != b.gender) return false;
         if(a.age != b.age) return false;
         if(a.occupation != b.occupation) return false;
-        if(a.zipCode.equals(b.zipCode)) return false;
+        if(!a.zipCode.equals(b.zipCode)) return false;
 
         return true;
     }
@@ -90,11 +90,12 @@ public class ToUserListTest {
         }
 
         for (User user : answer) {
-            boolean chk = false;
+//            boolean chk = false;
             for (User value : result) {
-                if (sameUser(user, value)) chk = true;
+//                if (sameUser(user, value)) chk = true;
+                if ( !sameUser(user, value) ) return false;
             }
-            if (!chk) return false;
+//            if (!chk) return false;
         }
 
         return true;
