@@ -57,7 +57,6 @@ public class GetGenreListTest {
         this.answer = A;
     }
 
-    @Ignore
     @Test
     public void parameterTest(){
         ArrayList<Movie.Genre> result = dataPreprocessor.GetGenreList(question);

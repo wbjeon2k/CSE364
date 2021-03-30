@@ -105,7 +105,6 @@ public class ToRatingListTest {
         return true;
     }
 
-    @Ignore
     @Test
     public void parameterTest(){
         String read_text = question;
