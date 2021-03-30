@@ -41,6 +41,12 @@ public class Main
         Preprocessor preprocessor = new PreprocessorImpl();
         var ratingList = preprocessor.GetScoreList(category, occupation);
 
+        if ( ratingList == null )
+        {
+            System.out.println("Error");
+            return;
+        }
+
         // 결과 출력
         var score = CalculateScore(ratingList);
         System.out.println(score);

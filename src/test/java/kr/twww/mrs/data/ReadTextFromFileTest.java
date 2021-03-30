@@ -31,7 +31,7 @@ public class ReadTextFromFileTest {
     @Parameters
     public static Collection<Object[]> testSet(){
         return Arrays.asList(new Object[][]{
-                {"testReadText.dat", "TEST::READ\nTEST::READ" },
+                {"testReadText.dat", "TEST::READ\r\nTEST::READ" },
                 {"testReadTextBlank.dat", "" },
                 {"NODATA.dat", null},
                 {"NoData2.dat", null}
