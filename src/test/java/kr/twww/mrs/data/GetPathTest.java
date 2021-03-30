@@ -63,7 +63,6 @@ public class GetPathTest {
 
     //순차적으로 @Parameters 에 정의된 parameter 넣어서 진행.
     //path 경로 비교 Files.isSameFile 로 교체.
-    @Ignore
     @Test
     public void parameterTest() throws IOException {
         System.out.println("Parameter test started\n");

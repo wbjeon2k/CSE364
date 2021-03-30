@@ -198,7 +198,6 @@ public class MovieFilterTest {
         return true;
     }
 
-    @Ignore
     @Test
     public void parametrizedTest(){
         ArrayList<Movie.Genre> genreList = dataPreprocessor.GetGenreList(input_genres);
