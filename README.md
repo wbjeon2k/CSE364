@@ -12,7 +12,7 @@
   - ```java -cp ./target/cse364-project-1.0-SNAPSHOT-jar-with-dependencies.jar kr.twww.mrs.Main [Genre] [Occupation]```
   - example) ```java -cp ./target/cse364-project-1.0-SNAPSHOT-jar-with-dependencies.jar kr.twww.mrs.Main Adventure educator```
 
-#### Roles of each team member (i.e. who did what?)
+#### 3. Roles of each team member (i.e. who did what?)
 
 - Kim Taeyoung
   * Enabled Docker setting, distrubuted the devloping environment for the team.
