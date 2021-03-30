@@ -1,5 +1,6 @@
 package kr.twww.mrs.preprocess;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.After;
@@ -104,10 +105,6 @@ public class UserFilterTest {
         return ret;
     }
 
-    /*
-    1::1::4::978300760
-    1::2::3::978302109
-     */
 
     //토이스토리에 4점 준 Rating 객체 반환.
     static Rating toy_rating_gen(int userid, int rating){
@@ -197,6 +194,7 @@ public class UserFilterTest {
         return true;
     }
 
+    @Ignore
     @Test
     public void parametrizedTest(){
         ArrayList<Movie.Genre> genreList = dataPreprocessor.GetGenreList(input_genres);
@@ -205,19 +203,8 @@ public class UserFilterTest {
         ArrayList<Movie> movieList = movie_list_gen();
         ArrayList<Rating> ratingList = ratings_list_gen();
         ArrayList<Rating> result = dataPreprocessor.GetScoreList(genreList,occupation,userList,movieList,ratingList);
-        //
-        //assertThat(result, is(answer));
         assertTrue(compareRatingList(answer,result));
     }
-
-
-    /*
-    ArrayList<Movie.Genre> genreList,
-    User.Occupation occupation,
-    ArrayList<User> userList,
-    ArrayList<Movie> movieList,
-    ArrayList<Rating> ratingList
-    */
 
     @Before
     public void setUp() throws Exception

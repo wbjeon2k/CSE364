@@ -52,7 +52,6 @@ public class ToUserListTest {
     /*
     1번째: User 정보 3개 넣었을때 정상적으로 출력되는지 확인.
     2번째: 잘못된 파일 형식 들어오면 null 반환 하는지 확인.
-
      */
     @Parameters
     public static Collection<Object[]> testSet(){
@@ -109,14 +108,6 @@ public class ToUserListTest {
         ArrayList<User> result = dataReader.ToUserList(read_text);
         assertTrue(compareAnsRes(answer, result));
     }
-    /*
-    public int userId;
-    public Gender gender;
-    public Age age;
-    public Occupation occupation;
-    public int zipCode;
-    //1 F 1 10 48067-100 5개.
-     */
 
     @Before
     public void setUp() throws Exception

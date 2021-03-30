@@ -1,6 +1,7 @@
 package kr.twww.mrs.preprocess;
 
 import kr.twww.mrs.data.*;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.After;
@@ -46,6 +47,7 @@ public class GetOccupationTest {
         this.answer = A;
     }
 
+    @Ignore
     @Test
     public void parameterTest(){
         User.Occupation result = dataPreprocessor.GetOccupation(question);

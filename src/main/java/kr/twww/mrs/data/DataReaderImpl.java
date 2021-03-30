@@ -51,23 +51,12 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             return "./data/ratings.dat";
         else
             return null;
-        // TODO: 데이터 타입에 따른 데이터파일 경로 반환
     }
 
     @Override
     public String ReadTextFromFile( String path )
     {
         try {
-//            BufferedReader br = new BufferedReader(new FileReader(path));
-//            // 데이터 전체 다 받도록 코드 수정함
-//            String line = br.readLine();
-//            String resultRead = "";
-//            while (line != null){
-//                resultRead = resultRead + (line + '\n');
-//                line = br.readLine();
-//            }
-//            return StringUtils.chop(resultRead);
-
             File file = new File(path);
             FileInputStream fis = new FileInputStream(file);
             byte[] data = new byte[(int)file.length()];
@@ -92,14 +81,13 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         var resultUserList = new ArrayList<User>();
 
         String str = text;
-        // convert String into InputStream
         InputStream is = new ByteArrayInputStream(str.getBytes());
-        // read it with BufferedReader
+        // BufferedReader를 이용해 한 줄씩 읽기
         try {
             BufferedReader brUser = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = brUser.readLine()) != null) {
-                // MyUser 선언을 반복문 안으로 오도록 수정했습니다.
+
                 var MyUser = new User();
                 //한 줄씩 받으면서 MyUser 객체에 변수를 넣는다.
                 String[] strUser = line.split("::");
@@ -116,7 +104,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // TODO: 주어진 텍스트를 User 리스트로 반환
+
         return resultUserList;
     }
 
@@ -126,14 +114,14 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         var resultMovieList = new ArrayList<Movie>();
 
         String str = text;
-        // convert String into InputStream
+
         InputStream is = new ByteArrayInputStream(str.getBytes());
-        // read it with BufferedReader
+        // BufferedReader를 이용해 한 줄씩 읽기
         try {
             BufferedReader brMovie = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = brMovie.readLine()) != null) {
-                //MyMovie를 반복문 안에서 선언하도록 수정했습니다.
+
                 var MyMovie = new Movie();
                 //한 줄씩 받으면서 MyMovie 객체에 변수를 넣는다.
                 String[] strMovie = line.split("::");
@@ -145,8 +133,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 var resultGenreList = new ArrayList<Movie.Genre>();
                 String[] strGenre = strMovie[2].split("\\|");
                 for(String i : strGenre){
-                    //사실 convert 함수 써야되는 어떻게 하는지 모르겠다.
-//                    resultGenreList.add(Movie.ConvertGenre(i));
+
                     var convertedGenre = Movie.ConvertGenre(i);
 
                     // 잘못된 장르
@@ -164,38 +151,13 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             e.printStackTrace();
         }
         return resultMovieList;
-        // TODO: 주어진 텍스트를 Movie 리스트로 반환
+
     }
 
     @Override
     public ArrayList<Rating> ToRatingList( String text )
     {
         var resultRatingList = new ArrayList<Rating>();
-
-//        String str = text;
-//        // convert String into InputStream
-//        InputStream is = new ByteArrayInputStream(str.getBytes());
-//        // read it with BufferedReader
-//        try {
-//            BufferedReader brUser = new BufferedReader(new InputStreamReader(is));
-//            String line;
-//            while ((line = brUser.readLine()) != null) {
-//                // MyRating 을 반복문 안에서 선언하도록 수정했습니다.
-//                var MyRating = new Rating();
-//                //한 줄씩 받으면서 MyRating 객체에 변수를 넣는다.
-//                String[] strRating = line.split("::");
-//                MyRating.userId = Integer.parseInt(strRating[0]);
-//                MyRating.movieId = Integer.parseInt(strRating[1]);
-//                MyRating.rating = Integer.parseInt(strRating[2]);
-//                MyRating.timestamp = Integer.parseInt(strRating[3]);
-//
-//                resultRatingList.add(MyRating);
-//            }
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         if ( text == null ) return null;
 
@@ -217,6 +179,6 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         }
 
         return resultRatingList;
-        // TODO: 주어진 텍스트를 Rating 리스트로 반환
+
     }
 }

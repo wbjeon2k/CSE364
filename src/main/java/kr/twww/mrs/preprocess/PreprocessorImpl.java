@@ -34,11 +34,12 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     @Override
     public ArrayList<Movie.Genre> GetGenreList( String genreText )
     {
-        // TODO: 주어진 텍스트를 enum Genre 리스트로 반환
         String s = genreText;
         s = s.toLowerCase();    // 소문자로 통일
         s = s.replaceAll("\\p{Z}","");  //  공백제거
         s = s.replaceAll("\\|","A"); // '|' 를 대문자 A로 치환
+
+        s = s.replaceAll("[^a-zA-Z]", "");
 
         ArrayList<String> list = new ArrayList<String>();   // 장르를 여러개 받을수있는 리스트선언
         String[] getstr1 = s.split("A");        // 장르를 대문자 A를 기준으로 구분해서 배열에 담음
@@ -60,7 +61,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             if(list.get(k).equals("action")){ movie_list.add(Movie.Genre.Action);}
             if(list.get(k).equals("adventure")){ movie_list.add(Movie.Genre.Adventure);}
             if(list.get(k).equals("animation")){ movie_list.add(Movie.Genre.Animation);}
-            if(list.get(k).equals("children_s")){ movie_list.add(Movie.Genre.Children_s);}
+            if(list.get(k).equals("childrens")){ movie_list.add(Movie.Genre.Children_s);}
             if(list.get(k).equals("comedy")){ movie_list.add(Movie.Genre.Comedy);}
             if(list.get(k).equals("crime")){ movie_list.add(Movie.Genre.Crime);}
             if(list.get(k).equals("documentary")){ movie_list.add(Movie.Genre.Documentary);}
@@ -84,8 +85,6 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     @Override
     public User.Occupation GetOccupation( String occupationText )
     {
-        // TODO: 주어진 텍스트를 enum Occupation으로 반환
-
         String s = occupationText;
         s = s.replaceAll("\\p{Z}","");  // 공백제거
         s = s.replaceAll("\\p{Punct}","");  // 특수문자제거

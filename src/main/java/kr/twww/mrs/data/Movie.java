@@ -54,6 +54,6 @@ public class Movie
                 return null;
             }
         }
-        // TODO: 텍스트로 주어진 장르를 enum Genre로 반환
+
     }
 }

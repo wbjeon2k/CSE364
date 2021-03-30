@@ -1,5 +1,6 @@
 package kr.twww.mrs.preprocess;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.After;
@@ -181,6 +182,7 @@ public class GetRatingListTest {
         return true;
     }
 
+    @Ignore
     @Test
     public void parametrizedTest(){
         ArrayList<Movie.Genre> genreList = dataPreprocessor.GetGenreList(input_genres);
@@ -192,15 +194,6 @@ public class GetRatingListTest {
         //
         assertTrue(compareRatingList(answer,result));
     }
-
-
-    /*
-    ArrayList<Movie.Genre> genreList,
-    User.Occupation occupation,
-    ArrayList<User> userList,
-    ArrayList<Movie> movieList,
-    ArrayList<Rating> ratingList
-    */
 
     @Before
     public void setUp() throws Exception

@@ -2,6 +2,7 @@ package kr.twww.mrs.data;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -62,6 +63,7 @@ public class GetPathTest {
 
     //순차적으로 @Parameters 에 정의된 parameter 넣어서 진행.
     //path 경로 비교 Files.isSameFile 로 교체.
+    @Ignore
     @Test
     public void parameterTest() throws IOException {
         System.out.println("Parameter test started\n");

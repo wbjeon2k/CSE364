@@ -1,4 +1,3 @@
-
 # CSE364 Team 4, Team Woongbae without Woongbae (TWwW)  
 
 ## Milestone 1 Readme
@@ -13,9 +12,9 @@
   - ```java -cp ./target/cse364-project-1.0-SNAPSHOT-jar-with-dependencies.jar kr.twww.mrs.Main [Genre] [Occupation]```
   - example) ```java -cp ./target/cse364-project-1.0-SNAPSHOT-jar-with-dependencies.jar kr.twww.mrs.Main Adventure educator```
 
-#### 3. Roles of each team member (i.e. who did what?)
+#### Roles of each team member (i.e. who did what?)
 
-- Kim Taeyeong
+- Kim Taeyoung
   * Enabled Docker setting, distrubuted the devloping environment for the team.
   * *Project design*:
     - Designed and Milestone 1 project scheme, implemented primitive structure.
@@ -29,7 +28,7 @@
   * Preprocessed given 2 user inputs, genres and occupation. (`GetGenreList`,  `GetOccupationList`)
   * Implemented `GetScoreList`, which is to find all the matching rating result from given preprocessed dataset and given user input.
 
-- An Jinmyeong: 
+- Ahn Jinmyeong: 
   * Developed `dataReader` class. `dataReader` class includes: `ReadTextFromFile`, `ToUserList`, `ToMovieList`, `ToRatingList`
   * Implemented string parser routine for `user.dat`, `ratings.dat`, `movies.dat`.
   * Implemented data process routine which makes a list of data from a parsed string. Converted raw `user/rating/movie.dat` into `ArrayList<User/Rating/Movie>`.

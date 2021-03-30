@@ -16,7 +16,8 @@ public class MainTest
         var tick = System.currentTimeMillis();
 
         Preprocessor preprocessor = new PreprocessorImpl();
-        var testScoreList = preprocessor.GetScoreList("Adventure", "educator");
+        //var testScoreList = preprocessor.GetScoreList("Adventure", "educator");
+        var testScoreList = preprocessor.GetScoreList("Documentary|draMa", "aCadEMiC");
         var result = Main.CalculateScore(testScoreList);
 
         var elapsedTick = System.currentTimeMillis() - tick;

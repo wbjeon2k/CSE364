@@ -1,6 +1,7 @@
 package kr.twww.mrs.preprocess;
 
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.After;
@@ -56,6 +57,7 @@ public class GetGenreListTest {
         this.answer = A;
     }
 
+    @Ignore
     @Test
     public void parameterTest(){
         ArrayList<Movie.Genre> result = dataPreprocessor.GetGenreList(question);
