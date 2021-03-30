@@ -94,12 +94,12 @@ public class User
             System.out.println("WRONG DATA IN AGE!");
             return null;
         }
-        // TODO: 주어진 나이 텍스트를 enum Age로 반환
+
     }
 
     public static Occupation ConvertOccupation( int _occupation )
     {
         return Occupation.values()[_occupation];
-        // TODO: 주어진 직업 텍스트를 enum Occupation로 반환
+
     }
 }
