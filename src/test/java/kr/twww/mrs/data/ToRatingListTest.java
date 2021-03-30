@@ -1,5 +1,6 @@
 package kr.twww.mrs.data;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.After;
@@ -58,7 +59,6 @@ public class ToRatingListTest {
     1번째: Rating 1개 넣었을 때 확인.
     2번째: 파일 비었을 때 빈 리스트 반환 확인.
     3번째: Rating 2개 넣었을 때 확인.
-
      */
     @Parameters
     public static Collection<Object[]> testSet() {
@@ -105,6 +105,7 @@ public class ToRatingListTest {
         return true;
     }
 
+    @Ignore
     @Test
     public void parameterTest(){
         String read_text = question;
