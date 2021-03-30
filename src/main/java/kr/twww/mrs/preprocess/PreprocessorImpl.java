@@ -91,7 +91,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         s = s.toUpperCase();    // 대문자로 통일
         // 형식에서 벗어나는 텍스트가 들어오면 오류
         if(!(s.equals("OTHER") || s.equals("ACADEMIC") || s.equals("EDUCATOR") || s.equals("ARTIST") || s.equals("CLERICAL")
-                || s.equals("GRADSTUDENT") || s.equals("COLLEGE") || s.equals("ADMIN") || s.equals("CUSTOMERSERVICE")
+                || s.equals("GRADSTUDENT") || s.equals("COLLEGESTUDENT") || s.equals("ADMIN") || s.equals("CUSTOMERSERVICE")
                 || s.equals("DOCTOR") || s.equals("HEALTHCARE") || s.equals("EXECUTIVE") || s.equals("MANAGERIAL")
                 || s.equals("FARMER") || s.equals("HOMEMAKER") || s.equals("K12STUDENT") || s.equals("LAWYER")
                 || s.equals("PROGRAMMER") || s.equals("RETIRED") || s.equals("SALES") || s.equals("MARKETING")
@@ -104,7 +104,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         if(s.equals("ACADEMIC") || s.equals("EDUCATOR")){ return User.Occupation.ACADEMIC_OR_EDUCATOR; }
         if(s.equals("ARTIST")){ return User.Occupation.ARTIST; }
         if(s.equals("CLERICAL") || s.equals("ADMIN")){ return User.Occupation.CLERICAL_OR_ADMIN; }
-        if(s.equals("COLLEGE") || s.equals("GRADSTUDENT")){ return User.Occupation.COLLEGE_OR_GRAD_STUDENT; }
+        if(s.equals("COLLEGESTUDENT") || s.equals("GRADSTUDENT")){ return User.Occupation.COLLEGE_OR_GRAD_STUDENT; }
         if(s.equals("CUSTOMERSERVICE")){ return User.Occupation.CUSTOMER_SERVICE; }
         if(s.equals("DOCTOR") ||s.equals("HEALTHCARE")){ return User.Occupation.DOCTOR_OR_HEALTH_CARE; }
         if(s.equals("EXECUTIVE") || s.equals("MANAGERIAL")){ return User.Occupation.EXECUTIVE_OR_MANAGERIAL; }

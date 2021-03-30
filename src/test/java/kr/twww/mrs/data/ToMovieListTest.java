@@ -106,7 +106,6 @@ public class ToMovieListTest {
         return true;
     }
 
-    @Ignore
     @Test
     public void parameterTest(){
 

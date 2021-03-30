@@ -47,7 +47,6 @@ public class GetOccupationTest {
         this.answer = A;
     }
 
-    @Ignore
     @Test
     public void parameterTest(){
         User.Occupation result = dataPreprocessor.GetOccupation(question);
