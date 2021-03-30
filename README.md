@@ -14,7 +14,7 @@
 
 #### 3. Roles of each team member (i.e. who did what?)
 
-- Kim Taeyoung
+- Kim Taeyeong
   * Enabled Docker setting, distrubuted the devloping environment for the team.
   * *Project design*:
     - Designed and Milestone 1 project scheme, implemented primitive structure.
