@@ -34,7 +34,6 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     @Override
     public ArrayList<Movie.Genre> GetGenreList( String genreText )
     {
-        // TODO: 주어진 텍스트를 enum Genre 리스트로 반환
         String s = genreText;
         s = s.toLowerCase();    // 소문자로 통일
         s = s.replaceAll("\\p{Z}","");  //  공백제거
@@ -84,8 +83,6 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     @Override
     public User.Occupation GetOccupation( String occupationText )
     {
-        // TODO: 주어진 텍스트를 enum Occupation으로 반환
-
         String s = occupationText;
         s = s.replaceAll("\\p{Z}","");  // 공백제거
         s = s.replaceAll("\\p{Punct}","");  // 특수문자제거
