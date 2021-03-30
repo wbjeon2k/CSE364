@@ -44,6 +44,7 @@ public class GetGenreListTest {
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
                 {"comedy|animation", new ArrayList<>(Arrays.asList(Movie.Genre.Comedy, Movie.Genre.Animation))},
+                {"animation|comedy", new ArrayList<>(Arrays.asList(Movie.Genre.Comedy, Movie.Genre.Animation))},
                 {"", null},
                 {"com|ani", null}
         });
@@ -58,7 +59,16 @@ public class GetGenreListTest {
     @Test
     public void parameterTest(){
         ArrayList<Movie.Genre> result = dataPreprocessor.GetGenreList(question);
-        assertThat(result, is(answer));
+
+        if ( result == null || answer == null )
+        {
+            assertEquals(result, answer);
+            return;
+        }
+
+        for(int i=0;i<answer.size();++i){
+            assert(result.contains(answer.get(i)));
+        }
     }
 
     @Before

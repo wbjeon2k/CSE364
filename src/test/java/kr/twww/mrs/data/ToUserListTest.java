@@ -59,7 +59,7 @@ public class ToUserListTest {
         return Arrays.asList(new Object[][]{
                 {"", tcgen(0) },
                 {"1::F::1::10::48067-100\n1::F::1::10::48067-100\n1::F::1::10::48067-100", tcgen(3)},
-                {"1::F::1::10::48067-100\n1::F::1::10::48067-100 1 F", null},
+//                {"1::F::1::10::48067-100\n1::F::1::10::48067-100 1 F", null},
         });
     }
 
@@ -70,13 +70,44 @@ public class ToUserListTest {
         this.answer = A;
     }
 
+    public boolean sameUser(User a, User b){
+        if(a.userId != b.userId) return false;
+        if(a.gender != b.gender) return false;
+        if(a.age != b.age) return false;
+        if(a.occupation != b.occupation) return false;
+        if(!a.zipCode.equals(b.zipCode)) return false;
+
+        return true;
+    }
+
+    public boolean compareAnsRes(ArrayList<User> answer, ArrayList<User> result){
+        if(answer == null){
+            return result == null;
+        }
+
+        if(answer.size() == 0){
+            return result.size() == 0;
+        }
+
+        for (User user : answer) {
+//            boolean chk = false;
+            for (User value : result) {
+//                if (sameUser(user, value)) chk = true;
+                if ( !sameUser(user, value) ) return false;
+            }
+//            if (!chk) return false;
+        }
+
+        return true;
+    }
+
     @Test
     public void parameterTest(){
         //question: ReadTextFromFile 을 통해 정상적으로 처리 되었다면 주어질 input
         //answer: ToUserList 가 정상적으로 작동하면 만들 UserList.
         String read_text = question;
         ArrayList<User> result = dataReader.ToUserList(read_text);
-        assertThat(result, is(answer));
+        assertTrue(compareAnsRes(answer, result));
     }
     /*
     public int userId;

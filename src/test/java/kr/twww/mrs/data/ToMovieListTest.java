@@ -23,7 +23,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 //MovieList 로 변환 하는지 테스트.
-//1::A B C D é(E F G) (1998)::Animation|Children's|Comedy
+//1::A B C D eee(E F G) (1998)::Animation|Children's|Comedy
 //5개 로 구성된 테스트 케이스 통과해야 한다.
 @RunWith(Parameterized.class)
 public class ToMovieListTest {
@@ -32,7 +32,7 @@ public class ToMovieListTest {
     ArrayList<Movie> answer;
 
     //movie TC template.
-    //ID:1, title: "A B C D é(E F G) (1998)", genres: Animation|Children's|Comedy
+    //ID:1, title: "A B C D eee(E F G) (1998)", genres: Animation|Children's|Comedy
     //들어가는 Movie 케이스 만드는 함수.
     static Movie TCtemplate(){
         Movie tmp = new Movie();
@@ -41,7 +41,7 @@ public class ToMovieListTest {
         tmp.genres.add(Movie.Genre.Children_s);
         tmp.genres.add(Movie.Genre.Comedy);
         tmp.movieId = 1;
-        tmp.title = "A B C D é(E F G) (1998)";
+        tmp.title = "A B C D eee(E F G) (1998)";
         return tmp;
     }
 
@@ -61,10 +61,10 @@ public class ToMovieListTest {
     @Parameters
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
-                {"1::A B C D é(E F G) (1998)::Animation|Children's|Comedy", tcgen(1)},
                 {"", tcgen(0)},
-                {"1::A B C D é(E F G) (1998)::Animation|Children's|Comedy\n1::A B C D é(E F G) (1998)::Animation|Children's|Comedy", tcgen(2)},
-                {"1::A B C D é(E F G) (1998)::Animat", null}
+                {"1::A B C D eee(E F G) (1998)::Animation|Children's|Comedy", tcgen(1)},
+                {"1::A B C D eee(E F G) (1998)::Animation|Children's|Comedy\n1::A B C D eee(E F G) (1998)::Animation|Children's|Comedy", tcgen(2)},
+                {"1::A B C D eee(E F G) (1998)::Animat", null}
         });
     }
 
@@ -75,19 +75,48 @@ public class ToMovieListTest {
         this.answer = A;
     }
 
+    public boolean sameMovie(Movie a, Movie b){
+        if(a.movieId != b.movieId) return false;
+        if(!a.title.equals(b.title)) return false;
+        if(a.genres.size() != b.genres.size()) return false;
+        for(int i=0;i<a.genres.size();++i){
+            if(!b.genres.contains(a.genres.get(i))) return false;
+        }
+        return true;
+    }
+
+    public boolean compareAnsRes(ArrayList<Movie> answer, ArrayList<Movie> result){
+        if(answer == null){
+            return result == null;
+        }
+
+        if(answer.size() == 0){
+            return result.size() == 0;
+        }
+
+        for (Movie movie : answer) {
+            boolean chk = false;
+            for (Movie value : result) {
+                if (sameMovie(movie, value)) chk = true;
+            }
+            if (!chk) return false;
+        }
+
+        return true;
+    }
+
     @Test
     public void parameterTest(){
 
         String read_text = question;
         ArrayList<Movie> result = dataReader.ToMovieList(read_text);
-        //assertThat 적용
-        //https://mkyong.com/unittest/junit-how-to-test-a-list/
-        assertThat(result, is(answer));
+
+        assertTrue(compareAnsRes(answer,result));
         /*
         public int movieId;
         public String title;
         public ArrayList<Genre> genres;
-        1 A B C D é(E F G) (1998) Animation|Children's|Comedy
+        1 A B C D eee(E F G) (1998) Animation|Children's|Comedy
         */
 
     }

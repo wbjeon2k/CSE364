@@ -127,11 +127,19 @@ public class GetRatingListTest {
     //parameter
     /*
     1번째: 장르, 2번째: 직업, 3번째: 예상 점수
+    1: 토이스토리, 쥬만지 2개 들어간 리스트 반환
+    2: 1과 똑같은 결과. 장르 순서만 바뀐것
      */
     @Parameters
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
                 {"Animation|Drama","grad_student", ratings_list_gen() },
+                {"Drama|Animation","grad_student", ratings_list_gen() },
+                {"Animation|Drama","gRaD Student", ratings_list_gen() },
+                {"Animation|Drama","grad student", ratings_list_gen() },
+                {"Animation|Drama","K-12 student", new ArrayList<Rating>() },
+                {"Animation|Drama","K-12student", new ArrayList<Rating>() },
+                {"Animation|Drama","JeonWoongbae", null }
         });
     }
 
@@ -144,6 +152,35 @@ public class GetRatingListTest {
         this.answer =  C;
     }
 
+    boolean sameRating(Rating a, Rating b){
+        if(a.userId != b.userId) return false;
+        if(a.movieId != b.movieId) return false;
+        if(a.timestamp != b.timestamp) return false;
+        if(a.rating != b.rating) return false;
+
+        return true;
+    }
+
+    public boolean compareRatingList(ArrayList<Rating> answer, ArrayList<Rating> result){
+        if(answer == null){
+            return result == null;
+        }
+
+        if(answer.size() == 0){
+            return result.size() == 0;
+        }
+
+        for (Rating rating : answer) {
+            boolean chk = false;
+            for (Rating value : result) {
+                if (sameRating(rating, value)) chk = true;
+            }
+            if (!chk) return false;
+        }
+
+        return true;
+    }
+
     @Test
     public void parametrizedTest(){
         ArrayList<Movie.Genre> genreList = dataPreprocessor.GetGenreList(input_genres);
@@ -153,7 +190,7 @@ public class GetRatingListTest {
         ArrayList<Rating> ratingList = ratings_list_gen();
         ArrayList<Rating> result = dataPreprocessor.GetScoreList(genreList,occupation,userList,movieList,ratingList);
         //
-        assertThat(result, is(answer));
+        assertTrue(compareRatingList(answer,result));
     }
 
 
