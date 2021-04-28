@@ -1,7 +1,7 @@
 package kr.twww.mrs.data;
 
-import kr.twww.mrs.*;
-
+import kr.twww.mrs.data.object.User;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.After;
@@ -9,21 +9,13 @@ import org.junit.Before;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import java.nio.file.*;
-
-import java.util.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Scanner;
 
-import static org.junit.Assert.*;
-
-import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
+@Ignore
 @RunWith(Parameterized.class)
 public class ToUserListTest {
     DataReaderImpl dataReader;
@@ -52,7 +44,6 @@ public class ToUserListTest {
     /*
     1번째: User 정보 3개 넣었을때 정상적으로 출력되는지 확인.
     2번째: 잘못된 파일 형식 들어오면 null 반환 하는지 확인.
-
      */
     @Parameters
     public static Collection<Object[]> testSet(){
@@ -106,17 +97,9 @@ public class ToUserListTest {
         //question: ReadTextFromFile 을 통해 정상적으로 처리 되었다면 주어질 input
         //answer: ToUserList 가 정상적으로 작동하면 만들 UserList.
         String read_text = question;
-        ArrayList<User> result = dataReader.ToUserList(read_text);
-        assertTrue(compareAnsRes(answer, result));
+//        ArrayList<User> result = dataReader.ToUserList(read_text);
+//        assertTrue(compareAnsRes(answer, result));
     }
-    /*
-    public int userId;
-    public Gender gender;
-    public Age age;
-    public Occupation occupation;
-    public int zipCode;
-    //1 F 1 10 48067-100 5개.
-     */
 
     @Before
     public void setUp() throws Exception
