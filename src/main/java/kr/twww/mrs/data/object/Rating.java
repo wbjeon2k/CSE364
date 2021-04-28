@@ -1,4 +1,4 @@
-package kr.twww.mrs.data;
+package kr.twww.mrs.data.object;
 
 public class Rating
 {

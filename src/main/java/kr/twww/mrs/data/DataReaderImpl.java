@@ -1,6 +1,9 @@
 package kr.twww.mrs.data;
 
-import org.apache.maven.shared.utils.StringUtils;
+import kr.twww.mrs.data.object.Link;
+import kr.twww.mrs.data.object.Movie;
+import kr.twww.mrs.data.object.Rating;
+import kr.twww.mrs.data.object.User;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,36 +12,6 @@ import static kr.twww.mrs.data.DataType.*;
 
 public class DataReaderImpl extends DataReaderBase implements DataReader
 {
-    @Override
-    public ArrayList<User> GetUserList()
-    {
-        var path = GetPathFromDataType(USER);
-        var text = ReadTextFromFile(path);
-        var result = ToUserList(text);
-
-        return result;
-    }
-
-    @Override
-    public ArrayList<Movie> GetMovieList()
-    {
-        var path = GetPathFromDataType(MOVIE);
-        var text = ReadTextFromFile(path);
-        var result = ToMovieList(text);
-
-        return result;
-    }
-
-    @Override
-    public ArrayList<Rating> GetRatingList()
-    {
-        var path = GetPathFromDataType(RATING);
-        var text = ReadTextFromFile(path);
-        var result = ToRatingList(text);
-
-        return result;
-    }
-
     @Override
     public String GetPathFromDataType( DataType dataType )
     {
@@ -51,6 +24,42 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             return "./data/ratings.dat";
         else
             return null;
+    }
+
+    @Override
+    public ArrayList<User> GetUserList()
+    {
+        var path = GetPathFromDataType(USER);
+        var text = ReadTextFromFile(path);
+
+        return ToUserList(text);
+    }
+
+    @Override
+    public ArrayList<Movie> GetMovieList()
+    {
+        var path = GetPathFromDataType(MOVIE);
+        var text = ReadTextFromFile(path);
+
+        return ToMovieList(text);
+    }
+
+    @Override
+    public ArrayList<Rating> GetRatingList()
+    {
+        var path = GetPathFromDataType(RATING);
+        var text = ReadTextFromFile(path);
+
+        return ToRatingList(text);
+    }
+
+    @Override
+    public ArrayList<Link> GetLinkList()
+    {
+        var path = GetPathFromDataType(LINK);
+        var text = ReadTextFromFile(path);
+
+        return ToLinkList(text);
     }
 
     @Override
@@ -94,7 +103,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 MyUser.userId = Integer.parseInt(strUser[0]);
                 MyUser.gender = MyUser.ConvertGender(strUser[1].charAt(0));
                 MyUser.age = MyUser.ConvertAge(Integer.parseInt(strUser[2]));
-                MyUser.occupation = MyUser.ConvertOccupation(Integer.parseInt(strUser[3]));
+                MyUser.occupation = MyUser.ConvertOccupationByIndex(Integer.parseInt(strUser[3]));
                 MyUser.zipCode = MyUser.zipCode.valueOf(strUser[4]);
                 //객체를 리스트에 add
                 resultUserList.add(MyUser);
@@ -180,5 +189,13 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 
         return resultRatingList;
 
+    }
+
+    @Override
+    public ArrayList<Link> ToLinkList( String text )
+    {
+        // TODO
+
+        return null;
     }
 }

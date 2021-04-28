@@ -1,6 +1,7 @@
 package kr.twww.mrs.preprocess;
 
 
+import kr.twww.mrs.data.object.Movie;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,24 +10,16 @@ import org.junit.Before;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import java.nio.file.*;
-
-import java.util.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
-import kr.twww.mrs.data.*;
 
-
-import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
+@Ignore
 @RunWith(Parameterized.class)
 public class GetGenreListTest {
     PreprocessorImpl dataPreprocessor;
@@ -44,9 +37,9 @@ public class GetGenreListTest {
     @Parameters
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
-                {"comedy|animation", new ArrayList<>(Arrays.asList(Movie.Genre.Comedy, Movie.Genre.Animation))},
-                {"animation|comedy", new ArrayList<>(Arrays.asList(Movie.Genre.Comedy, Movie.Genre.Animation))},
-                {"", null},
+                {"comedy|animation", new ArrayList<>(Arrays.asList(Movie.Genre.COMEDY, Movie.Genre.ANIMATION))},
+                {"animation|comedy", new ArrayList<>(Arrays.asList(Movie.Genre.COMEDY, Movie.Genre.ANIMATION))},
+//                {"", null},
                 {"com|ani", null}
         });
     }
@@ -59,7 +52,7 @@ public class GetGenreListTest {
 
     @Test
     public void parameterTest(){
-        ArrayList<Movie.Genre> result = dataPreprocessor.GetGenreList(question);
+        ArrayList<Movie.Genre> result = dataPreprocessor.GetCategoryList(question);
 
         if ( result == null || answer == null )
         {

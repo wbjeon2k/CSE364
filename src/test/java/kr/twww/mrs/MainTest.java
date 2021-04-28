@@ -11,18 +11,16 @@ public class MainTest
 {
     @Ignore
     @Test
-    public void main()
+    public void Test()
     {
         var tick = System.currentTimeMillis();
 
         Preprocessor preprocessor = new PreprocessorImpl();
-        //var testScoreList = preprocessor.GetScoreList("Adventure", "educator");
-        var testScoreList = preprocessor.GetScoreList("Documentary|draMa", "aCadEMiC");
-        var result = Main.CalculateScore(testScoreList);
+        var testScoreList = preprocessor.GetRecommendList("F", "25", "Grad student", "Action|Comedy");
+//        var testScoreList = preprocessor.GetRecommendList("", "", "", "Adventure");
 
         var elapsedTick = System.currentTimeMillis() - tick;
 
-        System.out.println(result);
         System.out.println("Elapsed Tick: " + elapsedTick);
     }
 }

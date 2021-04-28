@@ -1,4 +1,4 @@
-package kr.twww.mrs.data;
+package kr.twww.mrs.data.object;
 
 import java.util.ArrayList;
 
@@ -6,24 +6,24 @@ public class Movie
 {
     public enum Genre
     {
-        Action,
-        Adventure,
-        Animation,
-        Children_s,
-        Comedy,
-        Crime,
-        Documentary,
-        Drama,
-        Fantasy,
-        Film_Noir,
-        Horror,
-        Musical,
-        Mystery,
-        Romance,
-        Sci_Fi,
-        Thriller,
-        War,
-        Western
+        ACTION,
+        ADVENTURE,
+        ANIMATION,
+        CHILDREN_S,
+        COMEDY,
+        CRIME,
+        DOCUMENTARY,
+        DRAMA,
+        FANTASY,
+        FILM_NOIR,
+        HORROR,
+        MUSICAL,
+        MYSTERY,
+        ROMANCE,
+        SCI_FI,
+        THRILLER,
+        WAR,
+        WESTERN
     }
 
     public int movieId;
@@ -34,13 +34,13 @@ public class Movie
     {
 
         if(_genre.equals("Children's")){
-            return Genre.Children_s;
+            return Genre.CHILDREN_S;
         }
         else if(_genre.equals("Film-Noir")){
-            return Genre.Film_Noir;
+            return Genre.FILM_NOIR;
         }
         else if(_genre.equals("Sci-Fi")){
-            return Genre.Sci_Fi;
+            return Genre.SCI_FI;
         }
         else {
             try
