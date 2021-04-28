@@ -5,24 +5,26 @@ import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.Rating;
 import kr.twww.mrs.data.object.User;
 
-import java.io.*;
+import java.io.File;
 import java.util.ArrayList;
 
 import static kr.twww.mrs.data.DataType.*;
 
 public class DataReaderImpl extends DataReaderBase implements DataReader
 {
+    private final String PATH_DATA = "./data/";
+    private final String SUFFIX = "s.dat";
+
     @Override
     public String GetPathFromDataType( DataType dataType )
     {
         // 데이터 타입 별 경로 설정
-        if (dataType == USER)
-            return "./data/users.dat";
-        else if (dataType == MOVIE)
-            return "./data/movies.dat";
-        else if  (dataType == RATING)
-            return "./data/ratings.dat";
-        else
+        if ( dataType != null )
+        {
+            // ####s.dat
+            return PATH_DATA + dataType.name().toLowerCase() + SUFFIX;
+        }
+
             return null;
     }
 
