@@ -4,36 +4,32 @@ import kr.twww.mrs.preprocess.Preprocessor;
 import kr.twww.mrs.preprocess.PreprocessorImpl;
 
 public class Main
-{   // args는 input 데이터
+{
     public static void main( String[] args )
     {
-        System.out.println("Team Woongbae without Woongbae");
-
-        // 인수 2개 검사
-        if ( args.length != 2 )
+        if ( !(args.length == 3 || args.length == 4) )
         {
             System.out.println("Error: Invalid argument");
             return;
         }
 
-        // 카테고리, 직업 입력
-        var category = args[0];
-        var occupation = args[1];
+        var gender = args[0];
+        var age = args[1];
+        var occupation = args[2];
+        var categories = args.length == 4 ? args[3] : "";
 
-        // 영화 평점 전처리
         Preprocessor preprocessor = new PreprocessorImpl();
-        var scoreList = preprocessor.GetScoreList(category, occupation);
+        var result = preprocessor.GetRecommendList(gender, age, occupation, categories);
 
-        // 결과 출력
-        var sum = 0.0;
-
-        for ( var i : scoreList )
+        if ( result == null )
         {
-            sum += i.rating;
+            System.out.println("Error");
+            return;
         }
 
-        sum /= scoreList.size();
-
-        System.out.println(sum);
+        for ( var i : result )
+        {
+            System.out.println(i.movie.title + " (" + i.link.GetURL() + ")");
+        }
     }
 }

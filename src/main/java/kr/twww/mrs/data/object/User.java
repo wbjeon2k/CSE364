@@ -1,11 +1,12 @@
-package kr.twww.mrs.data;
+package kr.twww.mrs.data.object;
 
 public class User
 {
     public enum Gender
     {
         MALE,
-        FEMALE
+        FEMALE,
+        UNKNOWN
     }
 
     public enum Age
@@ -16,7 +17,8 @@ public class User
         BETWEEN_35_44,
         BETWEEN_45_49,
         BETWEEN_50_55,
-        OVER_55
+        OVER_55,
+        UNKNOWN
     }
 
     public enum Occupation
@@ -41,7 +43,8 @@ public class User
         TECHNICIAN_OR_ENGINEER,
         TRADESMAN_OR_CRAFTSMAN,
         UNEMPLOYED,
-        WRITER
+        WRITER,
+        UNKNOWN
     }
 
     public int userId;
@@ -64,6 +67,13 @@ public class User
             return null;
         }
         // TODO: 주어진 성별 텍스트를 enum Gender로 반환
+    }
+
+    public static Gender ConvertGender( String _gender )
+    {
+        // TODO
+
+        return null;
     }
 
     public static Age ConvertAge( int _age )
@@ -94,12 +104,26 @@ public class User
             System.out.println("WRONG DATA IN AGE!");
             return null;
         }
-        // TODO: 주어진 나이 텍스트를 enum Age로 반환
+
     }
 
-    public static Occupation ConvertOccupation( int _occupation )
+    public static Age ConvertAge( String _age )
+    {
+        // TODO
+
+        return null;
+    }
+
+    public static Occupation ConvertOccupationByIndex( int _occupation )
     {
         return Occupation.values()[_occupation];
-        // TODO: 주어진 직업 텍스트를 enum Occupation로 반환
+
+    }
+
+    public static Occupation ConvertOccupationByText( String _occupation )
+    {
+        // TODO
+
+        return null;
     }
 }

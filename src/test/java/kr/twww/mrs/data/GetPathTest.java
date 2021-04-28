@@ -24,6 +24,7 @@ import static org.junit.Assert.*;
 
 //UserList 로 변환 하는지 테스트.
 //1 F 1 10 48067-100 5개 로 구성된 테스트 케이스 통과해야 한다.
+@Ignore
 @RunWith(Parameterized.class)
 public class GetPathTest {
     DataReaderImpl dataReader;
@@ -63,7 +64,6 @@ public class GetPathTest {
 
     //순차적으로 @Parameters 에 정의된 parameter 넣어서 진행.
     //path 경로 비교 Files.isSameFile 로 교체.
-    @Ignore
     @Test
     public void parameterTest() throws IOException {
         System.out.println("Parameter test started\n");
