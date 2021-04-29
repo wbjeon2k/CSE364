@@ -91,10 +91,13 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public ArrayList<User> ToUserList( String text )
     {
+        if ( text == null ) return null;
+        if ( text.isEmpty() ) return new ArrayList<>();
+
         var resultUserList = new ArrayList<User>();
 
-        String str = text;
-        InputStream is = new ByteArrayInputStream(str.getBytes());
+        var splitText = text.split("\\r?\\n");
+
         // BufferedReader를 이용해 한 줄씩 읽기
         try {
             BufferedReader brUser = new BufferedReader(new InputStreamReader(is));
