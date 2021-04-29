@@ -55,25 +55,31 @@ public class User
 
     public static Gender ConvertGender( char _gender )
     {
-        //M,F 을 Enum 으로 변경
-        if(_gender == 'M'){
-            return Gender.MALE;
+        switch ( _gender )
+        {
+            case 'M':
+                return Gender.MALE;
+
+            case 'F':
+                return Gender.FEMALE;
         }
-        else if(_gender == 'F'){
-            return Gender.FEMALE;
-        }
-        else{
-            System.out.println("WRONG DATA IN GENDER!");
-            return null;
-        }
-        // TODO: 주어진 성별 텍스트를 enum Gender로 반환
+
+        return null;
     }
 
     public static Gender ConvertGender( String _gender )
     {
-        // TODO
+        if ( _gender == null )
+        {
+            return null;
+        }
 
-        return null;
+        if ( _gender.isEmpty() )
+        {
+            return Gender.UNKNOWN;
+        }
+
+        return ConvertGender(_gender.charAt(0));
     }
 
     public static Age ConvertAge( int _age )
