@@ -6,6 +6,8 @@ import kr.twww.mrs.data.object.Rating;
 import kr.twww.mrs.data.object.User;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static kr.twww.mrs.data.DataType.*;
@@ -67,6 +69,9 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public String ReadTextFromFile( String path )
     {
+        if ( path == null ) return null;
+        if ( path.isEmpty() ) return null;
+
         try {
             File file = new File(path);
             FileInputStream fis = new FileInputStream(file);
@@ -74,15 +79,12 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             fis.read(data);
             fis.close();
 
-            String str = new String(data);
-            return str;
+            return new String(data);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
-        // TODO: 주어진 경로의 파일을 읽어 String으로 반환
         return null;
     }
 
