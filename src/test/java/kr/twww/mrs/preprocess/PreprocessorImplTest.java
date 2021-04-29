@@ -27,5 +27,61 @@ import static org.junit.Assert.*;
 
 public class PreprocessorImplTest
 {
+    @Rule
+    public final ExpectedException expectedException = ExpectedException.none();
 
+    private final DataReaderImpl dataReader = new DataReaderImpl();
+    private final PreprocessorImpl preprocessor = new PreprocessorImpl();
+
+    private void ClearChecksumAndModel()
+    {
+        try
+        {
+            Files.deleteIfExists(Paths.get("./data/checksum"));
+            FileUtils.deleteDirectory(new File("./data/model"));
+        }
+        catch ( IOException e )
+        {
+//                e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void TestGetRecommendList()
+    {
+        var result = preprocessor.GetRecommendList(
+                null,
+                null,
+                null
+        );
+
+        assertNull(result);
+    }
+
+    @Test
+    public void TestGetCategoryList()
+    {
+        var result = preprocessor.GetCategoryList(null);
+
+        assertNull(result);
+    }
+
+    @Test
+    public void TestGetCategoryList2()
+    {
+        var result = preprocessor.GetCategoryList("");
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void TestGetCategoryList3()
+    {
+        var result = preprocessor.GetCategoryList("action");
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(Movie.Genre.ACTION, result.get(0));
+    }
 }

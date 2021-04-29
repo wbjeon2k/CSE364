@@ -23,4 +23,15 @@ public class MainTest
 
         System.out.println("Elapsed Tick: " + elapsedTick);
     }
+
+    @Test
+    public void TestMain()
+    {
+        new Main();
+
+        Main.main(new String[] {});
+        Main.main(new String[] { "TEST", "TEST", "TEST" });
+        Main.main(new String[] { "TEST", "TEST", "TEST", "TEST" });
+        Main.main(new String[] { "M", "99", "other", "action" });
+    }
 }
