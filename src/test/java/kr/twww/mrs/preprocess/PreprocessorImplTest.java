@@ -84,4 +84,122 @@ public class PreprocessorImplTest
         assertEquals(1, result.size());
         assertEquals(Movie.Genre.ACTION, result.get(0));
     }
+
+    @Test
+    public void TestGetCategoryList4()
+    {
+        var result = preprocessor.GetCategoryList("TEST");
+
+        assertNull(result);
+    }
+
+    @Test
+    public void TestGetScoreList()
+    {
+        assertNull(preprocessor.GetScoreList(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null));
+        assertNull(preprocessor.GetScoreList(
+                User.Gender.UNKNOWN,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null));
+        assertNull(preprocessor.GetScoreList(
+                User.Gender.UNKNOWN,
+                User.Age.UNKNOWN,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null));
+        assertNull(preprocessor.GetScoreList(
+                User.Gender.UNKNOWN,
+                User.Age.UNKNOWN,
+                User.Occupation.UNKNOWN,
+                null,
+                null,
+                null,
+                null,
+                null));
+        assertNull(preprocessor.GetScoreList(
+                User.Gender.UNKNOWN,
+                User.Age.UNKNOWN,
+                User.Occupation.UNKNOWN,
+                new ArrayList<>(),
+                null,
+                null,
+                null,
+                null));
+        assertNull(preprocessor.GetScoreList(
+                User.Gender.UNKNOWN,
+                User.Age.UNKNOWN,
+                User.Occupation.UNKNOWN,
+                new ArrayList<>(),
+                new ArrayList<>(),
+                null,
+                null,
+                null));
+        assertNull(preprocessor.GetScoreList(
+                User.Gender.UNKNOWN,
+                User.Age.UNKNOWN,
+                User.Occupation.UNKNOWN,
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                null,
+                null));
+        assertNull(preprocessor.GetScoreList(
+                User.Gender.UNKNOWN,
+                User.Age.UNKNOWN,
+                User.Occupation.UNKNOWN,
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                null));
+        assertNotNull(preprocessor.GetScoreList(
+                User.Gender.UNKNOWN,
+                User.Age.UNKNOWN,
+                User.Occupation.UNKNOWN,
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>()));
+    }
+
+    @Test
+    public void TestGetScoreList2()
+    {
+        var userList = new ArrayList<User>();
+        var movieList = new ArrayList<Movie>();
+        var ratingList = new ArrayList<Rating>();
+        var linkList = new ArrayList<Link>();
+
+        userList.add(new User());
+        movieList.add(new Movie());
+        ratingList.add(new Rating());
+        linkList.add(new Link());
+
+        assertNotNull(preprocessor.GetScoreList(
+                User.Gender.UNKNOWN,
+                User.Age.UNKNOWN,
+                User.Occupation.UNKNOWN,
+                new ArrayList<>(),
+                userList,
+                movieList,
+                ratingList,
+                linkList));
+    }
 }
