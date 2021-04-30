@@ -98,30 +98,21 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 
         var splitText = text.split("\\r?\\n");
 
-        // BufferedReader를 이용해 한 줄씩 읽기
-        try {
-            BufferedReader brUser = new BufferedReader(new InputStreamReader(is));
-            String line;
-            while ((line = brUser.readLine()) != null) {
+        for ( var i : splitText )
+        {
+            var splitData = i.split("::");
 
-                var MyUser = new User();
-                //한 줄씩 받으면서 MyUser 객체에 변수를 넣는다.
-                String[] strUser = line.split("::");
-                MyUser.userId = Integer.parseInt(strUser[0]);
-                MyUser.gender = MyUser.ConvertGender(strUser[1].charAt(0));
-                MyUser.age = MyUser.ConvertAge(Integer.parseInt(strUser[2]));
-                MyUser.occupation = MyUser.ConvertOccupationByIndex(Integer.parseInt(strUser[3]));
-                MyUser.zipCode = MyUser.zipCode.valueOf(strUser[4]);
-                //객체를 리스트에 add
-                resultUserList.add(MyUser);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            var newUser = new User();
+            newUser.userId = Integer.parseInt(splitData[0]);
+            newUser.gender = User.ConvertGender(splitData[1]);
+            newUser.age = User.ConvertAge(splitData[2]);
+            newUser.occupation = User.ConvertOccupationByIndex(Integer.parseInt(splitData[3]));
+            newUser.zipCode = splitData[4];
+
+            result.add(newUser);
         }
 
-        return resultUserList;
+        return result;
     }
 
     @Override
