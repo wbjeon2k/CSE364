@@ -84,38 +84,56 @@ public class User
 
     public static Age ConvertAge( int _age )
     {
-        //나이 범위 나누기
-        if(_age < 18){
+        if ( _age < 18 )
+        {
             return Age.UNDER_18;
         }
-        else if(_age >= 18 && _age < 25 ){
+        else if ( _age <= 24 )
+        {
             return Age.BETWEEN_18_24;
         }
-        else if(_age >= 25 && _age < 35){
+        else if ( _age <= 34 )
+        {
             return Age.BETWEEN_25_34;
         }
-        else if(_age >= 35 && _age < 45){
+        else if ( _age <= 44 )
+        {
             return Age.BETWEEN_35_44;
         }
-        else if(_age >= 45 && _age < 50){
+        else if ( _age <= 49 )
+        {
             return Age.BETWEEN_45_49;
         }
-        else if(_age >= 50 && _age < 56){
+        else if ( _age <= 55 )
+        {
             return Age.BETWEEN_50_55;
         }
-        else if(_age >= 56){
+        else
+        {
             return Age.OVER_55;
         }
-        else{
-            System.out.println("WRONG DATA IN AGE!");
-            return null;
-        }
-
     }
 
     public static Age ConvertAge( String _age )
     {
-        // TODO
+        if ( _age == null )
+        {
+            return null;
+        }
+
+        if ( _age.isEmpty() )
+        {
+            return Age.UNKNOWN;
+        }
+
+        try
+        {
+            return ConvertAge(Integer.parseInt(_age));
+        }
+        catch ( IllegalArgumentException e )
+        {
+//            e.printStackTrace();
+        }
 
         return null;
     }
