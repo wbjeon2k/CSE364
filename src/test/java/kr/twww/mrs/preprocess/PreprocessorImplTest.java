@@ -202,4 +202,85 @@ public class PreprocessorImplTest
                 ratingList,
                 linkList));
     }
+
+    @Test
+    public void TestGetScoreList3()
+    {
+        var genreList = new ArrayList<Movie.Genre>();
+        genreList.add(Movie.Genre.ACTION);
+        genreList.add(Movie.Genre.COMEDY);
+
+        var result = preprocessor.GetScoreList(
+                User.Gender.FEMALE,
+                User.Age.BETWEEN_25_34,
+                User.Occupation.COLLEGE_OR_GRAD_STUDENT,
+                genreList,
+                dataReader.GetUserList(),
+                dataReader.GetMovieList(),
+                dataReader.GetRatingList(),
+                dataReader.GetLinkList());
+
+        assertNotNull(result);
+        assertEquals(10, result.size());
+        assertTrue(result.get(0).score >= result.get(1).score);
+        assertTrue(result.get(1).score >= result.get(2).score);
+        assertTrue(result.get(2).score >= result.get(3).score);
+        assertTrue(result.get(3).score >= result.get(4).score);
+        assertTrue(result.get(4).score >= result.get(5).score);
+        assertTrue(result.get(5).score >= result.get(6).score);
+        assertTrue(result.get(6).score >= result.get(7).score);
+        assertTrue(result.get(7).score >= result.get(8).score);
+        assertTrue(result.get(8).score >= result.get(9).score);
+    }
+
+    @Test
+    public void TestGetScoreList4()
+    {
+        var genreList = new ArrayList<Movie.Genre>();
+        genreList.add(Movie.Genre.ACTION);
+        genreList.add(Movie.Genre.COMEDY);
+
+        var result = preprocessor.GetScoreList(
+                User.Gender.FEMALE,
+                User.Age.BETWEEN_25_34,
+                User.Occupation.COLLEGE_OR_GRAD_STUDENT,
+                genreList,
+                dataReader.GetUserList(),
+                new ArrayList<>(),
+                dataReader.GetRatingList(),
+                dataReader.GetLinkList());
+
+        var result2 = preprocessor.GetScoreList(
+                User.Gender.FEMALE,
+                User.Age.BETWEEN_25_34,
+                User.Occupation.COLLEGE_OR_GRAD_STUDENT,
+                genreList,
+                dataReader.GetUserList(),
+                dataReader.GetMovieList(),
+                dataReader.GetRatingList(),
+                new ArrayList<>());
+
+        assertNull(result);
+        assertNull(result2);
+    }
+
+    // TODO: 테스트 작성중
+    @Ignore
+    @Test
+    public void TestSaveChecksum()
+    {
+        expectedException.expect(IOException.class);
+
+        try
+        {
+            var method = preprocessor.getClass().getDeclaredMethod("SaveChecksum", String.class);
+            method.setAccessible(true);
+
+            method.invoke(preprocessor, "");
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
+    }
 }
