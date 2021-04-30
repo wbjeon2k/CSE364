@@ -118,47 +118,31 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public ArrayList<Movie> ToMovieList( String text )
     {
-        var resultMovieList = new ArrayList<Movie>();
+        if ( text == null ) return null;
+        if ( text.isEmpty() ) return new ArrayList<>();
 
-        String str = text;
+        var result = new ArrayList<Movie>();
 
-        InputStream is = new ByteArrayInputStream(str.getBytes());
-        // BufferedReader를 이용해 한 줄씩 읽기
-        try {
-            BufferedReader brMovie = new BufferedReader(new InputStreamReader(is));
-            String line;
-            while ((line = brMovie.readLine()) != null) {
+        var splitText = text.split("\\r?\\n");
 
-                var MyMovie = new Movie();
-                //한 줄씩 받으면서 MyMovie 객체에 변수를 넣는다.
-                String[] strMovie = line.split("::");
-                MyMovie.movieId = Integer.parseInt(strMovie[0]);
-                MyMovie.title = strMovie[1];
-                //MyMovie 객체의 genres 변수가 ArrayList<Genre> 이다
-                //따라서 데이터를 "|" 기준 파싱하고 각각을 Enum Genre로 변환 후
-                //ArrayList<Genre>에 add 함
-                var resultGenreList = new ArrayList<Movie.Genre>();
-                String[] strGenre = strMovie[2].split("\\|");
-                for(String i : strGenre){
+        for ( var i : splitText )
+        {
+            var splitData = i.split("::");
 
-                    var convertedGenre = Movie.ConvertGenre(i);
+            var newMovie = new Movie();
+            newMovie.movieId = Integer.parseInt(splitData[0]);
+            newMovie.title = splitData[1];
 
-                    // 잘못된 장르
-                    if ( convertedGenre == null ) return null;
+            ArrayList<Movie.Genre> genreList = GetGenreList(splitData[2]);
 
-                    resultGenreList.add(convertedGenre);
-                }
-                MyMovie.genres = resultGenreList;
-                //객체를 리스트에 add
-                resultMovieList.add(MyMovie);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            if ( genreList == null ) return null;
+
+            newMovie.genres = genreList;
+
+            result.add(newMovie);
         }
-        return resultMovieList;
 
+        return result;
     }
 
     @Override
