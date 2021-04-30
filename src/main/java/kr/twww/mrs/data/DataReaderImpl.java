@@ -144,6 +144,22 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 
         return result;
     }
+    private ArrayList<Movie.Genre> GetGenreList( String genresText )
+    {
+        var genreList = new ArrayList<Movie.Genre>();
+        var splitGenre = genresText.split("\\|");
+
+        for( String j : splitGenre )
+        {
+            var genre = Movie.ConvertGenre(j);
+
+            if ( genre == null ) return null;
+
+            genreList.add(genre);
+        }
+
+        return genreList;
+    }
 
     @Override
     public ArrayList<Rating> ToRatingList( String text )
