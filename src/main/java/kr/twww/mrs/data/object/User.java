@@ -146,7 +146,45 @@ public class User
 
     public static Occupation ConvertOccupationByText( String _occupation )
     {
-        // TODO
+        if ( _occupation == null )
+        {
+            return null;
+        }
+
+        if ( _occupation.isEmpty() )
+        {
+            return Occupation.UNKNOWN;
+        }
+
+        _occupation = _occupation.replaceAll("[^a-zA-Z0-9]", "");
+        _occupation = _occupation.toUpperCase();
+
+        for ( var i : Occupation.values() )
+        {
+            if ( i == Occupation.UNKNOWN )
+            {
+                continue;
+            }
+
+            var splitOccupation = i.name().split("_OR_");
+
+            for ( var j : splitOccupation )
+            {
+                var occupation = j;
+                occupation = occupation.replaceAll("[^a-zA-Z0-9]", "");
+                occupation = occupation.toUpperCase();
+
+                if ( occupation.equals("COLLEGE") )
+                {
+                    occupation += "STUDENT";
+                }
+
+                if ( _occupation.equals(occupation) )
+                {
+                    return i;
+                }
+            }
+        }
 
         return null;
     }
