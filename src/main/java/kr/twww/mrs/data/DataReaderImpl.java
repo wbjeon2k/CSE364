@@ -191,8 +191,24 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public ArrayList<Link> ToLinkList( String text )
     {
-        // TODO
+        if ( text == null ) return null;
+        if ( text.isEmpty() ) return new ArrayList<>();
 
-        return null;
+        var result = new ArrayList<Link>();
+
+        var splitText = text.split("\\r?\\n");
+
+        for ( var i : splitText )
+        {
+            var splitData = i.split("::");
+
+            var newRating = new Link();
+            newRating.movieId = Integer.parseInt(splitData[0]);
+            newRating.imdbId = splitData[1];
+
+            result.add(newRating);
+        }
+
+        return result;
     }
 }
