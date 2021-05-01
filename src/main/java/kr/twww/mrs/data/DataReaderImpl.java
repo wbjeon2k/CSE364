@@ -2,12 +2,12 @@ package kr.twww.mrs.data;
 
 import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
-import kr.twww.mrs.data.object.Rating;
 import kr.twww.mrs.data.object.User;
+import org.apache.commons.codec.binary.StringUtils;
+import org.apache.spark.mllib.recommendation.Rating;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import static kr.twww.mrs.data.DataType.*;
@@ -20,14 +20,44 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public String GetPathFromDataType( DataType dataType )
     {
-        // 데이터 타입 별 경로 설정
         if ( dataType != null )
         {
             // ####s.dat
             return PATH_DATA + dataType.name().toLowerCase() + SUFFIX;
         }
 
-            return null;
+        System.out.println("Error: Invalid dataType");
+        return null;
+    }
+
+    @Override
+    public String ReadTextFromFile( String path )
+    {
+        if ( path == null ) return null;
+        if ( path.isEmpty() ) return null;
+
+        try
+        {
+            File file = new File(path);
+            FileInputStream fileInputStream = new FileInputStream(file);
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.ISO_8859_1);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            var data = new char[(int)file.length()];
+            bufferedReader.read(data);
+
+            bufferedReader.close();
+            inputStreamReader.close();
+            fileInputStream.close();
+
+            return new String(data);
+        }
+        catch ( IOException e )
+        {
+            System.out.println("Error: Read file failed");
+        }
+
+        return null;
     }
 
     @Override
@@ -67,34 +97,12 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     }
 
     @Override
-    public String ReadTextFromFile( String path )
-    {
-        if ( path == null ) return null;
-        if ( path.isEmpty() ) return null;
-
-        try {
-            File file = new File(path);
-            FileInputStream fis = new FileInputStream(file);
-            byte[] data = new byte[(int)file.length()];
-            fis.read(data);
-            fis.close();
-
-            return new String(data);
-
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
     public ArrayList<User> ToUserList( String text )
     {
         if ( text == null ) return null;
         if ( text.isEmpty() ) return new ArrayList<>();
 
-        var resultUserList = new ArrayList<User>();
+        var result = new ArrayList<User>();
 
         var splitText = text.split("\\r?\\n");
 
@@ -144,6 +152,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 
         return result;
     }
+
     private ArrayList<Movie.Genre> GetGenreList( String genresText )
     {
         var genreList = new ArrayList<Movie.Genre>();
@@ -175,17 +184,21 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         {
             var splitData = i.split("::");
 
-            var newRating = new Rating();
-            newRating.userId = Integer.parseInt(splitData[0]);
-            newRating.movieId = Integer.parseInt(splitData[1]);
-            newRating.rating = Integer.parseInt(splitData[2]);
-            newRating.timestamp = Integer.parseInt(splitData[3]);
+            var userId = Integer.parseInt(splitData[0]);
+            var movieId = Integer.parseInt(splitData[1]);
+            var rating = Integer.parseInt(splitData[2]);
+//            var timestamp = Integer.parseInt(splitData[3]);
+
+            var newRating = new Rating(
+                    userId,
+                    movieId,
+                    rating
+            );
 
             result.add(newRating);
         }
 
         return result;
-
     }
 
     @Override

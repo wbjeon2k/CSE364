@@ -2,8 +2,8 @@ package kr.twww.mrs.data;
 
 import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
-import kr.twww.mrs.data.object.Rating;
 import kr.twww.mrs.data.object.User;
+import org.apache.spark.mllib.recommendation.Rating;
 
 import java.util.ArrayList;
 

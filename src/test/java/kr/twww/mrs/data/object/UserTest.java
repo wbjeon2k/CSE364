@@ -28,6 +28,7 @@ public class UserTest
         assertEquals(User.Age.OVER_55, User.ConvertAge("99"));
         assertEquals(User.Age.UNKNOWN, User.ConvertAge(""));
         assertNull(User.ConvertAge(null));
+        assertNull(User.ConvertAge("TEST"));
     }
 
     @Test
@@ -40,5 +41,6 @@ public class UserTest
         assertEquals(User.Occupation.COLLEGE_OR_GRAD_STUDENT, User.ConvertOccupationByText("college student"));
         assertEquals(User.Occupation.UNKNOWN, User.ConvertOccupationByText(""));
         assertNull(User.ConvertOccupationByText(null));
+        assertNull(User.ConvertOccupationByText("TEST"));
     }
 }
