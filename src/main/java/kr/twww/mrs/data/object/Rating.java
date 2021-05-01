@@ -1,6 +1,8 @@
 package kr.twww.mrs.data.object;
 
-public class Rating
+import java.io.Serializable;
+
+public class Rating implements Serializable
 {
     public int userId;
     public int movieId;
