@@ -30,30 +30,24 @@ public class Movie
     public String title;
     public ArrayList<Genre> genres;
 
-    public static Genre ConvertGenre( String _genre )
-    {
+    public static Genre ConvertGenre( String _genre ){
+        _genre = _genre.replaceAll("[^a-zA-Z0-9]", "");
+        _genre = _genre.toUpperCase();
 
-        if(_genre.equals("Children's")){
-            return Genre.CHILDREN_S;
-        }
-        else if(_genre.equals("Film-Noir")){
-            return Genre.FILM_NOIR;
-        }
-        else if(_genre.equals("Sci-Fi")){
-            return Genre.SCI_FI;
-        }
-        else {
-            try
-            {
-                return Genre.valueOf(_genre);
-            }
-            catch ( IllegalArgumentException e )
-            {
-                e.printStackTrace();
+        for ( var i : Genre.values() )
+        {
+            var genre = i.name();
+            genre = genre.replaceAll("[^a-zA-Z0-9]", "");
+            genre = genre.toUpperCase();
 
-                return null;
+            if ( genre.equals(_genre) )
+            {
+                return i;
             }
         }
 
+        return null;
     }
 }
+
+
