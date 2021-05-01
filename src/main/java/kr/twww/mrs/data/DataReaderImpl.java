@@ -164,15 +164,14 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public ArrayList<Rating> ToRatingList( String text )
     {
-        var resultRatingList = new ArrayList<Rating>();
-
         if ( text == null ) return null;
-
         if ( text.isEmpty() ) return new ArrayList<>();
 
-        var splitRating = text.split("\\r?\\n");
+        var result = new ArrayList<Rating>();
 
-        for ( var i : splitRating )
+        var splitText = text.split("\\r?\\n");
+
+        for ( var i : splitText )
         {
             var splitData = i.split("::");
 
@@ -182,10 +181,10 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             newRating.rating = Integer.parseInt(splitData[2]);
             newRating.timestamp = Integer.parseInt(splitData[3]);
 
-            resultRatingList.add(newRating);
+            result.add(newRating);
         }
 
-        return resultRatingList;
+        return result;
 
     }
 
