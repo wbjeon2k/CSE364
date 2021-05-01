@@ -64,6 +64,7 @@ public class User
                 return Gender.FEMALE;
         }
 
+        System.out.println("Error: Invalid gender character");
         return null;
     }
 
@@ -71,6 +72,7 @@ public class User
     {
         if ( _gender == null )
         {
+            System.out.println("Error: Invalid gender string");
             return null;
         }
 
@@ -118,6 +120,7 @@ public class User
     {
         if ( _age == null )
         {
+            System.out.println("Error: Invalid age string");
             return null;
         }
 
@@ -130,9 +133,9 @@ public class User
         {
             return ConvertAge(Integer.parseInt(_age));
         }
-        catch ( IllegalArgumentException e )
+        catch ( Exception e )
         {
-//            e.printStackTrace();
+            System.out.println("Error: Invalid age string");
         }
 
         return null;
@@ -141,13 +144,13 @@ public class User
     public static Occupation ConvertOccupationByIndex( int _occupation )
     {
         return Occupation.values()[_occupation];
-
     }
 
     public static Occupation ConvertOccupationByText( String _occupation )
     {
         if ( _occupation == null )
         {
+            System.out.println("Error: Invalid occupation string");
             return null;
         }
 
@@ -186,6 +189,7 @@ public class User
             }
         }
 
+        System.out.println("Error: Invalid occupation string");
         return null;
     }
 }

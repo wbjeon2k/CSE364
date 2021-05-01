@@ -30,7 +30,8 @@ public class Movie
     public String title;
     public ArrayList<Genre> genres;
 
-    public static Genre ConvertGenre( String _genre ){
+    public static Genre ConvertGenre( String _genre )
+    {
         _genre = _genre.replaceAll("[^a-zA-Z0-9]", "");
         _genre = _genre.toUpperCase();
 
@@ -46,8 +47,7 @@ public class Movie
             }
         }
 
+        System.out.println("Error: Invalid genre string");
         return null;
     }
 }
-
-
