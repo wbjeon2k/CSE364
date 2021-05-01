@@ -1,54 +1,44 @@
 package kr.twww.mrs;
 
-import kr.twww.mrs.data.Rating;
 import kr.twww.mrs.preprocess.Preprocessor;
 import kr.twww.mrs.preprocess.PreprocessorImpl;
-
-import java.util.ArrayList;
+import org.apache.commons.codec.binary.StringUtils;
 
 public class Main
 {
-    public static double CalculateScore( ArrayList<Rating> ratingList )
-    {
-        var sum = 0.0;
-
-        for ( var i : ratingList )
-        {
-            sum += i.rating;
-        }
-
-        var score = sum / ratingList.size();
-
-        return score;
-    }
-
     public static void main( String[] args )
     {
-//        System.out.println("Team Woongbae without Woongbae");
-
-        // 인수 2개 검사
-        if ( args.length != 2 )
+        if ( !(args.length == 3 || args.length == 4) )
         {
-            System.out.println("Error: Invalid argument");
+            System.out.println("Error: Invalid number of arguments");
             return;
         }
 
-        // 카테고리, 직업 입력
-        var category = args[0];
-        var occupation = args[1];
+        var gender = args[0];
+        var age = args[1];
+        var occupation = args[2];
+        var categories = args.length == 4 ? args[3] : "";
 
-        // 영화 평점 전처리
+        System.out.println("[Group 4] Movie Recommendation System");
+
         Preprocessor preprocessor = new PreprocessorImpl();
-        var ratingList = preprocessor.GetScoreList(category, occupation);
+        var result = preprocessor.GetRecommendList(gender, age, occupation, categories);
 
-        if ( ratingList == null )
+        if ( result == null )
         {
-            System.out.println("Error");
+            System.out.println("Error: Cannot recommendation failed");
             return;
         }
 
-        // 결과 출력
-        var score = CalculateScore(ratingList);
-        System.out.println(score);
+        System.out.println("Info: Movie recommendation:");
+
+        var count = 0;
+
+        for ( var i : result )
+        {
+            ++count;
+
+            System.out.println(count + ". " + i.movie.title + " (" + i.link.GetURL() + ")");
+        }
     }
 }

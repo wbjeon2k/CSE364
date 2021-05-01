@@ -1,22 +1,72 @@
 package kr.twww.mrs.data;
 
-import org.apache.maven.shared.utils.StringUtils;
+import kr.twww.mrs.data.object.Link;
+import kr.twww.mrs.data.object.Movie;
+import kr.twww.mrs.data.object.User;
+import org.apache.commons.codec.binary.StringUtils;
+import org.apache.spark.mllib.recommendation.Rating;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import static kr.twww.mrs.data.DataType.*;
 
 public class DataReaderImpl extends DataReaderBase implements DataReader
 {
+    private final String PATH_DATA = "./data/";
+    private final String SUFFIX = "s.dat";
+
+    @Override
+    public String GetPathFromDataType( DataType dataType )
+    {
+        if ( dataType != null )
+        {
+            // ####s.dat
+            return PATH_DATA + dataType.name().toLowerCase() + SUFFIX;
+        }
+
+        System.out.println("Error: Invalid dataType");
+        return null;
+    }
+
+    @Override
+    public String ReadTextFromFile( String path )
+    {
+        if ( path == null ) return null;
+        if ( path.isEmpty() ) return null;
+
+        try
+        {
+            File file = new File(path);
+            FileInputStream fileInputStream = new FileInputStream(file);
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.ISO_8859_1);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            var data = new char[(int)file.length()];
+            bufferedReader.read(data);
+
+            bufferedReader.close();
+            inputStreamReader.close();
+            fileInputStream.close();
+
+            return new String(data);
+        }
+        catch ( IOException e )
+        {
+            System.out.println("Error: Read file failed");
+        }
+
+        return null;
+    }
+
     @Override
     public ArrayList<User> GetUserList()
     {
         var path = GetPathFromDataType(USER);
         var text = ReadTextFromFile(path);
-        var result = ToUserList(text);
 
-        return result;
+        return ToUserList(text);
     }
 
     @Override
@@ -24,9 +74,8 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     {
         var path = GetPathFromDataType(MOVIE);
         var text = ReadTextFromFile(path);
-        var result = ToMovieList(text);
 
-        return result;
+        return ToMovieList(text);
     }
 
     @Override
@@ -34,151 +83,145 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     {
         var path = GetPathFromDataType(RATING);
         var text = ReadTextFromFile(path);
-        var result = ToRatingList(text);
 
-        return result;
+        return ToRatingList(text);
     }
 
     @Override
-    public String GetPathFromDataType( DataType dataType )
+    public ArrayList<Link> GetLinkList()
     {
-        // 데이터 타입 별 경로 설정
-        if (dataType == USER)
-            return "./data/users.dat";
-        else if (dataType == MOVIE)
-            return "./data/movies.dat";
-        else if  (dataType == RATING)
-            return "./data/ratings.dat";
-        else
-            return null;
-    }
+        var path = GetPathFromDataType(LINK);
+        var text = ReadTextFromFile(path);
 
-    @Override
-    public String ReadTextFromFile( String path )
-    {
-        try {
-            File file = new File(path);
-            FileInputStream fis = new FileInputStream(file);
-            byte[] data = new byte[(int)file.length()];
-            fis.read(data);
-            fis.close();
-
-            String str = new String(data);
-            return str;
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // TODO: 주어진 경로의 파일을 읽어 String으로 반환
-        return null;
+        return ToLinkList(text);
     }
 
     @Override
     public ArrayList<User> ToUserList( String text )
     {
-        var resultUserList = new ArrayList<User>();
+        if ( text == null ) return null;
+        if ( text.isEmpty() ) return new ArrayList<>();
 
-        String str = text;
-        InputStream is = new ByteArrayInputStream(str.getBytes());
-        // BufferedReader를 이용해 한 줄씩 읽기
-        try {
-            BufferedReader brUser = new BufferedReader(new InputStreamReader(is));
-            String line;
-            while ((line = brUser.readLine()) != null) {
+        var result = new ArrayList<User>();
 
-                var MyUser = new User();
-                //한 줄씩 받으면서 MyUser 객체에 변수를 넣는다.
-                String[] strUser = line.split("::");
-                MyUser.userId = Integer.parseInt(strUser[0]);
-                MyUser.gender = MyUser.ConvertGender(strUser[1].charAt(0));
-                MyUser.age = MyUser.ConvertAge(Integer.parseInt(strUser[2]));
-                MyUser.occupation = MyUser.ConvertOccupation(Integer.parseInt(strUser[3]));
-                MyUser.zipCode = MyUser.zipCode.valueOf(strUser[4]);
-                //객체를 리스트에 add
-                resultUserList.add(MyUser);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        var splitText = text.split("\\r?\\n");
+
+        for ( var i : splitText )
+        {
+            var splitData = i.split("::");
+
+            var newUser = new User();
+            newUser.userId = Integer.parseInt(splitData[0]);
+            newUser.gender = User.ConvertGender(splitData[1]);
+            newUser.age = User.ConvertAge(splitData[2]);
+            newUser.occupation = User.ConvertOccupationByIndex(Integer.parseInt(splitData[3]));
+            newUser.zipCode = splitData[4];
+
+            result.add(newUser);
         }
 
-        return resultUserList;
+        return result;
     }
 
     @Override
     public ArrayList<Movie> ToMovieList( String text )
     {
-        var resultMovieList = new ArrayList<Movie>();
+        if ( text == null ) return null;
+        if ( text.isEmpty() ) return new ArrayList<>();
 
-        String str = text;
+        var result = new ArrayList<Movie>();
 
-        InputStream is = new ByteArrayInputStream(str.getBytes());
-        // BufferedReader를 이용해 한 줄씩 읽기
-        try {
-            BufferedReader brMovie = new BufferedReader(new InputStreamReader(is));
-            String line;
-            while ((line = brMovie.readLine()) != null) {
+        var splitText = text.split("\\r?\\n");
 
-                var MyMovie = new Movie();
-                //한 줄씩 받으면서 MyMovie 객체에 변수를 넣는다.
-                String[] strMovie = line.split("::");
-                MyMovie.movieId = Integer.parseInt(strMovie[0]);
-                MyMovie.title = strMovie[1];
-                //MyMovie 객체의 genres 변수가 ArrayList<Genre> 이다
-                //따라서 데이터를 "|" 기준 파싱하고 각각을 Enum Genre로 변환 후
-                //ArrayList<Genre>에 add 함
-                var resultGenreList = new ArrayList<Movie.Genre>();
-                String[] strGenre = strMovie[2].split("\\|");
-                for(String i : strGenre){
+        for ( var i : splitText )
+        {
+            var splitData = i.split("::");
 
-                    var convertedGenre = Movie.ConvertGenre(i);
+            var newMovie = new Movie();
+            newMovie.movieId = Integer.parseInt(splitData[0]);
+            newMovie.title = splitData[1];
 
-                    // 잘못된 장르
-                    if ( convertedGenre == null ) return null;
+            ArrayList<Movie.Genre> genreList = GetGenreList(splitData[2]);
 
-                    resultGenreList.add(convertedGenre);
-                }
-                MyMovie.genres = resultGenreList;
-                //객체를 리스트에 add
-                resultMovieList.add(MyMovie);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            if ( genreList == null ) return null;
+
+            newMovie.genres = genreList;
+
+            result.add(newMovie);
         }
-        return resultMovieList;
 
+        return result;
+    }
+
+    private ArrayList<Movie.Genre> GetGenreList( String genresText )
+    {
+        var genreList = new ArrayList<Movie.Genre>();
+        var splitGenre = genresText.split("\\|");
+
+        for( String j : splitGenre )
+        {
+            var genre = Movie.ConvertGenre(j);
+
+            if ( genre == null ) return null;
+
+            genreList.add(genre);
+        }
+
+        return genreList;
     }
 
     @Override
     public ArrayList<Rating> ToRatingList( String text )
     {
-        var resultRatingList = new ArrayList<Rating>();
-
         if ( text == null ) return null;
-
         if ( text.isEmpty() ) return new ArrayList<>();
 
-        var splitRating = text.split("\\r?\\n");
+        var result = new ArrayList<Rating>();
 
-        for ( var i : splitRating )
+        var splitText = text.split("\\r?\\n");
+
+        for ( var i : splitText )
         {
             var splitData = i.split("::");
 
-            var newRating = new Rating();
-            newRating.userId = Integer.parseInt(splitData[0]);
-            newRating.movieId = Integer.parseInt(splitData[1]);
-            newRating.rating = Integer.parseInt(splitData[2]);
-            newRating.timestamp = Integer.parseInt(splitData[3]);
+            var userId = Integer.parseInt(splitData[0]);
+            var movieId = Integer.parseInt(splitData[1]);
+            var rating = Integer.parseInt(splitData[2]);
+//            var timestamp = Integer.parseInt(splitData[3]);
 
-            resultRatingList.add(newRating);
+            var newRating = new Rating(
+                    userId,
+                    movieId,
+                    rating
+            );
+
+            result.add(newRating);
         }
 
-        return resultRatingList;
+        return result;
+    }
 
+    @Override
+    public ArrayList<Link> ToLinkList( String text )
+    {
+        if ( text == null ) return null;
+        if ( text.isEmpty() ) return new ArrayList<>();
+
+        var result = new ArrayList<Link>();
+
+        var splitText = text.split("\\r?\\n");
+
+        for ( var i : splitText )
+        {
+            var splitData = i.split("::");
+
+            var newRating = new Link();
+            newRating.movieId = Integer.parseInt(splitData[0]);
+            newRating.imdbId = splitData[1];
+
+            result.add(newRating);
+        }
+
+        return result;
     }
 }

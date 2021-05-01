@@ -1,13 +1,26 @@
 package kr.twww.mrs.preprocess;
 
-import kr.twww.mrs.data.*;
+import kr.twww.mrs.data.DataReader;
+import kr.twww.mrs.data.DataReaderImpl;
+import kr.twww.mrs.data.object.Movie;
+import kr.twww.mrs.data.object.User;
+import kr.twww.mrs.preprocess.object.Score;
+import kr.twww.mrs.preprocess.predict.Predictor;
+import kr.twww.mrs.preprocess.predict.PredictorImpl;
+import org.apache.spark.mllib.recommendation.Rating;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 {
-    DataReader dataReader;
+    private final DataReader dataReader;
+
+    private final int N = (1 << 19);
 
     public PreprocessorImpl()
     {
@@ -15,154 +28,339 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     }
 
     @Override
-    public ArrayList<Rating> GetScoreList( String _category, String _occupation )
+    public ArrayList<Score> GetRecommendList( String _gender, String _age, String _occupation )
     {
-        var genreList = GetGenreList(_category);
-        var occupation = GetOccupation(_occupation);
+        return GetRecommendList(_gender, _age, _occupation, "");
+    }
 
-        var result = GetScoreList(
-                genreList,
+    @Override
+    public ArrayList<Score> GetRecommendList( String _gender, String _age, String _occupation, String _categories )
+    {
+        var gender = User.ConvertGender(_gender);
+        var age = User.ConvertAge(_age);
+        var occupation = User.ConvertOccupationByText(_occupation);
+        var categoryList = GetCategoryList(_categories);
+
+        return GetScoreList(
+                gender,
+                age,
                 occupation,
-                dataReader.GetUserList(),
-                dataReader.GetMovieList(),
-                dataReader.GetRatingList()
+                categoryList
         );
+    }
+
+    @Override
+    public ArrayList<Movie.Genre> GetCategoryList( String genreText )
+    {
+        if ( genreText == null ) return null;
+        if ( genreText.isEmpty() ) return new ArrayList<>();
+
+        var result = new ArrayList<Movie.Genre>();
+
+        var splitText = genreText.split("\\|");
+
+        for ( var i : splitText )
+        {
+            var genre = Movie.ConvertGenre(i);
+
+            if ( genre == null ) return null;
+
+            result.add(genre);
+        }
 
         return result;
     }
 
     @Override
-    public ArrayList<Movie.Genre> GetGenreList( String genreText )
-    {
-        String s = genreText;
-        s = s.toLowerCase();    // 소문자로 통일
-        s = s.replaceAll("\\p{Z}","");  //  공백제거
-        s = s.replaceAll("\\|","A"); // '|' 를 대문자 A로 치환
-
-        s = s.replaceAll("[^a-zA-Z]", "");
-
-        ArrayList<String> list = new ArrayList<String>();   // 장르를 여러개 받을수있는 리스트선언
-        String[] getstr1 = s.split("A");        // 장르를 대문자 A를 기준으로 구분해서 배열에 담음
-
-        for(int i=0; i<getstr1.length;i++){     // 리스트에 split한 장르를 다시 모아줌
-            list.add(getstr1[i]);
-        }
-        for(int j=0; j<list.size();j++){    // 주어진 장르에 포함되는것이 없으면 에러
-            if(!(list.get(j).equals("action") || list.get(j).equals("adventure") || list.get(j).equals("animation")
-                    || list.get(j).equals("childrens") || list.get(j).equals("comedy") || list.get(j).equals("crime")
-                    || list.get(j).equals("documentary") || list.get(j).equals("drama") || list.get(j).equals("fantasy")
-                    || list.get(j).equals("filmnoir") || list.get(j).equals("horror") || list.get(j).equals("musical")
-                    || list.get(j).equals("mystery") || list.get(j).equals("romance") || list.get(j).equals("scifi")
-                    || list.get(j).equals("thriller") || list.get(j).equals("war") || list.get(j).equals("western")))
-                return null;
-        }
-        ArrayList<Movie.Genre> movie_list = new ArrayList<Movie.Genre>();   // 주어진 장르종류를 담아줄 리스트
-        for(int k=0; k<list.size();k++){    // 맞는 장르 찾아서 리스트에 추가
-            if(list.get(k).equals("action")){ movie_list.add(Movie.Genre.Action);}
-            if(list.get(k).equals("adventure")){ movie_list.add(Movie.Genre.Adventure);}
-            if(list.get(k).equals("animation")){ movie_list.add(Movie.Genre.Animation);}
-            if(list.get(k).equals("childrens")){ movie_list.add(Movie.Genre.Children_s);}
-            if(list.get(k).equals("comedy")){ movie_list.add(Movie.Genre.Comedy);}
-            if(list.get(k).equals("crime")){ movie_list.add(Movie.Genre.Crime);}
-            if(list.get(k).equals("documentary")){ movie_list.add(Movie.Genre.Documentary);}
-            if(list.get(k).equals("drama")){ movie_list.add(Movie.Genre.Drama);}
-            if(list.get(k).equals("fantasy")){ movie_list.add(Movie.Genre.Fantasy);}
-            if(list.get(k).equals("filmnoir")){ movie_list.add(Movie.Genre.Film_Noir);}
-            if(list.get(k).equals("horror")){ movie_list.add(Movie.Genre.Horror);}
-            if(list.get(k).equals("musical")){ movie_list.add(Movie.Genre.Musical);}
-            if(list.get(k).equals("mystery")){ movie_list.add(Movie.Genre.Mystery);}
-            if(list.get(k).equals("romance")){ movie_list.add(Movie.Genre.Romance);}
-            if(list.get(k).equals("scifi")){ movie_list.add(Movie.Genre.Sci_Fi);}
-            if(list.get(k).equals("thriller")){ movie_list.add(Movie.Genre.Thriller);}
-            if(list.get(k).equals("war")){ movie_list.add(Movie.Genre.War);}
-            if(list.get(k).equals("western")){ movie_list.add(Movie.Genre.Western);}
-        }
-
-        return movie_list;      // 장르 모은 리스트 반환
-
-    }
-
-    @Override
-    public User.Occupation GetOccupation( String occupationText )
-    {
-        String s = occupationText;
-        s = s.replaceAll("\\p{Z}","");  // 공백제거
-        s = s.replaceAll("\\p{Punct}","");  // 특수문자제거
-        s = s.toUpperCase();    // 대문자로 통일
-        // 형식에서 벗어나는 텍스트가 들어오면 오류
-        if(!(s.equals("OTHER") || s.equals("ACADEMIC") || s.equals("EDUCATOR") || s.equals("ARTIST") || s.equals("CLERICAL")
-                || s.equals("GRADSTUDENT") || s.equals("COLLEGESTUDENT") || s.equals("ADMIN") || s.equals("CUSTOMERSERVICE")
-                || s.equals("DOCTOR") || s.equals("HEALTHCARE") || s.equals("EXECUTIVE") || s.equals("MANAGERIAL")
-                || s.equals("FARMER") || s.equals("HOMEMAKER") || s.equals("K12STUDENT") || s.equals("LAWYER")
-                || s.equals("PROGRAMMER") || s.equals("RETIRED") || s.equals("SALES") || s.equals("MARKETING")
-                || s.equals("SCIENTIST") || s.equals("SELFEMPLOYED") || s.equals("TECHNICIAN") || s.equals("ENGINEER")
-                || s.equals("TRADESMAN") || s.equals("UNEMPLOYED") || s.equals("WRITER") || s.equals("CRAFTSMAN"))){
-            return null;
-        }
-        // 정리한 알파벳과 매칭되는 직업 뱉어줌
-        if(s.equals("OTHER")){ return User.Occupation.OTHER; }
-        if(s.equals("ACADEMIC") || s.equals("EDUCATOR")){ return User.Occupation.ACADEMIC_OR_EDUCATOR; }
-        if(s.equals("ARTIST")){ return User.Occupation.ARTIST; }
-        if(s.equals("CLERICAL") || s.equals("ADMIN")){ return User.Occupation.CLERICAL_OR_ADMIN; }
-        if(s.equals("COLLEGESTUDENT") || s.equals("GRADSTUDENT")){ return User.Occupation.COLLEGE_OR_GRAD_STUDENT; }
-        if(s.equals("CUSTOMERSERVICE")){ return User.Occupation.CUSTOMER_SERVICE; }
-        if(s.equals("DOCTOR") ||s.equals("HEALTHCARE")){ return User.Occupation.DOCTOR_OR_HEALTH_CARE; }
-        if(s.equals("EXECUTIVE") || s.equals("MANAGERIAL")){ return User.Occupation.EXECUTIVE_OR_MANAGERIAL; }
-        if(s.equals("FARMER")){ return User.Occupation.FARMER; }
-        if(s.equals("HOMEMAKER")){ return User.Occupation.HOMEMAKER; }
-        if(s.equals("K12STUDENT")){ return User.Occupation.K_12_STUDENT; }
-        if(s.equals("LAWYER")){ return User.Occupation.LAWYER; }
-        if(s.equals("PROGRAMMER")){ return User.Occupation.PROGRAMMER; }
-        if(s.equals("RETIRED")){ return User.Occupation.RETIRED; }
-        if(s.equals("SALES") || s.equals("MARKETING")){ return User.Occupation.SALES_OR_MARKETING; }
-        if(s.equals("SCIENTIST")){ return User.Occupation.SCIENTIST; }
-        if(s.equals("SELFEMPLOYED")){ return User.Occupation.SELF_EMPLOYED; }
-        if(s.equals("TECHNICIAN") || s.equals("ENGINEER")){ return User.Occupation.TECHNICIAN_OR_ENGINEER; }
-        if(s.equals("TRADESMAN") || s.equals("CRAFTSMAN")){ return User.Occupation.TRADESMAN_OR_CRAFTSMAN; }
-        if(s.equals("UNEMPLOYED")){ return User.Occupation.UNEMPLOYED; }
-        if(s.equals("WRITER")){ return User.Occupation.WRITER; }
-
-        return null;
-    }
-
-    @Override
-    public ArrayList<Rating> GetScoreList(
-            ArrayList<Movie.Genre> genreList,
+    public ArrayList<Score> GetScoreList(
+            User.Gender gender,
+            User.Age age,
             User.Occupation occupation,
-            ArrayList<User> userList,
-            ArrayList<Movie> movieList,
-            ArrayList<Rating> ratingList
+            ArrayList<Movie.Genre> genreList
     )
     {
-
-        if ( genreList == null ) return null;
+        if ( gender == null ) return null;
+        if ( age == null ) return null;
         if ( occupation == null ) return null;
+        if ( genreList == null ) return null;
+
+        var userList = dataReader.GetUserList();
+        var movieList = dataReader.GetMovieList();
+        var ratingList = dataReader.GetRatingList();
+
         if ( userList == null ) return null;
         if ( movieList == null ) return null;
         if ( ratingList == null ) return null;
 
-        var filtered_movielist = movieList.stream()
-                .filter(a -> {
-                    for(var i : genreList){
-                        if(!(a.genres.contains(i))){
-                            return false;
+        // 1. 유저 필터
+        var filteredUserList = GetFilteredUserList(
+                gender,
+                age,
+                occupation,
+                userList
+        );
+
+        // 2. 영화 필터
+        var filteredMovieList = GetFilteredMovieList(
+                genreList,
+                movieList
+        );
+
+        // 3. 유저 최대 N명 선택
+        filteredUserList = SelectFilteredUser(ratingList, filteredUserList, filteredMovieList);
+
+        if ( filteredUserList == null ) return null;
+
+        // 4. ALS 예측
+        var predictList = GetPredictList(
+                filteredUserList,
+                filteredMovieList,
+                ratingList
+        );
+
+        if ( predictList == null ) return null;
+
+        // 5. Score 리스트 작성
+        var scoreList = ToScoreList(
+                filteredMovieList,
+                predictList
+        );
+
+        if ( scoreList == null ) return null;
+
+        // 6. 내림차순 정렬 및 상위 10개
+        scoreList.sort((o1, o2) -> Double.compare(o2.score, o1.score));
+
+        var count = scoreList.size();
+
+        if ( count > 10 )
+        {
+            count = 10;
+        }
+
+        return new ArrayList<>(scoreList.subList(0, count));
+    }
+
+    private List<User> SelectFilteredUser(
+            ArrayList<Rating> ratingList,
+            List<User> filteredUserList,
+            List<Movie> filteredMovieList
+    )
+    {
+        if ( filteredUserList.isEmpty() ) return filteredUserList;
+        if ( filteredMovieList.isEmpty() ) return null;
+
+        var size = filteredUserList.size();
+        var maxUserCount = N / filteredMovieList.size();
+
+        if ( size <= maxUserCount ) return filteredUserList;
+
+        var max = filteredUserList.get(filteredUserList.size() - 1).userId;
+
+        var ratingCount = new int[max];
+        Arrays.fill(ratingCount, 0);
+
+        ratingList.forEach(rating -> {
+            var userId = rating.user();
+
+            if ( userId <= max )
+            {
+                ++ratingCount[userId - 1];
+            }
+        });
+
+        filteredUserList.sort(
+                Comparator.comparingInt(o -> ratingCount[o.userId - 1])
+        );
+
+        var selectUserList = new ArrayList<User>();
+
+        var count = 0.0;
+        var step = (double)size / maxUserCount;
+
+        while ( count < (size - 1) )
+        {
+            var index = (int)count;
+            count += step;
+
+            selectUserList.add(filteredUserList.get(index));
+        }
+
+        return selectUserList;
+    }
+
+    private List<User> GetFilteredUserList(
+            User.Gender gender,
+            User.Age age,
+            User.Occupation occupation,
+            ArrayList<User> userList
+    )
+    {
+        var unknownCount = 3;
+
+        if ( gender == User.Gender.UNKNOWN ) --unknownCount;
+        if ( age == User.Age.UNKNOWN ) --unknownCount;
+        if ( occupation == User.Occupation.UNKNOWN ) --unknownCount;
+
+        if ( unknownCount == 0 ) return userList;
+
+        return GetFilteredUserStream(
+                gender,
+                age,
+                occupation,
+                userList,
+                unknownCount
+        );
+    }
+
+    private List<User> GetFilteredUserStream(
+            User.Gender gender,
+            User.Age age,
+            User.Occupation occupation,
+            ArrayList<User> userList,
+            int unknownCount
+    )
+    {
+        var result = userList
+                .stream()
+                .filter(user -> {
+                    var count = 0;
+
+                    if ( gender != User.Gender.UNKNOWN )
+                    {
+                        if ( user.gender == gender )
+                        {
+                            ++count;
                         }
-                    }return true;
-                })
-                .collect(Collectors.toList());
+                    }
 
-        var filtered_userlist = userList.stream()
-                .filter(b -> b.occupation == occupation).collect(Collectors.toList());
+                    if ( age != User.Age.UNKNOWN )
+                    {
+                        if ( user.age == age )
+                        {
+                            ++count;
+                        }
+                    }
 
-        var filtered_ratinglist = ratingList.stream().filter(c -> {
-            var found1 = filtered_movielist.stream().filter(d -> d.movieId == c.movieId)
-                    .collect(Collectors.toList()).isEmpty();
-            var found2 = filtered_userlist.stream().filter(e -> e.userId == c.userId)
-                    .collect(Collectors.toList()).isEmpty();
-            return (!found1) && (!found2);
-        }).collect(Collectors.toList());
+                    if ( occupation != User.Occupation.UNKNOWN )
+                    {
+                        if ( user.occupation == occupation )
+                        {
+                            ++count;
+                        }
+                    }
 
-        return new ArrayList<>(filtered_ratinglist);
+                    return (count >= unknownCount);
+                }).collect(Collectors.toList());
+
+        if ( result.isEmpty() && (unknownCount > 1) )
+        {
+            result = GetFilteredUserStream(
+                    gender,
+                    age,
+                    occupation,
+                    userList,
+                    unknownCount - 1);
+        }
+
+        return result;
+    }
+
+    private List<Movie> GetFilteredMovieList(
+            ArrayList<Movie.Genre> genreList,
+            List<Movie> movieList
+    )
+    {
+        if ( genreList.isEmpty() )
+        {
+            return movieList;
+        }
+
+        return movieList
+                .stream()
+                .filter(movie -> genreList
+                        .stream()
+                        .anyMatch(genre -> movie.genres.contains(genre))
+                ).collect(Collectors.toList());
+    }
+
+    private List<Rating> GetPredictList(
+            List<User> filteredUserList,
+            List<Movie> filteredMovieList,
+            ArrayList<Rating> ratingList
+    )
+    {
+        Predictor predictor = new PredictorImpl(dataReader);
+
+        if ( !predictor.LoadModel() )
+        {
+            if ( !predictor.CreateModel(ratingList) )
+            {
+                System.out.println("Error: Create model failed");
+
+                predictor.Close();
+                return null;
+            }
+        }
+
+        var predictList =
+                predictor.GetPredictList(
+                        filteredUserList,
+                        filteredMovieList
+                );
+
+        predictor.Close();
+
+        return predictList;
+    }
+
+    private ArrayList<Score> ToScoreList(
+            List<Movie> filteredMovieList,
+            List<Rating> predictList
+    )
+    {
+        var scoreList = new ArrayList<Score>();
+
+        var linkList = dataReader.GetLinkList();
+
+        if ( linkList == null ) return null;
+
+        predictList.forEach(_rating -> {
+            var movieId = _rating.product();
+            var rating = _rating.rating();
+
+            var findScore = scoreList
+                    .stream()
+                    .filter(score -> score.movie.movieId == movieId)
+                    .findFirst();
+
+            if ( findScore.isPresent() )
+            {
+                findScore.get().score += rating;
+            }
+            else
+            {
+                var score = new Score();
+
+                score.movie = filteredMovieList
+                        .stream()
+                        .filter(_movie -> _movie.movieId == movieId)
+                        .findFirst()
+                        .get();
+
+                score.link = linkList
+                        .stream()
+                        .filter(_link -> _link.movieId == movieId)
+                        .findFirst()
+                        .get();
+
+                score.score = rating;
+
+                scoreList.add(score);
+            }
+        });
+
+        return scoreList;
     }
 }
 
