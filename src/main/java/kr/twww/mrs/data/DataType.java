@@ -4,5 +4,6 @@ public enum DataType
 {
     USER,
     MOVIE,
-    RATING
+    RATING,
+    LINK
 }
