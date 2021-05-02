@@ -26,7 +26,7 @@ public class Main
 
         if ( result == null )
         {
-            System.out.println("Error: Cannot recommendation failed");
+            System.out.println("Error: Movie recommendation failed");
             return;
         }
 

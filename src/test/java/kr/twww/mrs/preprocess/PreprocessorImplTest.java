@@ -4,6 +4,7 @@ import kr.twww.mrs.data.DataReaderImpl;
 import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
+import kr.twww.mrs.preprocess.object.Score;
 import kr.twww.mrs.preprocess.predict.PredictorImpl;
 import mockit.Mock;
 import mockit.MockUp;
@@ -330,7 +331,7 @@ public class PreprocessorImplTest
             }
 
             @Mock
-            List<Rating> GetPredictList(
+            public List<Rating> GetPredictList(
                     List<User> filteredUserList,
                     List<Movie> filteredMovieList
             )
@@ -339,7 +340,76 @@ public class PreprocessorImplTest
             }
         };
 
+        assertNull(
+                preprocessor.GetScoreList(
+                        User.Gender.UNKNOWN,
+                        User.Age.UNKNOWN,
+                        User.Occupation.UNKNOWN,
+                        new ArrayList<>())
+        );
+
+        new MockUp<DataReaderImpl>() {
+            @Mock
+            public ArrayList<Movie> GetMovieList()
+            {
+                var result = new ArrayList<Movie>();
+
+                var movie = new Movie();
+                movie.movieId = 1;
+                result.add(movie);
+
+                return result;
+            }
+
+            @Mock
+            public ArrayList<Rating> GetRatingList()
+            {
+                var result = new ArrayList<Rating>();
+
+                var rating = new Rating(1, 1, 0.0);
+
+                for ( var i = 0; i < 10; ++i )
+                {
+                    result.add(rating);
+                }
+
+                return result;
+            }
+        };
+
+        new MockUp<PredictorImpl>() {
+            @Mock
+            public List<Rating> GetPredictList(
+                    List<User> filteredUserList,
+                    List<Movie> filteredMovieList
+            )
+            {
+                var result = new ArrayList<Rating>();
+                result.add(
+                        new Rating(0, 0, 0.0)
+                );
+
+                return result;
+            }
+        };
+
         assertNotNull(
+                preprocessor.GetScoreList(
+                        User.Gender.UNKNOWN,
+                        User.Age.UNKNOWN,
+                        User.Occupation.UNKNOWN,
+                        new ArrayList<>())
+        );
+
+        new MockUp<DataReaderImpl>() {
+            @Mock
+            public ArrayList<Link> GetLinkList()
+            {
+                return null;
+            }
+        };
+
+        assertNull(
                 preprocessor.GetScoreList(
                         User.Gender.UNKNOWN,
                         User.Age.UNKNOWN,
@@ -396,7 +466,15 @@ public class PreprocessorImplTest
 
             var filteredMovieList = new ArrayList<Movie>();
             var movie = new Movie();
-            for ( var i = 0; i < (1 << 19); ++i )
+
+            var field = PreprocessorImpl
+                    .class
+                    .getDeclaredField("MAX_PAIR_COUNT");
+            field.setAccessible(true);
+
+            var max = (int)field.get(preprocessor);
+
+            for ( var i = 0; i < max; ++i )
             {
                 filteredMovieList.add(movie);
             }

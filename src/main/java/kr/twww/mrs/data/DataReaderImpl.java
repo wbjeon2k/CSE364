@@ -26,7 +26,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             return PATH_DATA + dataType.name().toLowerCase() + SUFFIX;
         }
 
-        System.out.println("Error: Invalid dataType");
+        System.out.println("Error: Invalid data type");
         return null;
     }
 
@@ -54,7 +54,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         }
         catch ( IOException e )
         {
-            System.out.println("Error: Read file failed");
+            System.out.println("Error: Reading file failed");
         }
 
         return null;

@@ -19,7 +19,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 {
     private final DataReader dataReader;
 
-    private final int MAX_PAIR_COUNT = (1 << 19);
+    private final int MAX_PAIR_COUNT = (1 << 20);
     private final int MIN_RATING_COUNT = 10;
 
     public PreprocessorImpl()
@@ -84,6 +84,8 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         if ( occupation == null ) return null;
         if ( genreList == null ) return null;
 
+        System.out.println("Info: Loading data ... ");
+
         var userList = dataReader.GetUserList();
         var movieList = dataReader.GetMovieList();
         var ratingList = dataReader.GetRatingList();
@@ -91,6 +93,8 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         if ( userList == null ) return null;
         if ( movieList == null ) return null;
         if ( ratingList == null ) return null;
+
+        System.out.println("Info: Preprocessing ... ");
 
         // 1. 유저 필터
         var filteredUserList = GetFilteredUserList(
@@ -186,20 +190,19 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 
         var max = filteredUserList.get(filteredUserList.size() - 1).userId;
 
-        var ratingCount = new int[max];
+        var ratingCount = new int[max + 1];
         Arrays.fill(ratingCount, 0);
 
         ratingList.forEach(rating -> {
             var userId = rating.user();
 
-            if ( userId <= max )
-            {
-                ++ratingCount[userId - 1];
-            }
+            if ( userId > max ) return;
+
+            ++ratingCount[userId];
         });
 
         filteredUserList.sort(
-                Comparator.comparingInt(o -> ratingCount[o.userId - 1])
+                Comparator.comparingInt(o -> ratingCount[o.userId])
         );
 
         return filteredUserList.subList(
@@ -218,22 +221,21 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 
         var max = movieList.get(movieList.size() - 1).movieId;
 
-        var ratingCount = new int[max];
+        var ratingCount = new int[max + 1];
         Arrays.fill(ratingCount, 0);
 
         ratingList.forEach(rating -> {
             var movieId = rating.product();
 
-            if ( movieId <= max )
-            {
-                ++ratingCount[movieId - 1];
-            }
+            if ( movieId > max ) return;
+
+            ++ratingCount[movieId];
         });
 
         return movieList
                 .stream()
                 .filter(movie -> {
-                    if ( ratingCount[movie.movieId - 1] < MIN_RATING_COUNT )
+                    if ( ratingCount[movie.movieId] < MIN_RATING_COUNT )
                     {
                         return false;
                     }
@@ -334,45 +336,38 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             List<Rating> predictList
     )
     {
-        var scoreList = new ArrayList<Score>();
+        if ( filteredMovieList.isEmpty() ) return null;
 
         var linkList = dataReader.GetLinkList();
 
         if ( linkList == null ) return null;
 
-        predictList.forEach(_rating -> {
-            var movieId = _rating.product();
-            var rating = _rating.rating();
+        var max = filteredMovieList.get(filteredMovieList.size() - 1).movieId;
 
-            var findScore = scoreList
-                    .stream()
-                    .filter(score -> score.movie.movieId == movieId)
-                    .findFirst();
+        var scoreFullList = new ArrayList<Score>();
+        var scoreList = new ArrayList<Score>();
 
-            if ( findScore.isPresent() )
-            {
-                findScore.get().score += rating;
-            }
-            else
-            {
-                var score = new Score();
+        for ( var i = 0; i < (max + 1); ++i )
+        {
+            scoreFullList.add(new Score());
+        }
 
-                score.movie = filteredMovieList
-                        .stream()
-                        .filter(_movie -> _movie.movieId == movieId)
-                        .findFirst()
-                        .get();
+        filteredMovieList.forEach(
+                movie -> scoreFullList.get(movie.movieId).movie = movie
+        );
 
-                score.link = linkList
-                        .stream()
-                        .filter(_link -> _link.movieId == movieId)
-                        .findFirst()
-                        .get();
+        predictList.forEach(
+                rating -> scoreFullList.get(rating.product()).score += rating.rating()
+        );
 
-                score.score = rating;
+        linkList.forEach(link -> {
+            var movieId = link.movieId;
 
-                scoreList.add(score);
-            }
+            if ( movieId > max ) return;
+
+            scoreFullList.get(movieId).link = link;
+
+            scoreList.add(scoreFullList.get(movieId));
         });
 
         return scoreList;
