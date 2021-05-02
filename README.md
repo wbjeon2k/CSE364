@@ -4,7 +4,7 @@
 ## Milestone 2 Readme
 
 #### 1. ALS recommendation algorithm
-  Our team has implemented Alternating Least Square(ALS) algorithm via ALS library supported by [org.apache.spark.mllib](https://spark.apache.org/docs/latest/mllib-collaborative-filtering.html#collaborative-filtering) in (Spark)[https://spark.apache.org/docs/latest/index.html] library.
+  Our team has implemented Alternating Least Square(ALS) algorithm via ALS library supported by [org.apache.spark.mllib](https://spark.apache.org/docs/latest/mllib-collaborative-filtering.html#collaborative-filtering) in [Spark](https://spark.apache.org/docs/latest/index.html) library.
 
   ALS is a way to implement Collaborative Filtering(CF), which is a method used to estimate a user's preference information based on preference information of other people.
   In this movie recommendation system, CF is used to estimate rating of a movie without a user's previous rating information on that specific movie. 
