@@ -381,7 +381,7 @@ public class PreprocessorImplTest
         {
             var method = PreprocessorImpl
                     .class
-                    .getDeclaredMethod("SelectFilteredUser", ArrayList.class, List.class, List.class);
+                    .getDeclaredMethod("SelectFilteredUser", List.class, List.class, List.class);
             method.setAccessible(true);
 
             var ratingList = new ArrayList<Rating>();
@@ -423,7 +423,7 @@ public class PreprocessorImplTest
         {
             var method = PreprocessorImpl
                     .class
-                    .getDeclaredMethod("GetFilteredUserList", User.Gender.class, User.Age.class, User.Occupation.class, ArrayList.class);
+                    .getDeclaredMethod("GetFilteredUserList", User.Gender.class, User.Age.class, User.Occupation.class, List.class);
             method.setAccessible(true);
 
             var userList = new ArrayList<>();
@@ -513,7 +513,7 @@ public class PreprocessorImplTest
         {
             var method = PreprocessorImpl
                     .class
-                    .getDeclaredMethod("GetFilteredUserStream", User.Gender.class, User.Age.class, User.Occupation.class, ArrayList.class, int.class);
+                    .getDeclaredMethod("GetFilteredUserStream", User.Gender.class, User.Age.class, User.Occupation.class, List.class, int.class);
             method.setAccessible(true);
 
             assertNotNull(
@@ -525,6 +525,44 @@ public class PreprocessorImplTest
                             new ArrayList<>(),
                             3
                     )
+            );
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void TestGetFilteredMovieList()
+    {
+        try
+        {
+            var method = PreprocessorImpl
+                    .class
+                    .getDeclaredMethod("GetFilteredMovieList", List.class, List.class, List.class);
+            method.setAccessible(true);
+
+            var genreList = new ArrayList<Movie.Genre>();
+            genreList.add(Movie.Genre.ACTION);
+
+            var ratingList = new ArrayList<Rating>();
+            ratingList.add(new Rating(0, 1, 0.0));
+            ratingList.add(new Rating(0, 2, 0.0));
+
+            var filteredMovieList = new ArrayList<Movie>();
+            var movie = new Movie();
+            movie.movieId = 1;
+            filteredMovieList.add(movie);
+            filteredMovieList.add(movie);
+
+            assertNotNull(
+                    method.invoke(
+                            preprocessor,
+                            genreList,
+                            filteredMovieList,
+                            ratingList)
             );
         }
         catch ( Exception e )

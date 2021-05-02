@@ -14,13 +14,13 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 {
     private final DataReader dataReader;
 
-    private final int N = (1 << 19);
+    private final int MAX_PAIR_COUNT = (1 << 19);
+    private final int MIN_RATING_COUNT = 10;
 
     public PreprocessorImpl()
     {
@@ -103,11 +103,16 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         // 2. 영화 필터
         var filteredMovieList = GetFilteredMovieList(
                 genreList,
-                movieList
+                movieList,
+                ratingList
         );
 
         // 3. 유저 최대 N명 선택
-        filteredUserList = SelectFilteredUser(ratingList, filteredUserList, filteredMovieList);
+        filteredUserList = SelectFilteredUser(
+                ratingList,
+                filteredUserList,
+                filteredMovieList
+        );
 
         if ( filteredUserList == null ) return null;
 
@@ -141,8 +146,32 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         return new ArrayList<>(scoreList.subList(0, count));
     }
 
+    private List<User> GetFilteredUserList(
+            User.Gender gender,
+            User.Age age,
+            User.Occupation occupation,
+            List<User> userList
+    )
+    {
+        var unknownCount = 3;
+
+        if ( gender == User.Gender.UNKNOWN ) --unknownCount;
+        if ( age == User.Age.UNKNOWN ) --unknownCount;
+        if ( occupation == User.Occupation.UNKNOWN ) --unknownCount;
+
+        if ( unknownCount == 0 ) return userList;
+
+        return GetFilteredUserStream(
+                gender,
+                age,
+                occupation,
+                userList,
+                unknownCount
+        );
+    }
+
     private List<User> SelectFilteredUser(
-            ArrayList<Rating> ratingList,
+            List<Rating> ratingList,
             List<User> filteredUserList,
             List<Movie> filteredMovieList
     )
@@ -151,7 +180,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         if ( filteredMovieList.isEmpty() ) return null;
 
         var size = filteredUserList.size();
-        var maxUserCount = N / filteredMovieList.size();
+        var maxUserCount = MAX_PAIR_COUNT / filteredMovieList.size();
 
         if ( size <= maxUserCount ) return filteredUserList;
 
@@ -173,51 +202,53 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
                 Comparator.comparingInt(o -> ratingCount[o.userId - 1])
         );
 
-        var selectUserList = new ArrayList<User>();
-
-        var count = 0.0;
-        var step = (double)size / maxUserCount;
-
-        while ( count < (size - 1) )
-        {
-            var index = (int)count;
-            count += step;
-
-            selectUserList.add(filteredUserList.get(index));
-        }
-
-        return selectUserList;
+        return filteredUserList.subList(
+                filteredUserList.size() - maxUserCount,
+                filteredUserList.size()
+        );
     }
 
-    private List<User> GetFilteredUserList(
-            User.Gender gender,
-            User.Age age,
-            User.Occupation occupation,
-            ArrayList<User> userList
+    private List<Movie> GetFilteredMovieList(
+            List<Movie.Genre> genreList,
+            List<Movie> movieList,
+            List<Rating> ratingList
     )
     {
-        var unknownCount = 3;
+        var max = movieList.get(movieList.size() - 1).movieId;
 
-        if ( gender == User.Gender.UNKNOWN ) --unknownCount;
-        if ( age == User.Age.UNKNOWN ) --unknownCount;
-        if ( occupation == User.Occupation.UNKNOWN ) --unknownCount;
+        var ratingCount = new int[max];
+        Arrays.fill(ratingCount, 0);
 
-        if ( unknownCount == 0 ) return userList;
+        ratingList.forEach(rating -> {
+            var movieId = rating.product();
 
-        return GetFilteredUserStream(
-                gender,
-                age,
-                occupation,
-                userList,
-                unknownCount
-        );
+            if ( movieId <= max )
+            {
+                ++ratingCount[movieId - 1];
+            }
+        });
+
+        return movieList
+                .stream()
+                .filter(movie -> {
+                    if ( ratingCount[movie.movieId - 1] < MIN_RATING_COUNT )
+                    {
+                        return false;
+                    }
+
+                    if ( genreList.isEmpty() ) return true;
+
+                    return genreList
+                            .stream()
+                            .anyMatch(genre -> movie.genres.contains(genre));
+                }).collect(Collectors.toList());
     }
 
     private List<User> GetFilteredUserStream(
             User.Gender gender,
             User.Age age,
             User.Occupation occupation,
-            ArrayList<User> userList,
+            List<User> userList,
             int unknownCount
     )
     {
@@ -264,24 +295,6 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         }
 
         return result;
-    }
-
-    private List<Movie> GetFilteredMovieList(
-            ArrayList<Movie.Genre> genreList,
-            List<Movie> movieList
-    )
-    {
-        if ( genreList.isEmpty() )
-        {
-            return movieList;
-        }
-
-        return movieList
-                .stream()
-                .filter(movie -> genreList
-                        .stream()
-                        .anyMatch(genre -> movie.genres.contains(genre))
-                ).collect(Collectors.toList());
     }
 
     private List<Rating> GetPredictList(

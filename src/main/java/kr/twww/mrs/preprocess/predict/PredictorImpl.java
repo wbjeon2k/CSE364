@@ -13,10 +13,8 @@ import org.apache.spark.mllib.recommendation.MatrixFactorizationModel;
 import org.apache.spark.mllib.recommendation.Rating;
 import scala.Tuple2;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -50,6 +48,11 @@ public class PredictorImpl extends PredictorBase implements Predictor
     @Override
     public boolean LoadModel()
     {
+        var savedChecksum = GetSavedChecksum();
+
+        if ( savedChecksum == null ) return false;
+        if ( !savedChecksum.equals(GetChecksum()) ) return false;
+
         var modelPath = Paths.get(PATH_DATA_MODEL);
         var modelHadoopPath = "file:///" + Paths.get(PATH_DATA_MODEL).toAbsolutePath();
 
@@ -73,10 +76,10 @@ public class PredictorImpl extends PredictorBase implements Predictor
                 .parallelize(ratingList)
                 .cache();
 
-        var splitRDD = ratingRDD.randomSplit(new double[] { 0.8 });
+        var splitRDD = ratingRDD.randomSplit(new double[] { 1.0 });
         var ratingTrainingRDD = splitRDD[0].cache();
 
-        model = ALS.train(JavaRDD.toRDD(ratingTrainingRDD), 5, 10, 0.01);
+        model = ALS.train(JavaRDD.toRDD(ratingTrainingRDD), 5, 30, 0.01);
 
         if ( model == null ) return false;
 
@@ -176,6 +179,14 @@ public class PredictorImpl extends PredictorBase implements Predictor
         }
 
         return DigestUtils.sha256Hex(checksum.toString());
+    }
+
+    @Override
+    public String GetSavedChecksum()
+    {
+        if ( !Files.exists(Paths.get(PATH_DATA_CHECKSUM)) ) return null;
+
+        return dataReader.ReadTextFromFile(PATH_DATA_CHECKSUM);
     }
 
     @Override
