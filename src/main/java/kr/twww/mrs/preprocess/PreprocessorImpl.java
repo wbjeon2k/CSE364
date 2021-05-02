@@ -178,10 +178,12 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         var count = 0.0;
         var step = (double)size / maxUserCount;
 
-        while ( count < (size - 1) )
+        //while ( count < (size - 1) )
+        while (count < maxUserCount)
         {
             var index = (int)count;
-            count += step;
+            //count += step;
+            count += 1;
 
             selectUserList.add(filteredUserList.get(index));
         }

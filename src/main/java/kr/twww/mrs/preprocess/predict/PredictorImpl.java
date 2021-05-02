@@ -73,10 +73,10 @@ public class PredictorImpl extends PredictorBase implements Predictor
                 .parallelize(ratingList)
                 .cache();
 
-        var splitRDD = ratingRDD.randomSplit(new double[] { 0.8 });
+        var splitRDD = ratingRDD.randomSplit(new double[] { 0.95, 0.05 });
         var ratingTrainingRDD = splitRDD[0].cache();
 
-        model = ALS.train(JavaRDD.toRDD(ratingTrainingRDD), 5, 10, 0.01);
+        model = ALS.train(JavaRDD.toRDD(ratingTrainingRDD), 5, 20, 0.01);
 
         if ( model == null ) return false;
 
