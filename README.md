@@ -12,7 +12,7 @@
   Original ALS algorithm was introduced by [Koren et al](https://dl.acm.org/doi/10.1109/MC.2009.263), and supported by Spark libray.
 
   If a rank is set by n, number of users set by U, number of movies set by M, two data frames are made.
-  First dataframe is for user, with $U x n$ size. Secodne dataframe is for movie, with $n x M$ size.
+  First dataframe is for user, with $$U x n$$ size. Secodne dataframe is for movie, with $n x M$ size.
   Multiplying $U x n$ matrix and $n x M$ matrix makes a $U x M$ size inference matrix.
 
   ALS reduces the loss between the inference matrix and the actual dataset by Stochastic Gradient Descent(SGD).
