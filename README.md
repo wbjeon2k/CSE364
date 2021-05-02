@@ -26,7 +26,7 @@
 
 Execute below command with proper parameters.
 
-java -Xms1g -Xmx4g -cp target/cse364-project-1.0-SNAPSHOT-allinone.jar kr.twww.mrs.Main "[M/F]" "[Age]" "[Occupation]" "Adventure"
+`java -Xms1g -Xmx4g -cp target/cse364-project-1.0-SNAPSHOT-allinone.jar kr.twww.mrs.Main "[M/F]" "[Age]" "[Occupation]" "Adventure"`
 
 #### 3. Handling errors
 
