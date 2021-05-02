@@ -79,7 +79,7 @@ public class PredictorImpl extends PredictorBase implements Predictor
         var splitRDD = ratingRDD.randomSplit(new double[] { 1.0 });
         var ratingTrainingRDD = splitRDD[0].cache();
 
-        model = ALS.train(JavaRDD.toRDD(ratingTrainingRDD), 5, 10, 0.01);
+        model = ALS.train(JavaRDD.toRDD(ratingTrainingRDD), 5, 30, 0.01);
 
         if ( model == null ) return false;
 
