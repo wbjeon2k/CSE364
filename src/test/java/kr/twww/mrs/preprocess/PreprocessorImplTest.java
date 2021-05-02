@@ -544,11 +544,11 @@ public class PreprocessorImplTest
                     .getDeclaredMethod("GetFilteredMovieList", List.class, List.class, List.class);
             method.setAccessible(true);
 
-            var genreList = new ArrayList<Movie.Genre>();
-            genreList.add(Movie.Genre.ACTION);
-
             var ratingList = new ArrayList<Rating>();
-            ratingList.add(new Rating(0, 1, 0.0));
+            for ( var i = 0; i < 10; ++i )
+            {
+                ratingList.add(new Rating(0, 1, 0.0));
+            }
             ratingList.add(new Rating(0, 2, 0.0));
 
             var filteredMovieList = new ArrayList<Movie>();
@@ -560,7 +560,7 @@ public class PreprocessorImplTest
             assertNotNull(
                     method.invoke(
                             preprocessor,
-                            genreList,
+                            new ArrayList<>(),
                             filteredMovieList,
                             ratingList)
             );
