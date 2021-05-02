@@ -38,6 +38,42 @@ public class PredictorImplTest
     @Test
     public void TestLoadModel()
     {
+        new MockUp<PredictorImpl>() {
+            @Mock
+            public String GetChecksum()
+            {
+                return "TEST";
+            }
+        };
+
+        new MockUp<PredictorImpl>() {
+            @Mock
+            public String GetSavedChecksum()
+            {
+                return "X";
+            }
+        };
+
+        assertFalse(predictor.LoadModel());
+
+        new MockUp<PredictorImpl>() {
+            @Mock
+            public String GetSavedChecksum()
+            {
+                return null;
+            }
+        };
+
+        assertFalse(predictor.LoadModel());
+
+        new MockUp<PredictorImpl>() {
+            @Mock
+            public String GetSavedChecksum()
+            {
+                return "TEST";
+            }
+        };
+
         new MockUp<MatrixFactorizationModel>() {
             @Mock
             public void $init( int rank, RDD<Tuple2<Object, double[]>> userFeatures, RDD<Tuple2<Object, double[]>> productFeatures ) {}
@@ -72,26 +108,6 @@ public class PredictorImplTest
         new MockUp<MatrixFactorizationModel>() {
             @Mock
             public MatrixFactorizationModel load( SparkContext var0, String var1 )
-            {
-                return null;
-            }
-        };
-
-        assertFalse(predictor.LoadModel());
-
-        new MockUp<PredictorImpl>() {
-            @Mock
-            public String GetSavedChecksum()
-            {
-                return "TEST";
-            }
-        };
-
-        assertFalse(predictor.LoadModel());
-
-        new MockUp<PredictorImpl>() {
-            @Mock
-            public String GetSavedChecksum()
             {
                 return null;
             }
