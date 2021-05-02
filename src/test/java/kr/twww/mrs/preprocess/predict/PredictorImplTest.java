@@ -78,6 +78,26 @@ public class PredictorImplTest
         };
 
         assertFalse(predictor.LoadModel());
+
+        new MockUp<PredictorImpl>() {
+            @Mock
+            public String GetSavedChecksum()
+            {
+                return "TEST";
+            }
+        };
+
+        assertFalse(predictor.LoadModel());
+
+        new MockUp<PredictorImpl>() {
+            @Mock
+            public String GetSavedChecksum()
+            {
+                return null;
+            }
+        };
+
+        assertFalse(predictor.LoadModel());
     }
 
     @Test
@@ -177,6 +197,38 @@ public class PredictorImplTest
         };
 
         assertNull(predictor.GetChecksum());
+    }
+
+    @Test
+    public void TestGetSavedChecksum()
+    {
+        new MockUp<Files>() {
+            @Mock
+            public boolean exists( Path path, LinkOption... options )
+            {
+                return false;
+            }
+        };
+
+        assertNull(predictor.GetSavedChecksum());
+
+        new MockUp<Files>() {
+            @Mock
+            public boolean exists( Path path, LinkOption... options )
+            {
+                return true;
+            }
+        };
+
+        new MockUp<DataReaderImpl>() {
+            @Mock
+            public String ReadTextFromFile( String path )
+            {
+                return "TEST";
+            }
+        };
+
+        assertEquals(predictor.GetSavedChecksum(), "TEST");
     }
 
     @Test
