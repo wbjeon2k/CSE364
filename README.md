@@ -73,7 +73,7 @@ Error: Load model failed
   * Implemented unit test PredictorImplTest.
   * FYI: Wrote this file!
 
-  - Park Sangbeen, An Jinmyeong:
+ - Park Sangbeen, An Jinmyeong:
   * Added new link.dat link parser.
   * Renovated and upgraded DataReader part previously made in Milestone 1, enhanced data parsing speed.
 
