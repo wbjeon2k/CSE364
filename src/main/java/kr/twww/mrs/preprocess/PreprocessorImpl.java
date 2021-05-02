@@ -214,6 +214,8 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             List<Rating> ratingList
     )
     {
+        if ( movieList.isEmpty() ) return movieList;
+
         var max = movieList.get(movieList.size() - 1).movieId;
 
         var ratingCount = new int[max];
