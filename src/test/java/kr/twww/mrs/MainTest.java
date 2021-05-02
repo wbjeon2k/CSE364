@@ -21,6 +21,8 @@ public class MainTest
     @Test
     public void Test()
     {
+        Main.main(new String[] {"","",""});
+
         var tick = System.currentTimeMillis();
 
         Preprocessor preprocessor = new PreprocessorImpl();

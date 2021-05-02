@@ -13,8 +13,9 @@ import org.apache.spark.mllib.recommendation.MatrixFactorizationModel;
 import org.apache.spark.mllib.recommendation.Rating;
 import scala.Tuple2;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -60,7 +61,8 @@ public class PredictorImpl extends PredictorBase implements Predictor
 
         if ( Files.isDirectory(modelPath) )
         {
-            javaSparkContext.setLogLevel("OFF");
+            System.out.println("Info: Loading model ... ");
+
             model = MatrixFactorizationModel.load(javaSparkContext.sc(), modelHadoopPath);
         }
 
@@ -75,9 +77,9 @@ public class PredictorImpl extends PredictorBase implements Predictor
         var ratingRDD = javaSparkContext
                 .parallelize(ratingList);
 
-        System.out.println("Info: Creating model ...");
+        System.out.println("Info: Creating model ... ");
 
-        model = ALS.train(JavaRDD.toRDD(ratingRDD), 10, 20, 0.01);
+        model = ALS.train(JavaRDD.toRDD(ratingRDD), 10, 10, 0.01);
 
         if ( model == null ) return false;
 
@@ -89,16 +91,31 @@ public class PredictorImpl extends PredictorBase implements Predictor
         return true;
     }
 
-    private void DeleteModel()
+    private boolean DeleteModel()
     {
+        var path = Paths.get(PATH_DATA_MODEL);
+
         try
         {
-            FileUtils.deleteDirectory(new File(PATH_DATA_MODEL));
+            if ( Files.exists(path) )
+            {
+                if ( Files.isDirectory(path) )
+                {
+                    FileUtils.deleteDirectory(new File(PATH_DATA_MODEL));
+                }
+                else
+                {
+                    Files.delete(path);
+                }
+            }
         }
-        catch ( IOException e )
+        catch ( Exception e )
         {
             System.out.println("Error: Delete model failed");
+            return false;
         }
+
+        return true;
     }
 
     @Override
@@ -122,7 +139,7 @@ public class PredictorImpl extends PredictorBase implements Predictor
         var pairRDD = javaSparkContext
                 .parallelizePairs(pairList);
 
-        System.out.println("\nInfo: Recommendation is in progress ...\n");
+        System.out.println("Info: Predicting ... ");
 
         return model.predict(pairRDD).collect();
     }

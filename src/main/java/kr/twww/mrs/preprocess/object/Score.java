@@ -8,4 +8,9 @@ public class Score
     public Movie movie;
     public Link link;
     public double score;
+
+    public Score()
+    {
+        score = 0.0;
+    }
 }

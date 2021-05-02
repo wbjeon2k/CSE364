@@ -164,14 +164,6 @@ public class PredictorImplTest
     @Test
     public void TestDeleteModel()
     {
-        new MockUp<FileUtils>() {
-            @Mock
-            public void deleteDirectory( File directory ) throws IOException
-            {
-                throw new IOException();
-            }
-        };
-
         try
         {
             var method = PredictorImpl
@@ -179,7 +171,59 @@ public class PredictorImplTest
                     .getDeclaredMethod("DeleteModel");
             method.setAccessible(true);
 
-            method.invoke(predictor);
+            new MockUp<Files>() {
+                @Mock
+                public boolean exists( Path path, LinkOption... options )
+                {
+                    return false;
+                }
+            };
+
+            assertEquals(true, method.invoke(predictor));
+
+            new MockUp<Files>() {
+                @Mock
+                public boolean exists( Path path, LinkOption... options )
+                {
+                    return true;
+                }
+
+                @Mock
+                public boolean isDirectory( Path path, LinkOption... options )
+                {
+                    return true;
+                }
+            };
+
+            new MockUp<FileUtils>() {
+                @Mock
+                public void deleteDirectory( File directory ) {}
+            };
+
+            assertEquals(true, method.invoke(predictor));
+
+            new MockUp<Files>() {
+                @Mock
+                public boolean isDirectory( Path path, LinkOption... options )
+                {
+                    return false;
+                }
+
+                @Mock
+                public void delete( Path path ) {}
+            };
+
+            assertEquals(true, method.invoke(predictor));
+
+            new MockUp<Files>() {
+                @Mock
+                public void delete( Path path ) throws IOException
+                {
+                    throw new IOException();
+                }
+            };
+
+            assertEquals(false, method.invoke(predictor));
         }
         catch ( Exception e )
         {
