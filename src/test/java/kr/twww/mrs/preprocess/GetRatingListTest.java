@@ -1,24 +1,20 @@
 package kr.twww.mrs.preprocess;
 
+import kr.twww.mrs.data.DataReaderImpl;
 import kr.twww.mrs.data.object.Movie;
-import kr.twww.mrs.data.object.Rating;
 import kr.twww.mrs.data.object.User;
+import org.apache.spark.mllib.recommendation.Rating;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-
-import kr.twww.mrs.data.*;
-
-
-import static org.junit.Assert.assertThat;
 
 @Ignore
 @RunWith(Parameterized.class)
@@ -92,33 +88,33 @@ public class GetRatingListTest {
      */
 
     //토이스토리에 4점 준 Rating 객체 반환.
-    static Rating toy_rating_gen(){
-        Rating ret = new Rating();
-        ret.userId = 1;
-        ret.movieId = 1;
-        ret.rating = 4;
-        ret.timestamp = 978300760;
-        return ret;
-    }
+//    static Rating toy_rating_gen(){
+//        Rating ret = new Rating();
+//        ret.userId = 1;
+//        ret.movieId = 1;
+//        ret.rating = 4;
+//        ret.timestamp = 978300760;
+//        return ret;
+//    }
 
     //쥬만지에 4점 준 Rating 객체 반환.
-    static Rating jumanji_rating_gen(){
-        Rating ret = new Rating();
-        ret.userId = 1;
-        ret.movieId = 2;
-        ret.rating = 3;
-        ret.timestamp = 978302109;
-        return ret;
-    }
+//    static Rating jumanji_rating_gen(){
+//        Rating ret = new Rating();
+//        ret.userId = 1;
+//        ret.movieId = 2;
+//        ret.rating = 3;
+//        ret.timestamp = 978302109;
+//        return ret;
+//    }
 
     //토이스토리에 4점, 쥬만지에 3점 준
     //Rating 2개 들어간 리스트 반환.
-    static ArrayList<Rating> ratings_list_gen(){
-        ArrayList<Rating> ret = new ArrayList<>();
-        ret.add(toy_rating_gen());
-        ret.add(jumanji_rating_gen());
-        return ret;
-    }
+//    static ArrayList<Rating> ratings_list_gen(){
+//        ArrayList<Rating> ret = new ArrayList<>();
+//        ret.add(toy_rating_gen());
+//        ret.add(jumanji_rating_gen());
+//        return ret;
+//    }
 
     //parameter
     /*
@@ -129,10 +125,10 @@ public class GetRatingListTest {
     @Parameters
     public static Collection<Object[]> testSet() {
         return Arrays.asList(new Object[][]{
-                {"Animation|Drama","grad_student", ratings_list_gen() },
-                {"Drama|Animation","grad_student", ratings_list_gen() },
-                {"Animation|Drama","gRaD Student", ratings_list_gen() },
-                {"Animation|Drama","grad student", ratings_list_gen() },
+//                {"Animation|Drama","grad_student", ratings_list_gen() },
+//                {"Drama|Animation","grad_student", ratings_list_gen() },
+//                {"Animation|Drama","gRaD Student", ratings_list_gen() },
+//                {"Animation|Drama","grad student", ratings_list_gen() },
                 {"Animation|Drama","K-12 student", new ArrayList<Rating>() },
                 {"Animation|Drama","K-12student", new ArrayList<Rating>() },
                 {"Animation|Drama","JeonWoongbae", null }
@@ -149,10 +145,10 @@ public class GetRatingListTest {
     }
 
     boolean sameRating(Rating a, Rating b){
-        if(a.userId != b.userId) return false;
-        if(a.movieId != b.movieId) return false;
-        if(a.timestamp != b.timestamp) return false;
-        if(a.rating != b.rating) return false;
+//        if(a.userId != b.userId) return false;
+//        if(a.movieId != b.movieId) return false;
+//        if(a.timestamp != b.timestamp) return false;
+//        if(a.rating != b.rating) return false;
 
         return true;
     }
@@ -183,7 +179,7 @@ public class GetRatingListTest {
 //        User.Occupation occupation = dataPreprocessor.GetOccupation(input_occupation);
         ArrayList<User> userList = user_list_gen();
         ArrayList<Movie> movieList = movie_list_gen();
-        ArrayList<Rating> ratingList = ratings_list_gen();
+//        ArrayList<Rating> ratingList = ratings_list_gen();
 //        ArrayList<Rating> result = dataPreprocessor.GetScoreList(genreList,occupation,userList,movieList,ratingList);
 //        //
 //        assertTrue(compareRatingList(answer,result));

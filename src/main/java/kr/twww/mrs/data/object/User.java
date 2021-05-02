@@ -55,61 +55,88 @@ public class User
 
     public static Gender ConvertGender( char _gender )
     {
-        //M,F 을 Enum 으로 변경
-        if(_gender == 'M'){
-            return Gender.MALE;
+        switch ( _gender )
+        {
+            case 'M':
+                return Gender.MALE;
+
+            case 'F':
+                return Gender.FEMALE;
         }
-        else if(_gender == 'F'){
-            return Gender.FEMALE;
-        }
-        else{
-            System.out.println("WRONG DATA IN GENDER!");
-            return null;
-        }
-        // TODO: 주어진 성별 텍스트를 enum Gender로 반환
+
+        System.out.println("Error: Invalid gender character");
+        return null;
     }
 
     public static Gender ConvertGender( String _gender )
     {
-        // TODO
+        if ( _gender == null )
+        {
+            System.out.println("Error: Invalid gender string");
+            return null;
+        }
 
-        return null;
+        if ( _gender.isEmpty() )
+        {
+            return Gender.UNKNOWN;
+        }
+
+        return ConvertGender(_gender.charAt(0));
     }
 
     public static Age ConvertAge( int _age )
     {
-        //나이 범위 나누기
-        if(_age < 18){
+        if ( _age < 18 )
+        {
             return Age.UNDER_18;
         }
-        else if(_age >= 18 && _age < 25 ){
+        else if ( _age <= 24 )
+        {
             return Age.BETWEEN_18_24;
         }
-        else if(_age >= 25 && _age < 35){
+        else if ( _age <= 34 )
+        {
             return Age.BETWEEN_25_34;
         }
-        else if(_age >= 35 && _age < 45){
+        else if ( _age <= 44 )
+        {
             return Age.BETWEEN_35_44;
         }
-        else if(_age >= 45 && _age < 50){
+        else if ( _age <= 49 )
+        {
             return Age.BETWEEN_45_49;
         }
-        else if(_age >= 50 && _age < 56){
+        else if ( _age <= 55 )
+        {
             return Age.BETWEEN_50_55;
         }
-        else if(_age >= 56){
+        else
+        {
             return Age.OVER_55;
         }
-        else{
-            System.out.println("WRONG DATA IN AGE!");
-            return null;
-        }
-
     }
 
     public static Age ConvertAge( String _age )
     {
-        // TODO
+        if ( _age == null )
+        {
+            System.out.println("Error: Invalid age string");
+            return null;
+        }
+
+        if ( _age.isEmpty() )
+        {
+            return Age.UNKNOWN;
+        }
+
+        try
+        {
+            return ConvertAge(Integer.parseInt(_age));
+        }
+        catch ( Exception e )
+        {
+            System.out.println("Error: Invalid age string");
+        }
 
         return null;
     }
@@ -117,13 +144,52 @@ public class User
     public static Occupation ConvertOccupationByIndex( int _occupation )
     {
         return Occupation.values()[_occupation];
-
     }
 
     public static Occupation ConvertOccupationByText( String _occupation )
     {
-        // TODO
+        if ( _occupation == null )
+        {
+            System.out.println("Error: Invalid occupation string");
+            return null;
+        }
 
+        if ( _occupation.isEmpty() )
+        {
+            return Occupation.UNKNOWN;
+        }
+
+        _occupation = _occupation.replaceAll("[^a-zA-Z0-9]", "");
+        _occupation = _occupation.toUpperCase();
+
+        for ( var i : Occupation.values() )
+        {
+            if ( i == Occupation.UNKNOWN )
+            {
+                continue;
+            }
+
+            var splitOccupation = i.name().split("_OR_");
+
+            for ( var j : splitOccupation )
+            {
+                var occupation = j;
+                occupation = occupation.replaceAll("[^a-zA-Z0-9]", "");
+                occupation = occupation.toUpperCase();
+
+                if ( occupation.equals("COLLEGE") )
+                {
+                    occupation += "STUDENT";
+                }
+
+                if ( _occupation.equals(occupation) )
+                {
+                    return i;
+                }
+            }
+        }
+
+        System.out.println("Error: Invalid occupation string");
         return null;
     }
 }
