@@ -78,10 +78,12 @@ Below is a pseudocode of the recommendation algorithm.
     - Statistical reason why this upperbound `U` works:  
         - Population size: 6600 in the worst case (entire user set)  
         - Sample size: 2*(sqrt(6600)) == 162  
+      
       Based on the population size and the sample size,  
       confidence level(신뢰 구간 in Kor) and margin of error(오차범위 in Kor) can be calculated.  
         - Confidence Level: 80%  
         - Margin of Error: 5%  
+      
       This is enough to support below specification in the worst case, when all 6600 user groups are set as target.  
       
 
