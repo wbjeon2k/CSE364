@@ -44,8 +44,8 @@ When there are too many users in a group, subset of users with sufficient amount
 
 ### 1.3 Pseudocode of the recommendation algorithm
 
-Code for the prediction model is in `preprocess/predict/PredictorImpl.java` file.
-Code for the input refining process is in `preprocess/predict/PreProcessorImpl.java` file.
+Code for the prediction model is in `preprocess/predict/PredictorImpl.java` file.  
+Code for the input refining process is in `preprocess/predict/PreProcessorImpl.java` file.  
 
 Below is a pseudocode of the recommendation algorithm.  
 
