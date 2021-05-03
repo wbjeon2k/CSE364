@@ -181,6 +181,20 @@ Example output for `F 30 "" Drama`:
 10. It's a Wonderful Life (1946) (http://www.imdb.com/title/tt0038650)
 ```
 
+Example output for `M 20 "" Action|Drama|Comedy`:  
+```
+1. Autumn Sonata (H?stsonaten ) (1978) (http://www.imdb.com/title/tt0077711)
+2. Sanjuro (1962) (http://www.imdb.com/title/tt0056443)
+3. Shawshank Redemption, The (1994) (http://www.imdb.com/title/tt0111161)
+4. Visitors, The (Les Visiteurs) (1993) (http://www.imdb.com/title/tt0108500)
+5. Monty Python and the Holy Grail (1974) (http://www.imdb.com/title/tt0071853)
+6. Star Wars: Episode IV - A New Hope (1977) (http://www.imdb.com/title/tt0076759)
+7. Raiders of the Lost Ark (1981) (http://www.imdb.com/title/tt0082971)
+8. After Life (1998) (http://www.imdb.com/title/tt0165078)
+9. Godfather, The (1972) (http://www.imdb.com/title/tt0068646)
+10. Matrix, The (1999) (http://www.imdb.com/title/tt0133093)
+```
+
 ## 5. Roles of Each Member
 
 - Kim Taeyeong
