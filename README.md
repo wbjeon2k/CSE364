@@ -1,8 +1,6 @@
 
 # CSE364 Team 4, Team Woongbae without Woongbae (TWwW)  
 
-# CSE364 Team 4, Team Woongbae without Woongbae (TWwW)  
-
 ## Milestone 2 Readme
 
 #### 1. Recommendation Algorithm Design
