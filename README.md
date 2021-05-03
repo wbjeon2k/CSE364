@@ -28,7 +28,7 @@ Multiplying `U * rank` matrix and `rank * M` matrix makes a `U * M` size inferen
 
 ALS reduces the loss between the inference matrix and the actual dataset by Stochastic Gradient Descent(SGD).
 
-Parameter settings: `rank = 10, number of iterations = 20, regularization parameter = 0.01`
+Parameter settings: `rank = 10`, `number of iterations = 20`, `regularization parameter = 0.01`
 
 ### 1.3 Refining input data for ALS prediction
 Target user list and target movie list for prediction were refined to enhance prediction quality.

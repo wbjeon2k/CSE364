@@ -81,6 +81,12 @@ public class User
             return Gender.UNKNOWN;
         }
 
+        if ( _gender.length() != 1 )
+        {
+            System.out.println("Error: Invalid gender string");
+            return null;
+        }
+
         return ConvertGender(_gender.charAt(0));
     }
 

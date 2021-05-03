@@ -13,6 +13,7 @@ public class UserTest
         assertEquals(User.Gender.FEMALE, User.ConvertGender("F"));
         assertEquals(User.Gender.UNKNOWN, User.ConvertGender(""));
         assertNull(User.ConvertGender("X"));
+        assertNull(User.ConvertGender("TEST"));
         assertNull(User.ConvertGender(null));
     }
 
