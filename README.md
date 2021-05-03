@@ -79,7 +79,7 @@ Below is a pseudocode of the movie recommendation algorithm.
       - Confidence Level: 80%
       - Margin of Error: 5%
       
-      This is enough even in the worst case, when all 6,600 user groups are set as target.  
+      This is enough even in the worst case, when all 6,040 user groups are set as target.  
 
 
 5. Sort and get top 10 movies.
