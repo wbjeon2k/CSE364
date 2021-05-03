@@ -49,93 +49,93 @@ Code for the input refining process is in `preprocess/predict/PreProcessorImpl.j
 
 Below is a pseudocode of the recommendation algorithm.  
 
-1. Check if given input data files (`ratings/user/movies.dat`) are identical to the previously given files.
+1. Check if given input data files (`ratings/user/movies.dat`) are identical to the previously given files.  
    Program automatically checks it via [checksum](https://en.wikipedia.org/wiki/Checksum).
 
-2. If input data files are identical, skip generating new model. Load the predicton model.
+2. If input data files are identical, skip generating new model. Load the predicton model.  
 
-3. Generate prediction model with ALS algorithm. Parameter setting: `rank = 10, iteration = 20, learning rate = 0.01`
+3. Generate prediction model with ALS algorithm. Parameter setting: `rank = 10, iteration = 20, learning rate = 0.01`  
 
-4. Generate prediction targets.
-    - Target user group:
-      - Filter user list with given parameters. (e.g. F, Grad Student, etc.)
-    - Target movie group:
-      - Exclude movies with less than 10 total reviews from users in users.dat file.
-      - Filter movie list with given parameters. (e.g. Action|Comedy, etc.)
+4. Generate prediction targets.  
+    - Target user group:  
+      - Filter user list with given parameters. (e.g. F, Grad Student, etc.)  
+    - Target movie group:  
+      - Exclude movies with less than 10 total reviews from users in users.dat file.  
+      - Filter movie list with given parameters. (e.g. Action|Comedy, etc.)  
 
-5. Generate estimated rating for the filtered movie list.
-    - Assume filtered user list `UF`, number of filtered users `A`.
-    - Assume filtered movie list `MF`, number or filtered movies `B`.
-    - ```For all UF[i]: Get estimated ratings for each movie in MF```
-    - This takes `O(AB)` time, so an arbitrary upperbound `U` of `(A * B)` to enhance performance.
+5. Generate estimated rating for the filtered movie list.  
+    - Assume filtered user list `UF`, number of filtered users `A`.  
+    - Assume filtered movie list `MF`, number or filtered movies `B`.  
+    - ```For all UF[i]: Get estimated ratings for each movie in MF```  
+    - This takes `O(AB)` time, so an arbitrary upperbound `U` of `(A * B)` to enhance performance.  
       
-      If `(A * B) > U`, then sort `UF` by the number of ratings a user left, and pick top `(U / B)` users.
+      If `(A * B) > U`, then sort `UF` by the number of ratings a user left, and pick top `(U / B)` users.  
       
-    - `U == 2 * sqrt(6600) * (3800)`, which is approximately 620,000.
-      6600 is the total number of users in `users.dat` file.
-      3800 is the total number of movies in `movies.dat` file.
+    - `U == 2 * sqrt(6600) * (3800)`, which is approximately 620,000.  
+      6600 is the total number of users in `users.dat` file.  
+      3800 is the total number of movies in `movies.dat` file.  
 
     - Statistical reason why this upperbound `U` works:  
         - Population size: 6600 in the worst case (entire user set)  
         - Sample size: 2*(sqrt(6600)) == 162  
       Based on the population size and the sample size,  
-      confidence level(신뢰 구간 in Kor) and margin of error(오차범위 in Kor) can be calculated.
+      confidence level(신뢰 구간 in Kor) and margin of error(오차범위 in Kor) can be calculated.  
         - Confidence Level: 80%  
         - Margin of Error: 5%  
-      This is enough to support below specification in the worst case, when all 6600 user groups are set as target.
+      This is enough to support below specification in the worst case, when all 6600 user groups are set as target.  
       
 
-6. Sort and get top 10 movies.
-    - Calculate average estimated rating for movies in MF.
-    - Sort MF by the average estimated rating.
-    - Pick top 10 from MF.
+6. Sort and get top 10 movies.  
+    - Calculate average estimated rating for movies in MF.  
+    - Sort MF by the average estimated rating.  
+    - Pick top 10 from MF.  
 
-## 2. How to Use
+## 2. How to Use  
 
-Execute below command with proper parameters.
+Execute below command with proper parameters.  
 
 - This program treats `""` as *all*.  
-  For example:
-  - `"F" "25" "" "Adventure"` will return Adventure genre movies for 25 years old female group, for all occupations.
-  - `"" "" ""`, which is same as `"" "" "" ""`, will return top 10 movies for all all gender, age, and occupation.
+  For example:  
+  - `"F" "25" "" "Adventure"` will return Adventure genre movies for 25 years old female group, for all occupations.  
+  - `"" "" ""`, which is same as `"" "" "" ""`, will return top 10 movies for all all gender, age, and occupation.  
 
-- Memory parameters `-Xms1g -Xmx4g` should be added to ensure the minimum and maximum amount of memory for this program.
+- Memory parameters `-Xms1g -Xmx4g` should be added to ensure the minimum and maximum amount of memory for this program.  
 
 `java -Xms1g -Xmx4g -cp target/cse364-project-1.0-SNAPSHOT-allinone.jar kr.twww.mrs.Main "[M/F]" "[Age]" "[Occupation]" "[Genre(s)]"`  
 
-## 3. Handling Errors
+## 3. Handling Errors  
 
-- For invalid occupations like "Wizard", error message is printed like below example.
+- For invalid occupations like "Wizard", error message is printed like below example.  
     ```
     Error: Invalid gender character
     Error: Movie recommendation failed
     ```
 
-- For invalid gender like "X", error message is printed like below example.
+- For invalid gender like "X", error message is printed like below example.  
     ```
     Error: Invalid gender character
     Error: Movie recommendation failed
     ```
 
-- For invalid genre like "Co", error message is printed like below example.
+- For invalid genre like "Co", error message is printed like below example.  
     ```
     Error: Invalid genre string
     Error: Movie recommendation failed
     ```
 
-- If our program fails to generate a checksum for checking model data, error message is printed like below example.
+- If our program fails to generate a checksum for checking model data, error message is printed like below example.  
     ```
     Error: Get checksum failed
     Error: Save checksum failed
     ```
 
-- If our program fails to create prediction model, error message is printed like below example.
+- If our program fails to create prediction model, error message is printed like below example.  
     ```
     Error: Create model failed
     Error: Load model failed
     ```
   
-## 4. Example Output
+## 4. Example Output  
 
 Example output for `F 25 Grad student Action|Comedy`:  
 ```
