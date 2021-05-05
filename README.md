@@ -11,31 +11,32 @@ Our team has implemented movie recommendation algorithm based on Alternating Lea
 Inputs for the prediction model are a list of users and a list of movies.  
 The prediction model generated from ALS estimates the rating for each movie in the given list of movie.  
 By iterating for all users, it is able to estimate the average rating of a user group for each movie.  
-Inputs for the prediction model was refined with average rating and number of ratings by users, to enhance prediction quality.
+Inputs for the prediction model was refined with average rating and number of ratings by users, to enhance prediction quality.  
 
 ### 1.2 What is ALS?
 ALS is a way to implement Collaborative Filtering(CF), which is a method to estimate a user's preference information based on preference information of other people.  
-In this movie recommendation system, CF is used to estimate rating of a movie without a user's previous rating information on that specific movie.
 
-Original ALS algorithm was introduced by [Koren et al](https://dl.acm.org/doi/10.1109/MC.2009.263), and is supported by Spark library.
+In this movie recommendation system, CF is used to estimate rating of a movie without a user's previous rating information on that specific movie.  
 
-If a `rank` is set by `n`, number of users set by `U`, number of movies set by `M`, two data frame matrices are made.
+Original ALS algorithm was introduced by [Koren et al](https://dl.acm.org/doi/10.1109/MC.2009.263), and is supported by Spark library.  
+
+If a `rank` is set by `n`, number of users set by `U`, number of movies set by `M`, two data frame matrices are made.  
 
 First dataframe matrix is for users, with `U * rank` size.  
-Second dataframe matrix is for movies, with `rank * M` size.
+Second dataframe matrix is for movies, with `rank * M` size.  
 
-Multiplying `U * rank` matrix and `rank * M` matrix makes a `U * M` size inference matrix.
+Multiplying `U * rank` matrix and `rank * M` matrix makes a `U * M` size inference matrix.  
 
-ALS reduces the loss between the inference matrix and the actual dataset by Stochastic Gradient Descent(SGD).
+ALS reduces the loss between the inference matrix and the actual dataset by Stochastic Gradient Descent(SGD).  
 
-Parameter settings: `rank = 10`, `number of iterations = 20`, `regularization parameter = 0.01`
+Parameter settings: `rank = 10`, `number of iterations = 20`, `regularization parameter = 0.01`  
 
-### 1.3 Refining input data for ALS prediction
-Target user list and target movie list for prediction were refined to enhance prediction quality.
+### 1.3 Refining input data for ALS prediction  
+Target user list and target movie list for prediction were refined to enhance prediction quality.  
 
-Movies with too little amount of user ratings were excluded from prediction target to enhance prediction quality.
+Movies with too little amount of user ratings were excluded from prediction target to enhance prediction quality.  
 
-When there are too many users in a group, subset of users with a sufficient amount of ratings is selected as a prediction target.
+When there are too many users in a group, subset of users with a sufficient amount of ratings is selected as a prediction target.  
 
 ### 1.4 Pseudocode of the recommendation algorithm
 Codes for refinement process of the inputs is in `preprocess/predict/PreprocessorImpl.java` file.  
@@ -44,7 +45,7 @@ Codes for the prediction model is in `preprocess/predict/PredictorImpl.java` fil
 Below is a pseudocode of the movie recommendation algorithm.
 
 1. Check [checksum](https://en.wikipedia.org/wiki/Checksum) of given data files (`ratings.dat`, `user.dat`, `movies.dat`) and trained model data file.
-    - If checksum is valid and model already exists, skip the next step(generating new model).
+    - If checksum is valid and model already exists, skip generating new model, proceed to prediction.  
 
 
 2. Generate prediction model with ALS algorithm.  
@@ -63,8 +64,8 @@ Below is a pseudocode of the movie recommendation algorithm.
     - Assume filtered user list `UF`, number of filtered users `A`.
     - Assume filtered movie list `MF`, number or filtered movies `B`.
     - For all `UF[i]`, get estimated ratings for each movie in `MF`.
-    - This takes `O(AB)` time, so an arbitrary upperbound `U` of `(A * B)` to enhance performance.  
-      If `(A * B) > U`, then sort `UF` by the number of ratings a user left, and pick top `(U / B)` users.
+    - This takes `O(AB)` time, so an arbitrary upperbound `U` of `(A * B)` is set to enhance performance.  
+      If `(A * B) > U`, then sort `UF` by the number of ratings a user left, and pick top `(U / B)` users.  
       
     - `U == ceil(2 * sqrt(6040)) * 4000`, which is 624,000.
       - 6,040 is the total number of users in `users.dat` file.
