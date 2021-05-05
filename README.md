@@ -6,26 +6,28 @@ CSE364 Group 4, Team Woongbae without Woongbae (TWwW)
 ## 1. Recommendation Algorithm Design
 
 ### 1.1 Summary of the recommendation algorithm
-Our team has implemented movie recommendation algorithm based on Alternating Least Square(ALS) algorithm. ALS library is supported by [org.apache.spark.mllib](https://spark.apache.org/docs/latest/mllib-collaborative-filtering.html#collaborative-filtering) in [Spark](https://spark.apache.org/docs/latest/index.html).
+Our team has implemented movie recommendation algorithm based on Alternating Least Square(ALS) algorithm.  
+ALS algorithm library is supported by [org.apache.spark.mllib](https://spark.apache.org/docs/latest/mllib-collaborative-filtering.html#collaborative-filtering) in [Spark](https://spark.apache.org/docs/latest/index.html).  
 
 Inputs for the prediction model are a list of users and a list of movies.  
 The prediction model generated from ALS estimates the rating for each movie in the given list of movie.  
 By iterating for all users, it is able to estimate the average rating of a user group for each movie.  
 Inputs for the prediction model was refined with average rating and number of ratings by users, to enhance prediction quality.  
 
-### 1.2 What is ALS?
+### 1.2 What is ALS?  
+
 ALS is a way to implement Collaborative Filtering(CF), which is a method to estimate a user's preference information based on preference information of other people.  
 
 In this movie recommendation system, CF is used to estimate rating of a movie without a user's previous rating information on that specific movie.  
 
 Original ALS algorithm was introduced by [Koren et al](https://dl.acm.org/doi/10.1109/MC.2009.263), and is supported by Spark library.  
 
-If a `rank` is set by `n`, number of users set by `U`, number of movies set by `M`, two data frame matrices are made.  
+If a `rank` is set by size of `n`, number of users set by `U`, number of movies set by `M`, two data frame matrices are made.  
 
 First dataframe matrix is for users, with `U * rank` size.  
 Second dataframe matrix is for movies, with `rank * M` size.  
 
-Multiplying `U * rank` matrix and `rank * M` matrix makes a `U * M` size inference matrix.  
+Multiplying `U * rank` matrix and `rank * M` matrix makes a `U * M` size **inference matrix**.  
 
 ALS reduces the loss between the inference matrix and the actual dataset by Stochastic Gradient Descent(SGD).  
 
@@ -36,9 +38,10 @@ Target user list and target movie list for prediction were refined to enhance pr
 
 Movies with too little amount of user ratings were excluded from prediction target to enhance prediction quality.  
 
-When there are too many users in a group, subset of users with a sufficient amount of ratings is selected as a prediction target.  
+When there are too many users in a group, a subset of users with sufficient amount of ratings is selected as a prediction target.  
 
-### 1.4 Pseudocode of the recommendation algorithm
+### 1.4 Pseudocode of the recommendation algorithm  
+
 Codes for refinement process of the inputs is in `preprocess/predict/PreprocessorImpl.java` file.  
 Codes for the prediction model is in `preprocess/predict/PredictorImpl.java` file.
 
@@ -54,9 +57,9 @@ Below is a pseudocode of the movie recommendation algorithm.
 
 3. Generate prediction targets.
     - Target user group:  
-      - Filter user list with given input parameters. (e.g. `"F" "25" ""` "Adventure")
+      - Filter user list with given input parameters. (e.g. `"F" "25" "Grad Student"` "Adventure")
     - Target movie group:
-      - Filter movie list with given input parameters. (e.g. "F" "25" "" `"Adventure"`)
+      - Filter movie list with given input parameters. (e.g. "F" "25" "" `"Adventure|Action"`)
       - Exclude movies with a total number of reviews less than 10 from users.
   
 
@@ -67,7 +70,7 @@ Below is a pseudocode of the movie recommendation algorithm.
     - This takes `O(AB)` time, so an arbitrary upperbound `U` of `(A * B)` is set to enhance performance.  
       If `(A * B) > U`, then sort `UF` by the number of ratings a user left, and pick top `(U / B)` users.  
       
-    - `U == ceil(2 * sqrt(6040)) * 4000`, which is 624,000.
+    - `U == ceil(2 * sqrt(6040)) * 4000`, which is `624,000`.
       - 6,040 is the total number of users in `users.dat` file.
       - 4,000 is the *approximate* total number of movies in `movies.dat` file.
 
@@ -76,11 +79,12 @@ Below is a pseudocode of the movie recommendation algorithm.
       - Sample size: `ceil(2 * sqrt(6040)) == 156`
 
       Based on the population size and the sample size,  
-      confidence level(*신뢰 구간* in korean) and margin of error(*오차범위* in korean) can be calculated.
+      confidence level(*신뢰 구간* in Korean) and margin of error(*오차범위* in Korean)  
+      in the worst case can be calculated.
       - Confidence Level: 80%
       - Margin of Error: 5%
       
-      This is enough even in the worst case, when all 6,040 user groups are set as target.  
+      This is good enough even in the worst case, when all 6,040 user groups are set as target.  
 
 
 5. Sort and get top 10 movies.
@@ -88,19 +92,20 @@ Below is a pseudocode of the movie recommendation algorithm.
     - Sort `MF` by the average estimated rating.
     - Pick top 10 from `MF`.
   
-## 2. How to Use
-Execute below command with proper parameters.  
+## 2. How to Use  
 
-- This program treats `""` as **all**.
-  - `"F" "25" "" "Adventure"` will return **adventure genre** movies for **25 years old**, **female** group, for **all occupations**.
-  - `"" "" ""`, which is same as `"" "" "" ""`, will return top 10 **any genre** movies **regardless** of **gender**, **age**, and **occupation**.
-  
+Execute below command with proper parameters.    
 
 Memory parameters `-Xms1g -Xmx4g` should be added for this program.
 
 - `java -Xms1g -Xmx4g -cp target/cse364-project-1.0-SNAPSHOT-allinone.jar kr.twww.mrs.Main "[M/F]" "[Age]" "[Occupation]" "[Genre(s)]"`
 
-## 3. Handling Errors
+- This program treats `""` as **all**.
+  - `"F" "25" "" "Adventure"` will return **adventure genre** movies for **25 years old**, **female** group, for **all occupations**.
+  - `"" "" ""`, which is same as `"" "" "" ""`, will return top 10 **any genre** movies **regardless** of **gender**, **age**, and **occupation**.  
+
+## 3. Handling Errors  
+
 - For invalid gender like "X", error message is printed like below example.
     ```
     Error: Invalid gender character
@@ -139,7 +144,8 @@ Memory parameters `-Xms1g -Xmx4g` should be added for this program.
     Error: Movie recommendation failed
     ```
   
-## 4. Example Output
+## 4. Example Output  
+
 - Example output for `"F" "25" "Grad student" "Action|Comedy"`:
   ```
   1. Sanjuro (1962) (http://www.imdb.com/title/tt0056443)
@@ -198,7 +204,8 @@ Memory parameters `-Xms1g -Xmx4g` should be added for this program.
 
 > The output can be different if the trained model is not the same.
 
-## 5. Roles of Each Member
+## 5. Roles of Each Member  
+
 - Kim Taeyeong
   * Made conceptual design of recommendation engine with ALS algorithm.
   * Implemented recommendation engine with ALS algorithm.
