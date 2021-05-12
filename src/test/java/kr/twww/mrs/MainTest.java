@@ -9,6 +9,7 @@ import mockit.Mock;
 import mockit.MockUp;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.boot.SpringApplication;
 
 import java.util.ArrayList;
 
