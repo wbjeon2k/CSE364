@@ -1,8 +1,6 @@
 package kr.twww.mrs.preprocess.webquery;
 
 import breeze.stats.distributions.AliasTable;
-import org.json.JSONObject;
-import scala.util.parsing.combinator.testing.Str;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 

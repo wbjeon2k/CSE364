@@ -43,6 +43,8 @@ public class PredictorImpl extends PredictorBase implements Predictor
                 "predict"
         );
 
+        javaSparkContext.setLogLevel("OFF");
+
         model = null;
     }
 

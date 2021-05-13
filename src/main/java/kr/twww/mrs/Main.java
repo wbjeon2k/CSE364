@@ -6,14 +6,26 @@ import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class Main
 {
     public static void main( String[] args )
     {
-        SpringApplication.run(Main.class, args);
 
-        System.out.println("checkpoint\n");
+        Preprocessor preprocessor = new PreprocessorImpl();
+//        var testScoreList = preprocessor.GetRecommendList("F", "10", "", "");
+        var testScoreList = preprocessor.GetRecommendList("F", "25", "Grad student", "Action|Comedy");
+
+        var count = 0;
+
+        for ( var i : testScoreList )
+        {
+            ++count;
+
+            System.out.println(count + ". " + i.movie.title + " (" + i.link.GetURL() + ")");
+        }
+
+        //SpringApplication.run(Main.class, args);
 
         /*
         if ( !(args.length == 3 || args.length == 4) )

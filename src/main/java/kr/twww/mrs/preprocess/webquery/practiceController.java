@@ -5,7 +5,6 @@ import kr.twww.mrs.preprocess.*;
 //import kr.twww.mrs.preprocess.Preprocessor;
 //import kr.twww.mrs.preprocess.PreprocessorImpl;
 import kr.twww.mrs.preprocess.object.Score;
-import org.dmg.pmml.True;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -52,6 +51,7 @@ public class practiceController{
         occupation = PQ.getOccupation();
         genre = PQ.getGenre();
         var result = normalRecommend(gender, age, occupation, genre);
+
         ArrayList<MovieJson> ret = new ArrayList<>();
         ret.add(new MovieJson());
         ret.add(new MovieJson());
@@ -60,7 +60,6 @@ public class practiceController{
 
     public ArrayList<Score> normalRecommend(String gender, String age, String occupation, String genre){
         Preprocessor preprocessor = new PreprocessorImpl();
-        if(genre.compareTo("") == 0) return preprocessor.GetRecommendList(gender, age, occupation);
-        else return preprocessor.GetRecommendList(gender, age, occupation, genre);
+        return preprocessor.GetRecommendList(gender, age, occupation, genre);
     }
 }
