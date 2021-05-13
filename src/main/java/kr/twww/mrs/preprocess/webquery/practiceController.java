@@ -1,10 +1,13 @@
 package kr.twww.mrs.preprocess.webquery;
 
+import org.apache.spark.SparkContext;
+import org.apache.spark.api.java.JavaPairRDD;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
 import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.preprocess.*;
-//import kr.twww.mrs.preprocess.Preprocessor;
-//import kr.twww.mrs.preprocess.PreprocessorImpl;
 import kr.twww.mrs.preprocess.object.Score;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -36,10 +39,13 @@ public class practiceController{
     public practiceQuery practiceQuery(
             @RequestBody practiceQuery PQ
     ){
+        Preprocessor tmp = new PreprocessorImpl();
+        tmp.GetRecommendList("","","");
         return PQ;
     }
 
     //curl -X GET "http://localhost:8080/develop" -H "Content-type:application/json" -d "{\“gender\” : \“F\”, \“age\” : \“25\”, \“occupation\” : \“Grad student\”, \“genre\” : \“Action\”}"
+    //curl -X GET "http://localhost:8080/develop" -H "Content-type:application/json" -d "{\"gender\" : \"F\", \"age\" : \"25\", \"occupation\" : \"Grad student\", \"genre\" : \"Action\"}"
     @GetMapping("/develop")
     public ArrayList<MovieJson> normalQuery(
             @RequestBody practiceQuery PQ
@@ -50,16 +56,11 @@ public class practiceController{
         age = PQ.getAge();
         occupation = PQ.getOccupation();
         genre = PQ.getGenre();
-        var result = normalRecommend(gender, age, occupation, genre);
+        //var result = normalRecommend(gender, age, occupation, genre);
 
         ArrayList<MovieJson> ret = new ArrayList<>();
         ret.add(new MovieJson());
         ret.add(new MovieJson());
         return ret;
-    }
-
-    public ArrayList<Score> normalRecommend(String gender, String age, String occupation, String genre){
-        Preprocessor preprocessor = new PreprocessorImpl();
-        return preprocessor.GetRecommendList(gender, age, occupation, genre);
     }
 }
