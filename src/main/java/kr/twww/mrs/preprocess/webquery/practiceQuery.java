@@ -50,16 +50,11 @@ public class practiceQuery{
         this.genre = genre;
     }
 
-
     public void setOccupation(String occupation) {
         this.occupation = occupation;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public void setTitle(String title) { this.title = title; }
 
-    public void setLimit(String limit) {
-        this.limit = limit;
-    }
+    public void setLimit(String limit) { this.limit = limit; }
 }

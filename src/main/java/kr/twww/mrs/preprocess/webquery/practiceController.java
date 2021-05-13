@@ -5,6 +5,7 @@ import kr.twww.mrs.preprocess.*;
 //import kr.twww.mrs.preprocess.Preprocessor;
 //import kr.twww.mrs.preprocess.PreprocessorImpl;
 import kr.twww.mrs.preprocess.object.Score;
+import org.dmg.pmml.True;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class practiceController{
 
     /*
     입력은 항상 \ back tick 붙어 있어야 한다...
+    | 를 일반 문자로 받지 않아서 문제.
     curl -X GET "http://localhost:8080/practice" -H "Content-type:application/json" -d "{\“gender\” : \“F\”, \“age\” : \“25\”, \“occupation\” : \“Grad student\”, \“genre\” : \“Action|War\”}"
     curl -X GET "http://localhost:8080/practice" -H "Content-type:application/json" -d "{\“title\” : \“Toy Story\”, \“limit\” : \“20\”}"
     */
@@ -44,7 +46,12 @@ public class practiceController{
             @RequestBody practiceQuery PQ
     ){
         //GetRecommendList 에서 왜 error?
-        var result = normalRecommend(PQ.getGender(), PQ.getAge(), PQ.getOccupation(), PQ.getGenre());
+        String gender, age, occupation, genre;
+        gender = PQ.getGender();
+        age = PQ.getAge();
+        occupation = PQ.getOccupation();
+        genre = PQ.getGenre();
+        var result = normalRecommend(gender, age, occupation, genre);
         ArrayList<MovieJson> ret = new ArrayList<>();
         ret.add(new MovieJson());
         ret.add(new MovieJson());
@@ -53,6 +60,7 @@ public class practiceController{
 
     public ArrayList<Score> normalRecommend(String gender, String age, String occupation, String genre){
         Preprocessor preprocessor = new PreprocessorImpl();
-        return preprocessor.GetRecommendList(gender, age, occupation, genre);
+        if(genre.compareTo("") == 0) return preprocessor.GetRecommendList(gender, age, occupation);
+        else return preprocessor.GetRecommendList(gender, age, occupation, genre);
     }
 }
