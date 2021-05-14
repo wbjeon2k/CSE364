@@ -10,8 +10,8 @@ public class practiceQuery{
     private String age;
     private String occupation;
     private String genre;
-    private String title;
-    private String limit;
+    //private String title;
+    //private String limit;
 
 
     public practiceQuery(String gender, String age, String occupation, String genre){
@@ -21,10 +21,10 @@ public class practiceQuery{
         this.genre = genre;
     }
 
-    public practiceQuery(String title, String limit){
-        this.title = title;
-        this.limit = limit;
-    }
+    //public practiceQuery(String title, String limit){
+      //  this.title = title;
+        //this.limit = limit;
+    //}
 
     public practiceQuery() { }
 
@@ -32,8 +32,8 @@ public class practiceQuery{
     public String getAge() { return age; }
     public String getOccupation(){ return occupation; }
     public String getGenre(){ return genre; }
-    public String getTitle(){ return title; }
-    public String getLimit(){ return limit; }
+    //public String getTitle(){ return title; }
+    //public String getLimit(){ return limit; }
 
 
     public void setAge(String age) {
@@ -52,7 +52,7 @@ public class practiceQuery{
         this.occupation = occupation;
     }
 
-    public void setTitle(String title) { this.title = title; }
+    //public void setTitle(String title) { this.title = title; }
 
-    public void setLimit(String limit) { this.limit = limit; }
+    //public void setLimit(String limit) { this.limit = limit; }
 }

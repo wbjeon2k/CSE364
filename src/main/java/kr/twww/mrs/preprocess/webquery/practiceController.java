@@ -1,5 +1,6 @@
 package kr.twww.mrs.preprocess.webquery;
 
+import kr.twww.mrs.data.object.User;
 import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
@@ -16,7 +17,69 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/user")
 public class practiceController{
+    @GetMapping("/recommendation")
+    public practiceQuery getMultiParametersRtnJson(practiceQuery MultiInput){
+        //exception 처리
+
+        //gender
+        if ( MultiInput.getGender() == null )
+        {
+            MultiInput.setGender("Error: Invalid gender string");
+        }
+
+        if ( MultiInput.getGender().isEmpty() )
+        {
+            MultiInput.setGender("UNKNOWN");
+        }
+
+        if ( MultiInput.getGender().length() != 1 )
+        {
+            MultiInput.setGender("Error: Invalid gender string");
+        }
+
+        //Age
+        try
+        {
+            Integer.parseInt(MultiInput.getAge());
+        }
+        catch ( Exception e )
+        {
+            MultiInput.setAge("Error: Invalid age string");
+        }
+
+        //occupation(only null and empty now)
+        if ( MultiInput.getOccupation() == null )
+        {
+            MultiInput.setOccupation("Error: Invalid occupation string");
+        }
+
+        if ( MultiInput.getOccupation().isEmpty() )
+        {
+            MultiInput.setOccupation("UNKNOWN");
+        }
+
+        //genre
+        MultiInput.setGenre(MultiInput.getGenre().replaceAll("[^a-zA-Z0-9]", ""));
+        MultiInput.setGenre(MultiInput.getGenre().toUpperCase());
+
+        for ( var i : Movie.Genre.values() )
+        {
+            var genre = i.name();
+            genre = genre.replaceAll("[^a-zA-Z0-9]", "");
+            genre = genre.toUpperCase();
+
+            if ( genre.equals(MultiInput.getGenre()) )
+            {
+                MultiInput.setGenre(genre);
+                return MultiInput;
+            }
+        }
+        MultiInput.setGenre("Invalid genre");
+        return MultiInput;
+    }
+
 
     /*
     @GetMapping("/practice")
