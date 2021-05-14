@@ -39,8 +39,6 @@ public class practiceController{
     public practiceQuery practiceQuery(
             @RequestBody practiceQuery PQ
     ){
-        Preprocessor tmp = new PreprocessorImpl();
-        tmp.GetRecommendList("","","");
         return PQ;
     }
 
@@ -67,5 +65,11 @@ public class practiceController{
         ret.add(new MovieJson());
         ret.add(new MovieJson());
         return ret;
+    }
+
+    public ArrayList<Score> normalRecommend(String gender, String age, String occupation, String genre){
+        Preprocessor preprocessor = new PreprocessorImpl();
+        var result = preprocessor.GetRecommendList(gender, age, occupation, genre);
+        return result;
     }
 }
