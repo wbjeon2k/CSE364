@@ -113,6 +113,7 @@ public class practiceController{
 
     public ArrayList<Score> titleRecommend(String title, String limit){
         Preprocessor preprocessor = new PreprocessorImpl();
-        return preprocessor.GetRecommendList(title, limit);
+        //return preprocessor.GetRecommendList(title, limit);
+        return preprocessor.GetRecommendList(title);
     }
 }

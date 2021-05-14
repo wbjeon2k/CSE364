@@ -2,6 +2,7 @@ package kr.twww.mrs.preprocess;
 
 import kr.twww.mrs.data.DataReader;
 import kr.twww.mrs.data.DataReaderImpl;
+import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
 import kr.twww.mrs.preprocess.object.Score;
@@ -35,11 +36,6 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     }
 
     @Override
-    public ArrayList<Score> GetRecommendList( String _title, String _limit){
-        return new ArrayList<Score>();
-    }
-
-    @Override
     public ArrayList<Score> GetRecommendList( String _gender, String _age, String _occupation, String _categories )
     {
         var gender = User.ConvertGender(_gender);
@@ -53,6 +49,26 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
                 occupation,
                 categoryList
         );
+    }
+
+    /* temporary */
+
+    @Override
+    public ArrayList<Score> GetRecommendList( String _title){
+        ArrayList<Score> tmp = new ArrayList<Score>();
+        Score s = new Score();
+        s.movie = new Movie();
+        s.movie.title = "Test Title";
+        s.link = new Link();
+        s.link.movieId = 1;
+        s.link.imdbId = "https://testURL.com";
+        tmp.add(s);
+        return tmp;
+    }
+
+    @Override
+    public ArrayList<Score> GetRecommendList( String _title, String _limit){
+        return new ArrayList<Score>();
     }
 
     @Override

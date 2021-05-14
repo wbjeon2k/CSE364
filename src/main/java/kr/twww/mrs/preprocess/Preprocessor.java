@@ -29,4 +29,5 @@ public interface Preprocessor
 
     /* 임시로 만든 interface*/
     ArrayList<Score> GetRecommendList( String _title, String _limit );
+    ArrayList<Score> GetRecommendList( String _title);
 }
