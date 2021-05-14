@@ -19,7 +19,8 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 {
     private final DataReader dataReader;
 
-    private final int MAX_PAIR_COUNT = 624000;
+    //private final int MAX_PAIR_COUNT = 624000;
+    private final int MAX_PAIR_COUNT = 62;
     private final int MIN_RATING_COUNT = 10;
 
     public PreprocessorImpl()
