@@ -35,6 +35,11 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     }
 
     @Override
+    public ArrayList<Score> GetRecommendList( String _title, String _limit){
+        return new ArrayList<Score>();
+    }
+
+    @Override
     public ArrayList<Score> GetRecommendList( String _gender, String _age, String _occupation, String _categories )
     {
         var gender = User.ConvertGender(_gender);

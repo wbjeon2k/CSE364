@@ -26,4 +26,7 @@ public interface Preprocessor
      * @return 추천하는 영화 상위 10개 리스트
      */
     ArrayList<Score> GetRecommendList( String _gender, String _age, String _occupation, String _categories );
+
+    /* 임시로 만든 interface*/
+    ArrayList<Score> GetRecommendList( String _title, String _limit );
 }

@@ -1,5 +1,7 @@
 package kr.twww.mrs.preprocess.webquery;
 
+import kr.twww.mrs.preprocess.object.Score;
+
 import java.io.Serializable;
 
 public class MovieJson {
@@ -11,6 +13,12 @@ public class MovieJson {
         this.title = "T";
         this.genre = "G";
         this.imdb = "I";
+    }
+
+    public MovieJson(Score S){
+        this.title = S.movie.title;
+        this.genre = S.movie.genres.toString();
+        this.imdb = S.link.GetURL();
     }
 
     public String getGenre() {
