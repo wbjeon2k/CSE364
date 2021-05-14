@@ -65,7 +65,7 @@ public class practiceController{
 
         ArrayList<Score> recommend = new ArrayList<>();
         try{
-            //recommend = AcquireRecommend(gender,age,occupation,genre,title,limit);
+            recommend = AcquireRecommend(gender,age,occupation,genre,title,limit);
         }
         catch (Exception e){
             throw new Exception("Error: Failed to get recommend\nCause: " + e.getMessage());
@@ -113,7 +113,7 @@ public class practiceController{
 
     public ArrayList<Score> titleRecommend(String title, String limit){
         Preprocessor preprocessor = new PreprocessorImpl();
-        //return preprocessor.GetRecommendList(title, limit);
-        return preprocessor.GetRecommendList(title);
+        return preprocessor.GetRecommendList(title, limit);
+        // for test : return preprocessor.GetRecommendList(title);
     }
 }

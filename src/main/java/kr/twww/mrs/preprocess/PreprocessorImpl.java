@@ -59,6 +59,8 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         Score s = new Score();
         s.movie = new Movie();
         s.movie.title = "Test Title";
+        s.movie.genres = new ArrayList<>();
+        s.movie.genres.add(Movie.Genre.ADVENTURE);
         s.link = new Link();
         s.link.movieId = 1;
         s.link.imdbId = "https://testURL.com";
