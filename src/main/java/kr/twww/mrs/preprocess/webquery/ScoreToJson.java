@@ -4,18 +4,18 @@ import kr.twww.mrs.preprocess.object.Score;
 
 import java.io.Serializable;
 
-public class MovieJson {
+public class ScoreToJson {
     private String title;
     private String genre;
     private String imdb;
 
-    public MovieJson(){
+    public ScoreToJson(){
         this.title = "T";
         this.genre = "G";
         this.imdb = "I";
     }
 
-    public MovieJson(Score S){
+    public ScoreToJson(Score S){
         this.title = S.movie.title;
         this.genre = S.movie.GenresToString();
         this.imdb = S.link.GetURL();

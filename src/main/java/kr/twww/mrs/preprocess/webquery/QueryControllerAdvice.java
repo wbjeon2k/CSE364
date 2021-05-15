@@ -1,5 +1,6 @@
 package kr.twww.mrs.preprocess.webquery;
 
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -13,4 +14,5 @@ public class QueryControllerAdvice {
     public String handleDemoExceptionForGlobal(Exception e) {
         return ("ExceptionHandler Invoked:\n" + e.getMessage());
     }
+
 }

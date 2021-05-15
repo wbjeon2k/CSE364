@@ -10,29 +10,24 @@ import java.util.ArrayList;
 public class QueryController {
     /*
     입력은 항상 \ back tick 붙어 있어야 한다. | 를 일반 문자로 받지 않아서 문제.
-    curl -X GET "http://localhost:8080/practice" -H "Content-type:application/json" -d "{\“gender\” : \“F\”, \“age\” : \“25\”, \“occupation\” : \“Grad student\”, \“genre\” : \“Action|War\”}"
-    curl -X GET "http://localhost:8080/practice" -H "Content-type:application/json" -d "{\“title\” : \“Toy Story\”, \“limit\” : \“20\”}"
+    //curl -X GET "http://localhost:8080/practice" -H "Content-type:application/json" -d "{\"gender\" : \"F\", \"age\" : \"25\", \"occupation\" : \"Grad student\", \"genre\" : \"Action\"}"
     */
     //query를 받아서 그대로 출력.
     @GetMapping("/practice")
-    public NormalQuery practiceQuery(
-            @RequestBody NormalQuery PQ
+    public QueryResource practiceQuery(
+            @RequestBody QueryResource PQ
     ){
         return PQ;
     }
 
-    //curl -X GET "http://localhost:8080/develop" -H "Content-type:application/json" -d "{\“gender\” : \“F\”, \“age\” : \“25\”, \“occupation\” : \“Grad student\”, \“genre\” : \“Action\”}"
     //curl -X GET "http://localhost:8080/develop" -H "Content-type:application/json" -d "{\"gender\" : \"F\", \"age\" : \"25\", \"occupation\" : \"Grad student\", \"genre\" : \"Action\"}"
-
-    //curl -X GET "http://localhost:8080/practice" -H "Content-type:application/json" -d "{\"gender\" : \"F\", \"age\" : \"25\", \"occupation\" : \"Grad student\", \"genre\" : \"Action\"}"
-    //curl -X GET "http://localhost:8080/develop" -H "Content-type:application/json" -d "{\"gender\" : \"F\", \"age\" : \"25\", \"occupation\" : \"Grad student\", \"genre\" : \"Action\"}"
-    //curl -X GET "http://localhost:8080/practice" -H "Content-type:application/json" -d "{\"title\" : \"Toy Story\", \"limit\" : \"20\"}"
+    //curl -X GET "http://localhost:8080/develop" -H "Content-type:application/json" -d "{\"title\" : \"Toy Story\", \"limit\" : \"20\"}"
 
     //같은 url에 여러개 controller method 들 overload/mapping 불가능. 아래 링크 참조.
     //https://stackoverflow.com/questions/34587254/accessing-multiple-controllers-with-same-request-mapping
     @GetMapping("/develop")
-    public ArrayList<MovieJson> normalQuery(
-            @RequestBody NormalQuery NQ
+    public ArrayList<ScoreToJson> normalQuery(
+            @RequestBody QueryResource NQ
     ) throws Exception {
         String gender, age, occupation, genre, title, limit;
         gender = NQ.getGender();
@@ -50,9 +45,9 @@ public class QueryController {
             throw new Exception("Error: Failed to get recommend\nCause: " + e.getMessage());
         }
 
-        ArrayList<MovieJson> ret = new ArrayList<>();
+        ArrayList<ScoreToJson> ret = new ArrayList<>();
         for (Score tmp : recommend) {
-            ret.add(new MovieJson(tmp));
+            ret.add(new ScoreToJson(tmp));
         }
         return ret;
     }

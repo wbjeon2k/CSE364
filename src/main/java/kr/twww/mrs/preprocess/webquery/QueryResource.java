@@ -4,8 +4,8 @@ import breeze.stats.distributions.AliasTable;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 
-//public class NormalQuery implements Serializable {
-public class NormalQuery {
+//public class QueryResource implements Serializable {
+public class QueryResource {
     private String gender;
     private String age;
     private String occupation;
@@ -13,14 +13,14 @@ public class NormalQuery {
     private String title;
     private String limit;
 
-    public NormalQuery(String gender, String age, String occupation, String genre){
+    public QueryResource(String gender, String age, String occupation, String genre){
         this.gender = gender;
         this.age = age;
         this.occupation = occupation;
         this.genre = genre;
     }
 
-    public NormalQuery() { }
+    public QueryResource() { }
 
     public String getGender(){ return gender; }
     public String getAge() { return age; }
