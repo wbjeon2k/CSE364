@@ -52,19 +52,19 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     @Override
     public ArrayList<Score> GetRecommendList( String _title, String _limit)
     {
-        var limit = -1;
-        var title = _title;
-        if(title == null) return null;
+        var Limit = -1;
+        var Title = _title;
+        if(Title == null) return null;
         try{
-            limit = Integer.parseInt(_limit);
+            Limit = Integer.parseInt(_limit);
         }catch (NumberFormatException e) {
             return null;
         }
-        if(limit == -1) return null;
+        if(Limit == -1) return null;
 
         return GetScoreList_2(
-                title,
-                limit
+                Title,
+                Limit
         );
     }
 
@@ -173,12 +173,74 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     // 원래있던 GetScoreList를 변형해서 그 유저 160명이 주는 영화 예상 평점 받아오기
     // 함수 마지막부분을 바꿔서 이 함수를 통해 장르 필터링과 전체목록을 둘다 받을수있게 만들기.
     @Override
-    private ArrayList<Score> GetScoreList_2(
-            String title,
+    public ArrayList<Score> GetScoreList_2(
+            String Title,
             int limit
     )
     {
+        System.out.println("Info: Loading data ... ");
 
+        var userList = dataReader.GetUserList();
+        var movieList = dataReader.GetMovieList();
+        var ratingList = dataReader.GetRatingList();
+
+        if ( userList == null ) return null;
+        if ( movieList == null ) return null;
+        if ( ratingList == null ) return null;
+
+        System.out.println("Info: Preprocessing ... ");
+
+        // 1.영화 찾기
+        var findMovie = GetFindMovie(
+                Title,
+                movieList
+        );
+
+        // 2.이 영화에 평점 높게준 상위 160명 유저 찾기
+        var findUserList = GetFindUser(
+                findMovie,
+                userList,
+                ratingList
+        );
+
+        // 3.찾은 유저 160명의 전체 영화 예상평점 받아옴
+        var predictList_2 = GetPredictList(
+                findUserList,
+                movieList,
+                ratingList
+        );
+
+        // 4. Score 리스트 만들기
+
+        // 5-1. Score 리스트중에서 장르 필터링해서 [limit/2]을 올림한 숫자 만큼 상위
+
+        // 5-2 Score 리스트중에서 장르 해당안된 영화중 (limit - (5-1)) 만큼 상위
+
+        // 6. 5-1 5-2 번갈아 출력
+
+        return new ArrayList<>();
+
+    }
+
+    private List<Movie> GetFindMovie(
+            String Title,
+            List<Movie> movieList
+    )
+    {
+        var findmovie= movieList
+                .stream()
+                .filter(movie -> movie.title.equals(Title) )
+                .collect((Collectors.toList()));
+        return findmovie;
+    }
+
+    private List<User> GetFindUser(
+            List<Movie> findMovie,
+            List<User> userList,
+            List<Rating> ratingList
+    )
+    {
+        return new ArrayList<>();
     }
 
     private List<User> GetFilteredUserList(

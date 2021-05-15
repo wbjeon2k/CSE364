@@ -16,4 +16,9 @@ public abstract class PreprocessorBase
             User.Occupation occupation,
             ArrayList<Movie.Genre> genreList
     );
+
+    public abstract ArrayList<Score> GetScoreList_2(
+            String Title,
+            int limit
+    );
 }
