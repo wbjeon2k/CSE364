@@ -61,6 +61,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         s.movie.title = "Test Title";
         s.movie.genres = new ArrayList<>();
         s.movie.genres.add(Movie.Genre.ADVENTURE);
+        s.movie.genres.add(Movie.Genre.MYSTERY);
         s.link = new Link();
         s.link.movieId = 1;
         s.link.imdbId = "https://testURL.com";

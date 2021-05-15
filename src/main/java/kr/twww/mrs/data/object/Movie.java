@@ -52,10 +52,11 @@ public class Movie
     }
 
     public String GenresToString(){
-        String ret = "";
+        String ret = new String();
         for (int i=0;i<genres.size();++i){
-            ret.concat(genres.get(i).toString());
-            if(i != (genres.size() - 1)) ret.concat("|");
+            String tmp = genres.get(i).toString();
+            ret += tmp;
+            if(i != (genres.size() - 1)) ret += "|";
         }
         return ret;
     }

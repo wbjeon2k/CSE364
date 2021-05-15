@@ -66,6 +66,9 @@ public class QueryController {
                 throw new Exception("Error: Title exist, but gender/age/occupation/genre exist");
 
             return P.GetRecommendList(title, limit);
+
+            //for test
+            //return P.GetRecommendList(title);
         }
         else{
             if(limit != null) throw new Exception("Error: Title is null, but limit is not null");

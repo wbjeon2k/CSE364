@@ -19,16 +19,16 @@ public class QueryErrorController implements ErrorController {
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request) {
 
-        String errorCode = (String) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-        String errorMessage = (String) request.getAttribute(RequestDispatcher.ERROR_MESSAGE);
+        Integer errorCode = (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+        String errorMessage = (String) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
         String template = "Error: ";
-        template.concat("Code: " + errorCode + " ");
-        template.concat("Message: " + errorMessage + "\n");
+        template += ("Code " + errorCode.toString() + " ");
+        template += ("Message " + errorMessage + "\n");
         return template;
     }
 
     @Override
     public String getErrorPath() {
-        return "/error";
+        return null;
     }
 }
