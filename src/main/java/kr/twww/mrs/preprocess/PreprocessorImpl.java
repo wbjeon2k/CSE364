@@ -50,6 +50,25 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     }
 
     @Override
+    public ArrayList<Score> GetRecommendList( String _title, String _limit)
+    {
+        var limit = -1;
+        var title = _title;
+        if(title == null) return null;
+        try{
+            limit = Integer.parseInt(_limit);
+        }catch (NumberFormatException e) {
+            return null;
+        }
+        if(limit == -1) return null;
+
+        return GetScoreList_2(
+                title,
+                limit
+        );
+    }
+
+    @Override
     public ArrayList<Movie.Genre> GetCategoryList( String genreText )
     {
         if ( genreText == null ) return null;
@@ -148,6 +167,18 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         }
 
         return new ArrayList<>(scoreList.subList(0, count));
+    }
+
+    // 이함수에서 만들어야하는것: 영화에 평점을 높게준 최소카운트를 넘기는 유저 160명 고르기
+    // 원래있던 GetScoreList를 변형해서 그 유저 160명이 주는 영화 예상 평점 받아오기
+    // 함수 마지막부분을 바꿔서 이 함수를 통해 장르 필터링과 전체목록을 둘다 받을수있게 만들기.
+    @Override
+    private ArrayList<Score> GetScoreList_2(
+            String title,
+            int limit
+    )
+    {
+
     }
 
     private List<User> GetFilteredUserList(

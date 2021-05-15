@@ -26,4 +26,13 @@ public interface Preprocessor
      * @return 추천하는 영화 상위 10개 리스트
      */
     ArrayList<Score> GetRecommendList( String _gender, String _age, String _occupation, String _categories );
+
+    /**
+     * 주어진 영화와 비슷한영화를
+     * 데이터로 계산한 비슷한 영화 리스트({@link ArrayList})를 반환한다.
+     * @param _title    영화 제목
+     * @param _limit    추천 갯수
+     * @return 비슷한 영화 limit 만큼의 리스트
+     */
+    ArrayList<Score> GetRecommendList( String _title, String _limit );
 }
