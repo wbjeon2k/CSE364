@@ -3,6 +3,8 @@ package kr.twww.mrs.preprocess.webquery;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,7 +44,13 @@ public class ErrController implements ErrorController {
         return "ERROR: Undefined Error\n";
     }
 
-    //@Override
+    @RequestMapping("/error/405")
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public String handler_405(){
+        return "405 ERROR: Method Not Allowed.\n";
+    }
+
+    @Override
     public String getErrorPath() {
         return null;
     }

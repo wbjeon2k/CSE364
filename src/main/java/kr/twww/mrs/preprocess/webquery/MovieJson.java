@@ -17,7 +17,7 @@ public class MovieJson {
 
     public MovieJson(Score S){
         this.title = S.movie.title;
-        this.genre = S.movie.genres.toString();
+        this.genre = S.movie.GenresToString();
         this.imdb = S.link.GetURL();
     }
 

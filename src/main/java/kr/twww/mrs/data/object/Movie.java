@@ -50,4 +50,13 @@ public class Movie
         System.out.println("Error: Invalid genre string");
         return null;
     }
+
+    public String GenresToString(){
+        String ret = "";
+        for (int i=0;i<genres.size();++i){
+            ret.concat(genres.get(i).toString());
+            if(i != (genres.size() - 1)) ret.concat("|");
+        }
+        return ret;
+    }
 }
