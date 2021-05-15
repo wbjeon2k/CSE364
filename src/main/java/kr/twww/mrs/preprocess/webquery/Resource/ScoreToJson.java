@@ -1,4 +1,4 @@
-package kr.twww.mrs.preprocess.webquery;
+package kr.twww.mrs.preprocess.webquery.Resource;
 
 import kr.twww.mrs.preprocess.object.Score;
 

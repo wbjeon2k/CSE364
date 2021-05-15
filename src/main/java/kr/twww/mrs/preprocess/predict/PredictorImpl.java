@@ -4,6 +4,7 @@ import kr.twww.mrs.data.DataReader;
 import kr.twww.mrs.data.DataType;
 import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
+import lombok.SneakyThrows;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.spark.api.java.JavaRDD;
@@ -71,6 +72,7 @@ public class PredictorImpl extends PredictorBase implements Predictor
         return (model != null);
     }
 
+    @SneakyThrows
     @Override
     public boolean CreateModel( ArrayList<Rating> ratingList )
     {
@@ -85,7 +87,11 @@ public class PredictorImpl extends PredictorBase implements Predictor
 
         if ( model == null ) return false;
 
-        DeleteModel();
+        try{
+            DeleteModel();
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
         model.save(javaSparkContext.sc(), modelHadoopPath);
 
         SaveChecksum(GetChecksum());
@@ -93,8 +99,7 @@ public class PredictorImpl extends PredictorBase implements Predictor
         return true;
     }
 
-    private boolean DeleteModel()
-    {
+    private boolean DeleteModel() throws Exception {
         var path = Paths.get(PATH_DATA_MODEL);
 
         try
@@ -113,8 +118,9 @@ public class PredictorImpl extends PredictorBase implements Predictor
         }
         catch ( Exception e )
         {
-            System.out.println("Error: Delete model failed");
-            return false;
+            throw new Exception("Error: Delete model failed");
+            //System.out.println("Error: Delete model failed");
+            //return false;
         }
 
         return true;
@@ -174,6 +180,7 @@ public class PredictorImpl extends PredictorBase implements Predictor
         System.err.close();
     }
 
+    @SneakyThrows
     @Override
     public String GetChecksum()
     {
@@ -189,8 +196,9 @@ public class PredictorImpl extends PredictorBase implements Predictor
             }
             catch ( Exception e )
             {
-                System.out.println("Error: Get checksum failed");
-                return null;
+                //System.out.println("Error: Get checksum failed");
+                throw new Exception("Error: Get checksum failed");
+                //return null;
             }
         }
 
@@ -205,6 +213,7 @@ public class PredictorImpl extends PredictorBase implements Predictor
         return dataReader.ReadTextFromFile(PATH_DATA_CHECKSUM);
     }
 
+    @SneakyThrows
     @Override
     public void SaveChecksum( String checksum )
     {
@@ -219,7 +228,8 @@ public class PredictorImpl extends PredictorBase implements Predictor
         }
         catch ( Exception e )
         {
-            System.out.println("Error: Save checksum failed");
+            throw new Exception("Error: Save checksum failed");
+            //System.out.println("Error: Save checksum failed");
         }
     }
 }

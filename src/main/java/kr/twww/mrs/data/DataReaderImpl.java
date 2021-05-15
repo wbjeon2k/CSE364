@@ -3,6 +3,7 @@ package kr.twww.mrs.data;
 import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
+import lombok.SneakyThrows;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.spark.mllib.recommendation.Rating;
 
@@ -17,6 +18,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     private final String PATH_DATA = "./data/";
     private final String SUFFIX = "s.dat";
 
+    @SneakyThrows
     @Override
     public String GetPathFromDataType( DataType dataType )
     {
@@ -26,10 +28,14 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             return PATH_DATA + dataType.name().toLowerCase() + SUFFIX;
         }
 
-        System.out.println("Error: Invalid data type");
-        return null;
+        throw new Exception("Error: Invalid data type");
+        //System.out.println("Error: Invalid data type");
+
+        //return value 바뀌면 unit test도 다시 짜야한다.
+        //return null;
     }
 
+    @SneakyThrows
     @Override
     public String ReadTextFromFile( String path )
     {
@@ -54,10 +60,11 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         }
         catch ( IOException e )
         {
-            System.out.println("Error: Reading file failed");
+            throw new Exception("Error: Reading file failed");
+            //System.out.println("Error: Reading file failed");
         }
 
-        return null;
+        //return null;
     }
 
     @Override

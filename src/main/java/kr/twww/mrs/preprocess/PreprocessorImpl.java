@@ -8,6 +8,7 @@ import kr.twww.mrs.data.object.User;
 import kr.twww.mrs.preprocess.object.Score;
 import kr.twww.mrs.preprocess.predict.Predictor;
 import kr.twww.mrs.preprocess.predict.PredictorImpl;
+import lombok.SneakyThrows;
 import org.apache.spark.mllib.recommendation.Rating;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 
     @Override
     public ArrayList<Score> GetRecommendList( String _title){
-        ArrayList<Score> tmp = new ArrayList<Score>();
+        ArrayList<Score> tmp = new ArrayList<>();
         Score s = new Score();
         s.movie = new Movie();
         s.movie.title = "Test Title";
@@ -71,7 +72,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 
     @Override
     public ArrayList<Score> GetRecommendList( String _title, String _limit){
-        return new ArrayList<Score>();
+        return new ArrayList<>();
     }
 
     @Override
@@ -96,6 +97,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         return result;
     }
 
+    @SneakyThrows
     @Override
     public ArrayList<Score> GetScoreList(
             User.Gender gender,
@@ -151,6 +153,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
                 filteredMovieList,
                 ratingList
         );
+
 
         if ( predictList == null ) return null;
 
@@ -330,18 +333,18 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             List<User> filteredUserList,
             List<Movie> filteredMovieList,
             ArrayList<Rating> ratingList
-    )
-    {
+    ) throws Exception {
         Predictor predictor = new PredictorImpl(dataReader);
 
         if ( !predictor.LoadModel() )
         {
             if ( !predictor.CreateModel(ratingList) )
             {
-                System.out.println("Error: Create model failed");
+                //System.out.println("Error: Create model failed");
 
                 predictor.Close();
-                return null;
+                throw new Exception("Error: Create model failed");
+                //return null;
             }
         }
 

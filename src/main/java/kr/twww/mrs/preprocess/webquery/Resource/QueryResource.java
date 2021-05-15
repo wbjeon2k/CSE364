@@ -1,4 +1,4 @@
-package kr.twww.mrs.preprocess.webquery;
+package kr.twww.mrs.preprocess.webquery.Resource;
 
 import breeze.stats.distributions.AliasTable;
 import com.fasterxml.jackson.annotation.JsonFormat;

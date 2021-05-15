@@ -13,6 +13,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
 //https://cheese10yun.github.io/spring-guide-exception/
+//Servelet 안에서 발생하는 exception catch, ControllerAdvice 로 전달.
 @RestController
 public class QueryErrorController implements ErrorController {
 

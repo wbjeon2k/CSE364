@@ -2,16 +2,18 @@ package kr.twww.mrs.preprocess.webquery;
 
 import kr.twww.mrs.preprocess.*;
 import kr.twww.mrs.preprocess.object.Score;
+import kr.twww.mrs.preprocess.webquery.Resource.QueryResource;
+import kr.twww.mrs.preprocess.webquery.Resource.ScoreToJson;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
 @RestController
 public class QueryController {
-    /*
-    입력은 항상 \ back tick 붙어 있어야 한다. | 를 일반 문자로 받지 않아서 문제.
+
+    //입력은 항상 \ back tick 붙어 있어야 한다. | 를 일반 문자로 받지 않아서 문제.
     //curl -X GET "http://localhost:8080/practice" -H "Content-type:application/json" -d "{\"gender\" : \"F\", \"age\" : \"25\", \"occupation\" : \"Grad student\", \"genre\" : \"Action\"}"
-    */
+
     //query를 받아서 그대로 출력.
     @GetMapping("/practice")
     public QueryResource practiceQuery(
@@ -26,7 +28,7 @@ public class QueryController {
     //같은 url에 여러개 controller method 들 overload/mapping 불가능. 아래 링크 참조.
     //https://stackoverflow.com/questions/34587254/accessing-multiple-controllers-with-same-request-mapping
     @GetMapping("/develop")
-    public ArrayList<ScoreToJson> normalQuery(
+    public ArrayList<ScoreToJson> processQuery(
             @RequestBody QueryResource NQ
     ) throws Exception {
         String gender, age, occupation, genre, title, limit;
@@ -59,6 +61,7 @@ public class QueryController {
     ) throws Exception {
         Preprocessor P = new PreprocessorImpl();
 
+        //title 있는 경우 part 2/ 없는 경우 part 1
         if(title != null){
             if(limit == null) throw new Exception("Error: parameter limit is null");
 
