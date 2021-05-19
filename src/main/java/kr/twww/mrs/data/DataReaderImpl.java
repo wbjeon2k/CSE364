@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import static kr.twww.mrs.data.DataType.*;
 
+@SuppressWarnings("FieldCanBeLocal")
 @Service
 public class DataReaderImpl extends DataReaderBase implements DataReader
 {

@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("FieldCanBeLocal")
 @Service
 public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 {
