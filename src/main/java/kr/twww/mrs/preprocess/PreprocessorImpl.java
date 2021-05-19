@@ -141,13 +141,13 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             ArrayList<Movie.Genre> genreList
     ) throws Exception
     {
-        System.out.println("Info: Loading data ... ");
+        System.out.println("Info: Loading data ...");
 
         var userList = dataReader.GetUserList();
         var movieList = dataReader.GetMovieList();
         var ratingList = dataReader.GetRatingList();
 
-        System.out.println("Info: Preprocessing ... ");
+        System.out.println("Info: Preprocessing ...");
 
         // 1. 조건에 해당하는 유저 필터
         var filteredUserList = GetFilteredUserList(
@@ -185,7 +185,11 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         );
 
         // 6. 내림차순 정렬 및 상위 10개 선택
-        return SortingTopList(scoreList);
+        var result = SortingTopList(scoreList);
+
+        System.out.println("Info: Done");
+
+        return result;
     }
 
     @Override
@@ -194,13 +198,13 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             int limit
     ) throws Exception
     {
-        System.out.println("Info: Loading data ... ");
+        System.out.println("Info: Loading data ...");
 
         var userList = dataReader.GetUserList();
         var movieList = dataReader.GetMovieList();
         var ratingList = dataReader.GetRatingList();
 
-        System.out.println("Info: Preprocessing ... ");
+        System.out.println("Info: Preprocessing ...");
 
         // 0. 주어진 영화 제외
         movieList.removeIf(
@@ -253,11 +257,15 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         // 6. 동일 장르 영화 상위 최대 절반(반올림) 선택
         //    + 나머지 다른 장르 상위 선택
         //    (동일 장르 > 평점 순으로 정렬)
-        return GetCandidateScoreList(
+        var result = GetCandidateScoreList(
                 movie,
                 limit,
                 scoreList
         );
+
+        System.out.println("Info: Done");
+
+        return result;
     }
 
     private List<User> GetFilteredUserList(

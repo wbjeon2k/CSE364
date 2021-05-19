@@ -54,7 +54,7 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
 
         if ( Files.isDirectory(modelPath) )
         {
-            System.out.println("Info: Loading model ... ");
+            System.out.println("Info: Loading model ...");
 
             model = MatrixFactorizationModel.load(javaSparkContext.sc(), modelHadoopPath);
         }
@@ -70,7 +70,7 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
         var ratingRDD = javaSparkContext
                 .parallelize(ratingList);
 
-        System.out.println("Info: Creating model ... ");
+        System.out.println("Info: Creating model ...");
 
         // TODO: 로컬 테스트 끝나고 수정
         //model = ALS.train(JavaRDD.toRDD(ratingRDD), 10, 20, 0.01);
@@ -134,7 +134,7 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
         var pairRDD = javaSparkContext
                 .parallelizePairs(pairList);
 
-        System.out.println("Info: Predicting ... ");
+        System.out.println("Info: Predicting ...");
 
         return model.predict(pairRDD).collect();
     }
@@ -143,8 +143,6 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
     public void Close()
     {
         javaSparkContext.close();
-
-//        System.setErr(System.out);
     }
 
     @Override
@@ -163,8 +161,6 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
                 "org.slf4j.simpleLogger.defaultLogLevel",
                 "off"
         );
-
-//        System.err.close();
 
         javaSparkContext = new JavaSparkContext(
                 "local",
