@@ -14,7 +14,6 @@ import org.apache.spark.mllib.recommendation.Rating;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import scala.Tuple2;
 
@@ -73,6 +72,7 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
 
         System.out.println("Info: Creating model ... ");
 
+        // TODO: 로컬 테스트 끝나고 수정
         //model = ALS.train(JavaRDD.toRDD(ratingRDD), 10, 20, 0.01);
         model = ALS.train(JavaRDD.toRDD(ratingRDD), 5, 5, 0.01);
 
@@ -114,9 +114,12 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
     public List<Rating> GetPredictList(
             List<User> filteredUserList,
             List<Movie> filteredMovieList
-    )
+    ) throws Exception
     {
-        if ( model == null ) return null;
+        if ( model == null )
+        {
+            throw new Exception("Model was not loaded or created");
+        }
 
         List<Tuple2<Integer, Integer>> pairList = new ArrayList<>();
 

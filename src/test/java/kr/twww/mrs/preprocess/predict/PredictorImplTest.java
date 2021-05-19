@@ -259,12 +259,18 @@ public class PredictorImplTest
     @Test
     public void TestGetPredictList()
     {
-        assertNull(
-                predictor.GetPredictList(
-                        null,
-                        null
-                )
-        );
+        try
+        {
+            predictor.GetPredictList(
+                    null,
+                    null
+            );
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
     }
 
     @Test

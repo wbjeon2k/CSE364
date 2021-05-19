@@ -31,7 +31,7 @@ public interface Predictor
     List<Rating> GetPredictList(
             List<User> filteredUserList,
             List<Movie> filteredMovieList
-    );
+    ) throws Exception;
 
     /**
      * {@link org.apache.spark.api.java.JavaSparkContext}를 종료한다.

@@ -54,7 +54,6 @@ public class RecommendationController
             requestByMovie.setLimit("10");
         }
 
-
         var result = preprocessor.GetRecommendList(
                 requestByMovie.getTitle(),
                 requestByMovie.getLimit()

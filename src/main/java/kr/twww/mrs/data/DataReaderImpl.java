@@ -3,7 +3,6 @@ package kr.twww.mrs.data;
 import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
-import org.apache.commons.codec.binary.StringUtils;
 import org.apache.spark.mllib.recommendation.Rating;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +25,9 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         if ( dataType != null )
         {
             // ####s.dat
-            return PATH_DATA + dataType.name().toLowerCase() + SUFFIX;
+            return PATH_DATA
+                    + dataType.name().toLowerCase()
+                    + SUFFIX;
         }
 
         throw new Exception("Invalid data type");
@@ -36,9 +37,6 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public String ReadTextFromFile( String path ) throws Exception
     {
-        if ( path == null ) return null;
-        if ( path.isEmpty() ) return null;
-
         try
         {
             File file = new File(path);
@@ -100,8 +98,10 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public ArrayList<User> ToUserList( String text ) throws Exception
     {
-        if ( text == null ) return null;
-        if ( text.isEmpty() ) return new ArrayList<>();
+        if ( text.isEmpty() )
+        {
+            throw new Exception("Empty user data file");
+        }
 
         var result = new ArrayList<User>();
 
@@ -121,14 +121,21 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             result.add(newUser);
         }
 
+        if ( result.isEmpty() )
+        {
+            throw new Exception("Empty user data");
+        }
+
         return result;
     }
 
     @Override
     public ArrayList<Movie> ToMovieList( String text ) throws Exception
     {
-        if ( text == null ) return null;
-        if ( text.isEmpty() ) return new ArrayList<>();
+        if ( text.isEmpty() )
+        {
+            throw new Exception("Empty data file");
+        }
 
         var result = new ArrayList<Movie>();
 
@@ -144,6 +151,11 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             newMovie.genres = GetGenreList(splitData[2]);
 
             result.add(newMovie);
+        }
+
+        if ( result.isEmpty() )
+        {
+            throw new Exception("Empty movie data");
         }
 
         return result;
@@ -163,10 +175,12 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     }
 
     @Override
-    public ArrayList<Rating> ToRatingList( String text )
+    public ArrayList<Rating> ToRatingList( String text ) throws Exception
     {
-        if ( text == null ) return null;
-        if ( text.isEmpty() ) return new ArrayList<>();
+        if ( text.isEmpty() )
+        {
+            throw new Exception("Empty data file");
+        }
 
         var result = new ArrayList<Rating>();
 
@@ -190,14 +204,21 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             result.add(newRating);
         }
 
+        if ( result.isEmpty() )
+        {
+            throw new Exception("Empty rating data");
+        }
+
         return result;
     }
 
     @Override
-    public ArrayList<Link> ToLinkList( String text )
+    public ArrayList<Link> ToLinkList( String text ) throws Exception
     {
-        if ( text == null ) return null;
-        if ( text.isEmpty() ) return new ArrayList<>();
+        if ( text.isEmpty() )
+        {
+            throw new Exception("Empty data file");
+        }
 
         var result = new ArrayList<Link>();
 
@@ -212,6 +233,11 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             newRating.imdbId = splitData[1];
 
             result.add(newRating);
+        }
+
+        if ( result.isEmpty() )
+        {
+            throw new Exception("Empty link data");
         }
 
         return result;

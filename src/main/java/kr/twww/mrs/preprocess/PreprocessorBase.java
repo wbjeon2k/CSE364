@@ -24,5 +24,5 @@ public abstract class PreprocessorBase
     public abstract ArrayList<Score> GetScoreListByMovie(
             Movie movie,
             int limit
-    );
+    ) throws Exception;
 }
