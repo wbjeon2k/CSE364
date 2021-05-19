@@ -193,7 +193,16 @@
                 <configuration>
                     <excludes>
                         <exclude>
-                            **/*Main.class
+                            **/Main.class
+                        </exclude>
+                        <exclude>
+                            **/controller/object/*
+                        </exclude>
+                        <exclude>
+                            **/controller/ErrorController.class
+                        </exclude>
+                        <exclude>
+                            **/controller/ExceptionController.class
                         </exclude>
                     </excludes>
                 </configuration>

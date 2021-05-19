@@ -2,6 +2,8 @@ package kr.twww.mrs.data.object;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class MovieTest
@@ -23,5 +25,15 @@ public class MovieTest
         {
             assertTrue(true);
         }
+    }
+
+    @Test
+    public void TestGetGenresText()
+    {
+        var movie = new Movie();
+        movie.genres = new ArrayList<>();
+        movie.genres.add(Movie.Genre.ACTION);
+
+        assertEquals("Action", movie.GetGenresText());
     }
 }

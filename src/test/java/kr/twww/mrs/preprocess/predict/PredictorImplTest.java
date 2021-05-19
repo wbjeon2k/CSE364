@@ -131,6 +131,7 @@ public class PredictorImplTest
         };
 
         assertTrue(predictor.LoadModel());
+        assertTrue(predictor.LoadModel());
     }
 
     @Test

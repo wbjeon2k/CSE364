@@ -142,6 +142,16 @@ public class DataReaderImplTest
             assertTrue(true);
         }
 
+        try
+        {
+            dataReader.ToUserList(" ");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
+
         var result = dataReader.ToUserList("0::M::17::0::TEST");
         assertEquals(1, result.size());
         assertEquals(0, result.get(0).userId);
@@ -157,6 +167,16 @@ public class DataReaderImplTest
         try
         {
             dataReader.ToMovieList("");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
+
+        try
+        {
+            dataReader.ToMovieList(" ");
             fail();
         }
         catch ( Exception exception )
@@ -195,6 +215,16 @@ public class DataReaderImplTest
             assertTrue(true);
         }
 
+        try
+        {
+            dataReader.ToRatingList(" ");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
+
         var result = dataReader.ToRatingList("0::1::2::3");
         assertEquals(1, result.size());
         assertEquals(0, result.get(0).user());
@@ -208,6 +238,16 @@ public class DataReaderImplTest
         try
         {
             dataReader.ToLinkList("");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
+
+        try
+        {
+            dataReader.ToLinkList(" ");
             fail();
         }
         catch ( Exception exception )

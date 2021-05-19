@@ -18,7 +18,7 @@ public class RecommendationController
     @Autowired
     private Preprocessor preprocessor;
 
-    @GetMapping("users/recommendations")
+    @GetMapping("/users/recommendations")
     public ArrayList<Recommendation> Recommend(
             @RequestBody RequestByUser requestByUser
     ) throws Exception
@@ -44,7 +44,7 @@ public class RecommendationController
         ).collect(Collectors.toList());
     }
 
-    @GetMapping("movies/recommendations")
+    @GetMapping("/movies/recommendations")
     public ArrayList<Recommendation> Recommend(
             @RequestBody RequestByMovie requestByMovie
     ) throws Exception

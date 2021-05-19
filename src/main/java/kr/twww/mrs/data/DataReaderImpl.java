@@ -107,23 +107,25 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 
         var splitText = text.split("\\r?\\n");
 
-        for ( var i : splitText )
+        try
         {
-            var splitData = i.split("::");
+            for ( var i : splitText )
+            {
+                var splitData = i.split("::");
 
-            var newUser = new User();
-            newUser.userId = Integer.parseInt(splitData[0]);
-            newUser.gender = User.ConvertGender(splitData[1]);
-            newUser.age = User.ConvertAge(splitData[2]);
-            newUser.occupation = User.ConvertOccupationByIndex(Integer.parseInt(splitData[3]));
-            newUser.zipCode = splitData[4];
+                var newUser = new User();
+                newUser.userId = Integer.parseInt(splitData[0]);
+                newUser.gender = User.ConvertGender(splitData[1]);
+                newUser.age = User.ConvertAge(splitData[2]);
+                newUser.occupation = User.ConvertOccupationByIndex(Integer.parseInt(splitData[3]));
+                newUser.zipCode = splitData[4];
 
-            result.add(newUser);
+                result.add(newUser);
+            }
         }
-
-        if ( result.isEmpty() )
+        catch ( Exception exception )
         {
-            throw new Exception("Empty user data");
+            throw new Exception("Invalid user data");
         }
 
         return result;
@@ -134,32 +136,34 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     {
         if ( text.isEmpty() )
         {
-            throw new Exception("Empty data file");
+            throw new Exception("Empty movie data file");
         }
 
         var result = new ArrayList<Movie>();
 
         var splitText = text.split("\\r?\\n");
 
-        for ( var i : splitText )
+        try
         {
-            var splitData = i.split("::");
+            for ( var i : splitText )
+            {
+                var splitData = i.split("::");
 
-            var newMovie = new Movie();
-            newMovie.movieId = Integer.parseInt(splitData[0]);
-            newMovie.title = splitData[1];
-            newMovie.genres = GetGenreList(splitData[2]);
+                var newMovie = new Movie();
+                newMovie.movieId = Integer.parseInt(splitData[0]);
+                newMovie.title = splitData[1];
+                newMovie.genres = GetGenreList(splitData[2]);
 
-            result.add(newMovie);
+                result.add(newMovie);
+            }
+        }
+        catch ( Exception exception )
+        {
+            throw new Exception("Invalid movie data");
         }
 
-        if ( result.isEmpty() )
-        {
-            throw new Exception("Empty movie data");
+            return result;
         }
-
-        return result;
-    }
 
     private ArrayList<Movie.Genre> GetGenreList( String genresText ) throws Exception
     {
@@ -179,65 +183,69 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     {
         if ( text.isEmpty() )
         {
-            throw new Exception("Empty data file");
+            throw new Exception("Empty rating data file");
         }
 
         var result = new ArrayList<Rating>();
 
         var splitText = text.split("\\r?\\n");
 
-        for ( var i : splitText )
+        try
         {
-            var splitData = i.split("::");
+            for ( var i : splitText )
+            {
+                var splitData = i.split("::");
 
-            var userId = Integer.parseInt(splitData[0]);
-            var movieId = Integer.parseInt(splitData[1]);
-            var rating = Integer.parseInt(splitData[2]);
-//            var timestamp = Integer.parseInt(splitData[3]);
+                var userId = Integer.parseInt(splitData[0]);
+                var movieId = Integer.parseInt(splitData[1]);
+                var rating = Integer.parseInt(splitData[2]);
+//                var timestamp = Integer.parseInt(splitData[3]);
 
-            var newRating = new Rating(
-                    userId,
-                    movieId,
-                    rating
-            );
+                var newRating = new Rating(
+                        userId,
+                        movieId,
+                        rating
+                );
 
-            result.add(newRating);
+                result.add(newRating);
+            }
+        }
+        catch ( Exception exception )
+        {
+            throw new Exception("Invalid rating data");
         }
 
-        if ( result.isEmpty() )
-        {
-            throw new Exception("Empty rating data");
+            return result;
         }
-
-        return result;
-    }
 
     @Override
     public ArrayList<Link> ToLinkList( String text ) throws Exception
     {
         if ( text.isEmpty() )
         {
-            throw new Exception("Empty data file");
+            throw new Exception("Empty link data file");
         }
 
         var result = new ArrayList<Link>();
 
         var splitText = text.split("\\r?\\n");
 
-        for ( var i : splitText )
+        try
         {
-            var splitData = i.split("::");
+            for ( var i : splitText )
+            {
+                var splitData = i.split("::");
 
-            var newRating = new Link();
-            newRating.movieId = Integer.parseInt(splitData[0]);
-            newRating.imdbId = splitData[1];
+                var newRating = new Link();
+                newRating.movieId = Integer.parseInt(splitData[0]);
+                newRating.imdbId = splitData[1];
 
-            result.add(newRating);
+                result.add(newRating);
+            }
         }
-
-        if ( result.isEmpty() )
+        catch ( Exception exception )
         {
-            throw new Exception("Empty link data");
+            throw new Exception("Invalid link data");
         }
 
         return result;
