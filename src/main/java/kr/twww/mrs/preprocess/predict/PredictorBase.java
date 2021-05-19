@@ -4,7 +4,7 @@ public abstract class PredictorBase
 {
     public abstract void Setup();
 
-    public abstract String GetChecksum();
-    public abstract String GetSavedChecksum();
-    public abstract void SaveChecksum( String checksum );
+    public abstract String GetChecksum() throws Exception;
+    public abstract String GetSavedChecksum() throws Exception;
+    public abstract void SaveChecksum( String checksum ) throws Exception;
 }

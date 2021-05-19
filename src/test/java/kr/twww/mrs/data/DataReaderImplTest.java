@@ -4,17 +4,33 @@ import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
 import mockit.Expectations;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.*;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class DataReaderImplTest
 {
-    private final DataReaderImpl dataReader = new DataReaderImpl();
+    @Autowired
+    private DataReaderImpl dataReader;
 
     @Test
-    public void TestGetPathFromDataType()
+    public void TestGetPathFromDataType() throws Exception
     {
-        assertNull(dataReader.GetPathFromDataType(null));
+        try
+        {
+            dataReader.GetPathFromDataType(null);
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
+
         assertEquals("./data/users.dat",
                 dataReader.GetPathFromDataType(DataType.USER));
         assertEquals("./data/movies.dat",
@@ -26,28 +42,34 @@ public class DataReaderImplTest
     }
 
     @Test
-    public void TestReadTextFromFile()
+    public void TestReadTextFromFile() throws Exception
     {
         assertNull(
                 dataReader.ReadTextFromFile(null)
         );
 
         assertNull(
-                dataReader.ReadTextFromFile("")
+            dataReader.ReadTextFromFile("")
         );
 
         assertEquals(
                 "TEST",
-                dataReader.ReadTextFromFile("./data/test/test.dat")
+                dataReader.ReadTextFromFile("./data/test.dat")
         );
 
-        assertNull(
-                dataReader.ReadTextFromFile("xExRxRxOxRx")
-        );
+        try
+        {
+            dataReader.ReadTextFromFile("xExRxRxOxRx");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
     }
 
     @Test
-    public void TestGetList()
+    public void TestGetList() throws Exception
     {
         new Expectations(dataReader) {{
             dataReader.ReadTextFromFile(anyString);
@@ -72,7 +94,7 @@ public class DataReaderImplTest
     }
 
     @Test
-    public void TestToUserList()
+    public void TestToUserList() throws Exception
     {
         assertNull(
                 dataReader.ToUserList(null)
@@ -91,9 +113,8 @@ public class DataReaderImplTest
         assertEquals("TEST", result2.get(0).zipCode);
     }
 
-
     @Test
-    public void TestToMovieList()
+    public void TestToMovieList() throws Exception
     {
         assertNull(
                 dataReader.ToMovieList(null)
@@ -109,9 +130,15 @@ public class DataReaderImplTest
         assertEquals(1, result2.get(0).genres.size());
         assertEquals(Movie.Genre.ACTION, result2.get(0).genres.get(0));
 
-        assertNull(
-                dataReader.ToMovieList("0::TEST::aXcXtXiXoXn")
-        );
+        try
+        {
+            dataReader.ToMovieList("0::TEST::aXcXtXiXoXn");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
     }
 
     @Test

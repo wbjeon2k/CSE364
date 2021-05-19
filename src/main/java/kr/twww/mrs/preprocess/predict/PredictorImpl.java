@@ -11,6 +11,11 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.mllib.recommendation.ALS;
 import org.apache.spark.mllib.recommendation.MatrixFactorizationModel;
 import org.apache.spark.mllib.recommendation.Rating;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 import scala.Tuple2;
 
 import java.io.File;
@@ -21,34 +26,24 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PredictorImpl extends PredictorBase implements Predictor
+@Service
+public class PredictorImpl extends PredictorBase implements Predictor, InitializingBean, DisposableBean
 {
     private final String PATH_DATA = "./data/";
     private final String PATH_DATA_CHECKSUM = PATH_DATA + "checksum";
     private final String PATH_DATA_MODEL = PATH_DATA + "model";
 
-    private final DataReader dataReader;
+    @Autowired
+    private DataReader dataReader;
 
-    private final JavaSparkContext javaSparkContext;
+    private JavaSparkContext javaSparkContext;
     private MatrixFactorizationModel model;
 
-    public PredictorImpl( DataReader _dataReader )
-    {
-        Setup();
-
-        dataReader = _dataReader;
-
-        javaSparkContext = new JavaSparkContext(
-                "local",
-                "predict"
-        );
-
-        model = null;
-    }
-
     @Override
-    public boolean LoadModel()
+    public boolean LoadModel() throws Exception
     {
+        if ( model != null ) return true;
+
         var savedChecksum = GetSavedChecksum();
 
         if ( savedChecksum == null ) return false;
@@ -56,8 +51,6 @@ public class PredictorImpl extends PredictorBase implements Predictor
 
         var modelPath = Paths.get(PATH_DATA_MODEL);
         var modelHadoopPath = "file:///" + Paths.get(PATH_DATA_MODEL).toAbsolutePath();
-
-        model = null;
 
         if ( Files.isDirectory(modelPath) )
         {
@@ -70,7 +63,7 @@ public class PredictorImpl extends PredictorBase implements Predictor
     }
 
     @Override
-    public boolean CreateModel( ArrayList<Rating> ratingList )
+    public boolean CreateModel( ArrayList<Rating> ratingList ) throws Exception
     {
         var modelHadoopPath = "file:///" + Paths.get(PATH_DATA_MODEL).toAbsolutePath();
 
@@ -79,7 +72,8 @@ public class PredictorImpl extends PredictorBase implements Predictor
 
         System.out.println("Info: Creating model ... ");
 
-        model = ALS.train(JavaRDD.toRDD(ratingRDD), 10, 20, 0.01);
+        //model = ALS.train(JavaRDD.toRDD(ratingRDD), 10, 20, 0.01);
+        model = ALS.train(JavaRDD.toRDD(ratingRDD), 5, 5, 0.01);
 
         if ( model == null ) return false;
 
@@ -91,7 +85,7 @@ public class PredictorImpl extends PredictorBase implements Predictor
         return true;
     }
 
-    private boolean DeleteModel()
+    private void DeleteModel() throws Exception
     {
         var path = Paths.get(PATH_DATA_MODEL);
 
@@ -111,11 +105,8 @@ public class PredictorImpl extends PredictorBase implements Predictor
         }
         catch ( Exception e )
         {
-            System.out.println("Error: Delete model failed");
-            return false;
+            throw new Exception("Delete model failed");
         }
-
-        return true;
     }
 
     @Override
@@ -149,7 +140,7 @@ public class PredictorImpl extends PredictorBase implements Predictor
     {
         javaSparkContext.close();
 
-        System.setErr(System.out);
+//        System.setErr(System.out);
     }
 
     @Override
@@ -169,11 +160,18 @@ public class PredictorImpl extends PredictorBase implements Predictor
                 "off"
         );
 
-        System.err.close();
+//        System.err.close();
+
+        javaSparkContext = new JavaSparkContext(
+                "local",
+                "predict"
+        );
+
+        model = null;
     }
 
     @Override
-    public String GetChecksum()
+    public String GetChecksum() throws Exception
     {
         var checksum = new StringBuilder();
 
@@ -187,8 +185,7 @@ public class PredictorImpl extends PredictorBase implements Predictor
             }
             catch ( Exception e )
             {
-                System.out.println("Error: Get checksum failed");
-                return null;
+                throw new Exception("Get checksum failed");
             }
         }
 
@@ -196,15 +193,16 @@ public class PredictorImpl extends PredictorBase implements Predictor
     }
 
     @Override
-    public String GetSavedChecksum()
+    public String GetSavedChecksum() throws Exception
     {
         if ( !Files.exists(Paths.get(PATH_DATA_CHECKSUM)) ) return null;
 
         return dataReader.ReadTextFromFile(PATH_DATA_CHECKSUM);
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
-    public void SaveChecksum( String checksum )
+    public void SaveChecksum( String checksum ) throws Exception
     {
         try
         {
@@ -217,7 +215,19 @@ public class PredictorImpl extends PredictorBase implements Predictor
         }
         catch ( Exception e )
         {
-            System.out.println("Error: Save checksum failed");
+            throw new Exception("Save checksum failed");
         }
+    }
+
+    @Override
+    public void afterPropertiesSet()
+    {
+        Setup();
+    }
+
+    @Override
+    public void destroy()
+    {
+        Close();
     }
 }

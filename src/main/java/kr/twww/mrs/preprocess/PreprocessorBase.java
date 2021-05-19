@@ -8,12 +8,21 @@ import java.util.ArrayList;
 
 public abstract class PreprocessorBase
 {
-    public abstract ArrayList<Movie.Genre> GetCategoryList( String genreText );
+    public abstract ArrayList<Movie.Genre> GetCategoryList( String genreText ) throws Exception;
 
-    public abstract ArrayList<Score> GetScoreList(
+    public abstract Movie GetMovieFromTitle( String _title ) throws Exception;
+
+    public abstract int ConvertLimit( String _limit ) throws Exception;
+
+    public abstract ArrayList<Score> GetScoreListByUser(
             User.Gender gender,
             User.Age age,
             User.Occupation occupation,
             ArrayList<Movie.Genre> genreList
+    ) throws Exception;
+
+    public abstract ArrayList<Score> GetScoreListByMovie(
+            Movie movie,
+            int limit
     );
 }

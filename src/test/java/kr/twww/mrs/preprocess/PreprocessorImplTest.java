@@ -4,36 +4,49 @@ import kr.twww.mrs.data.DataReaderImpl;
 import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
-import kr.twww.mrs.preprocess.object.Score;
 import kr.twww.mrs.preprocess.predict.PredictorImpl;
 import mockit.Mock;
 import mockit.MockUp;
 import org.apache.spark.mllib.recommendation.Rating;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class PreprocessorImplTest
 {
-    private final PreprocessorImpl preprocessor = new PreprocessorImpl();
+    @Autowired
+    private PreprocessorImpl preprocessor;
 
     @Test
     public void TestGetRecommendList()
     {
-        var result = preprocessor.GetRecommendList(
-                null,
-                null,
-                null
-        );
+        try
+        {
+            preprocessor.GetRecommendList(
+                    null,
+                    null,
+                    null
+            );
 
-        assertNull(result);
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
     }
 
     @Test
-    public void TestGetCategoryList()
+    public void TestGetCategoryList() throws Exception
     {
         assertNull(
                 preprocessor.GetCategoryList(null)
@@ -48,49 +61,60 @@ public class PreprocessorImplTest
         assertEquals(1, result2.size());
         assertEquals(Movie.Genre.ACTION, result2.get(0));
 
-        assertNull(
-                preprocessor.GetCategoryList("TEST")
-        );
+        try
+        {
+            preprocessor.GetCategoryList("TEST");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
     }
 
     @Test
-    public void TestGetScoreList()
+    public void TestGetScoreList() throws Exception
     {
         assertNull(
-                preprocessor.GetScoreList(
+                preprocessor.GetScoreListByUser(
                         null,
                         null,
                         null,
-                        null)
+                        null
+                )
         );
 
         assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        null,
-                        null,
-                        null)
+            preprocessor.GetScoreListByUser(
+                    User.Gender.UNKNOWN,
+                    null,
+                    null,
+                    null
+            )
         );
 
         assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        null,
-                        null)
+            preprocessor.GetScoreListByUser(
+                    User.Gender.UNKNOWN,
+                    User.Age.UNKNOWN,
+                    null,
+                    null
+            )
         );
 
         assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        null)
+            preprocessor.GetScoreListByUser(
+                    User.Gender.UNKNOWN,
+                    User.Age.UNKNOWN,
+                    User.Occupation.UNKNOWN,
+                    null
+            )
         );
+
     }
 
     @Test
-    public void TestGetScoreList2()
+    public void TestGetScoreList2() throws Exception
     {
         new MockUp<DataReaderImpl>() {
             @Mock
@@ -107,11 +131,12 @@ public class PreprocessorImplTest
         };
 
         assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
+            preprocessor.GetScoreListByUser(
+                    User.Gender.UNKNOWN,
+                    User.Age.UNKNOWN,
+                    User.Occupation.UNKNOWN,
+                    new ArrayList<>()
+            )
         );
 
         new MockUp<DataReaderImpl>() {
@@ -123,11 +148,12 @@ public class PreprocessorImplTest
         };
 
         assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
+            preprocessor.GetScoreListByUser(
+                    User.Gender.UNKNOWN,
+                    User.Age.UNKNOWN,
+                    User.Occupation.UNKNOWN,
+                    new ArrayList<>()
+            )
         );
 
         new MockUp<DataReaderImpl>() {
@@ -139,16 +165,17 @@ public class PreprocessorImplTest
         };
 
         assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
+            preprocessor.GetScoreListByUser(
+                    User.Gender.UNKNOWN,
+                    User.Age.UNKNOWN,
+                    User.Occupation.UNKNOWN,
+                    new ArrayList<>()
+            )
         );
     }
 
     @Test
-    public void TestGetScoreList3()
+    public void TestGetScoreList3() throws Exception
     {
         new MockUp<DataReaderImpl>() {
             @Mock
@@ -174,11 +201,12 @@ public class PreprocessorImplTest
         };
 
         assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
+            preprocessor.GetScoreListByUser(
+                    User.Gender.UNKNOWN,
+                    User.Age.UNKNOWN,
+                    User.Occupation.UNKNOWN,
+                    new ArrayList<>()
+            )
         );
 
         new MockUp<DataReaderImpl>() {
@@ -215,13 +243,20 @@ public class PreprocessorImplTest
             }
         };
 
-        assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
-        );
+        try
+        {
+            preprocessor.GetScoreListByUser(
+                    User.Gender.UNKNOWN,
+                    User.Age.UNKNOWN,
+                    User.Occupation.UNKNOWN,
+                    new ArrayList<>()
+            );
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
 
         new MockUp<PredictorImpl>() {
             @Mock
@@ -247,11 +282,12 @@ public class PreprocessorImplTest
         };
 
         assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
+            preprocessor.GetScoreListByUser(
+                    User.Gender.UNKNOWN,
+                    User.Age.UNKNOWN,
+                    User.Occupation.UNKNOWN,
+                    new ArrayList<>()
+            )
         );
 
         new MockUp<PredictorImpl>() {
@@ -286,16 +322,17 @@ public class PreprocessorImplTest
         };
 
         assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
+            preprocessor.GetScoreListByUser(
+                    User.Gender.UNKNOWN,
+                    User.Age.UNKNOWN,
+                    User.Occupation.UNKNOWN,
+                    new ArrayList<>()
+            )
         );
     }
 
     @Test
-    public void TestGetScoreList4()
+    public void TestGetScoreList4() throws Exception
     {
         new MockUp<DataReaderImpl>() {
             @Mock
@@ -341,11 +378,12 @@ public class PreprocessorImplTest
         };
 
         assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
+            preprocessor.GetScoreListByUser(
+                    User.Gender.UNKNOWN,
+                    User.Age.UNKNOWN,
+                    User.Occupation.UNKNOWN,
+                    new ArrayList<>()
+            )
         );
 
         new MockUp<DataReaderImpl>() {
@@ -394,11 +432,12 @@ public class PreprocessorImplTest
         };
 
         assertNotNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
+            preprocessor.GetScoreListByUser(
+                    User.Gender.UNKNOWN,
+                    User.Age.UNKNOWN,
+                    User.Occupation.UNKNOWN,
+                    new ArrayList<>()
+            )
         );
 
         new MockUp<DataReaderImpl>() {
@@ -410,26 +449,28 @@ public class PreprocessorImplTest
         };
 
         assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
+            preprocessor.GetScoreListByUser(
+                    User.Gender.UNKNOWN,
+                    User.Age.UNKNOWN,
+                    User.Occupation.UNKNOWN,
+                    new ArrayList<>()
+            )
         );
     }
 
     @Test
-    public void TestGetScoreList5()
+    public void TestGetScoreList5() throws Exception
     {
         var genreList = new ArrayList<Movie.Genre>();
         genreList.add(Movie.Genre.ACTION);
         genreList.add(Movie.Genre.COMEDY);
 
-        var result = preprocessor.GetScoreList(
+        var result = preprocessor.GetScoreListByUser(
                 User.Gender.FEMALE,
                 User.Age.BETWEEN_25_34,
                 User.Occupation.COLLEGE_OR_GRAD_STUDENT,
-                genreList);
+                genreList
+        );
 
         assertNotNull(result);
         assertEquals(10, result.size());
@@ -484,12 +525,12 @@ public class PreprocessorImplTest
                             preprocessor,
                             ratingList,
                             filteredUserList,
-                            filteredMovieList)
+                            filteredMovieList
+                    )
             );
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
             fail();
         }
     }
@@ -579,7 +620,6 @@ public class PreprocessorImplTest
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
             fail();
         }
     }
@@ -607,7 +647,6 @@ public class PreprocessorImplTest
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
             fail();
         }
     }
@@ -640,12 +679,12 @@ public class PreprocessorImplTest
                             preprocessor,
                             new ArrayList<>(),
                             filteredMovieList,
-                            ratingList)
+                            ratingList
+                    )
             );
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
             fail();
         }
     }

@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 public abstract class DataReaderBase
 {
-    public abstract ArrayList<User> ToUserList( String textList );
-    public abstract ArrayList<Movie> ToMovieList( String textList );
+    public abstract ArrayList<User> ToUserList( String textList ) throws Exception;
+    public abstract ArrayList<Movie> ToMovieList( String textList ) throws Exception;
     public abstract ArrayList<Rating> ToRatingList( String textList );
     public abstract ArrayList<Link> ToLinkList( String textList );
 }

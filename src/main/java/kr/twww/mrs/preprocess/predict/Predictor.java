@@ -13,14 +13,14 @@ public interface Predictor
      * 저장된 모델을 불러온다.
      * @return 성공 여부
      */
-    boolean LoadModel();
+    boolean LoadModel() throws Exception;
 
     /**
      * 모델을 새로 생성하고 저장한다.
      * @param ratingList 학습시킬 평가 리스트
      * @return 성공 여부
      */
-    boolean CreateModel( ArrayList<Rating> ratingList );
+    boolean CreateModel( ArrayList<Rating> ratingList ) throws Exception;
 
     /**
      * 불러오거나 생성한 모델을 사용하여 예측한다.

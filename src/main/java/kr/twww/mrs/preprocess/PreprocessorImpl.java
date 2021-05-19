@@ -1,13 +1,13 @@
 package kr.twww.mrs.preprocess;
 
 import kr.twww.mrs.data.DataReader;
-import kr.twww.mrs.data.DataReaderImpl;
 import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
 import kr.twww.mrs.preprocess.object.Score;
 import kr.twww.mrs.preprocess.predict.Predictor;
-import kr.twww.mrs.preprocess.predict.PredictorImpl;
 import org.apache.spark.mllib.recommendation.Rating;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,33 +15,33 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 {
-    private final DataReader dataReader;
+    @Autowired
+    private DataReader dataReader;
+
+    @Autowired
+    private Predictor predictor;
 
     private final int MAX_PAIR_COUNT = 624000;
     private final int MIN_RATING_COUNT = 10;
 
-    public PreprocessorImpl()
-    {
-        dataReader = new DataReaderImpl();
-    }
-
     @Override
-    public ArrayList<Score> GetRecommendList( String _gender, String _age, String _occupation )
+    public ArrayList<Score> GetRecommendList( String _gender, String _age, String _occupation ) throws Exception
     {
         return GetRecommendList(_gender, _age, _occupation, "");
     }
 
     @Override
-    public ArrayList<Score> GetRecommendList( String _gender, String _age, String _occupation, String _categories )
+    public ArrayList<Score> GetRecommendList( String _gender, String _age, String _occupation, String _categories ) throws Exception
     {
         var gender = User.ConvertGender(_gender);
         var age = User.ConvertAge(_age);
         var occupation = User.ConvertOccupationByText(_occupation);
         var categoryList = GetCategoryList(_categories);
 
-        return GetScoreList(
+        return GetScoreListByUser(
                 gender,
                 age,
                 occupation,
@@ -50,7 +50,16 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     }
 
     @Override
-    public ArrayList<Movie.Genre> GetCategoryList( String genreText )
+    public ArrayList<Score> GetRecommendList( String _title, String _limit ) throws Exception
+    {
+        var title = GetMovieFromTitle(_title);
+        var limit = ConvertLimit(_limit);
+
+        return null;
+    }
+
+    @Override
+    public ArrayList<Movie.Genre> GetCategoryList( String genreText ) throws Exception
     {
         if ( genreText == null ) return null;
         if ( genreText.isEmpty() ) return new ArrayList<>();
@@ -61,23 +70,65 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 
         for ( var i : splitText )
         {
-            var genre = Movie.ConvertGenre(i);
-
-            if ( genre == null ) return null;
-
-            result.add(genre);
+            result.add(Movie.ConvertGenre(i));
         }
 
         return result;
     }
 
     @Override
-    public ArrayList<Score> GetScoreList(
+    public Movie GetMovieFromTitle( String _title ) throws Exception
+    {
+        if ( _title == null )
+        {
+            throw new Exception("Invalid title string");
+        }
+
+        var result = dataReader.GetMovieList().stream().filter(movie -> {
+            var a = movie.title
+                    .toLowerCase()
+                    .replaceAll("\\s+", "");
+
+            var b = _title
+                    .toLowerCase()
+                    .replaceAll("\\s+", "");
+
+            return a.equals(b);
+        }).findFirst().orElse(null);
+
+        if ( result == null )
+        {
+            throw new Exception("Cannot find movie title");
+        }
+
+        return result;
+    }
+
+    @Override
+    public int ConvertLimit( String _limit ) throws Exception
+    {
+        if ( _limit == null )
+        {
+            throw new Exception("Invalid limit string");
+        }
+
+        var result = Integer.parseInt(_limit);
+
+        if ( !Integer.toString(result).equals(_limit) )
+        {
+            throw new Exception("Invalid limit string");
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<Score> GetScoreListByUser(
             User.Gender gender,
             User.Age age,
             User.Occupation occupation,
             ArrayList<Movie.Genre> genreList
-    )
+    ) throws Exception
     {
         if ( gender == null ) return null;
         if ( age == null ) return null;
@@ -138,16 +189,13 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         if ( scoreList == null ) return null;
 
         // 6. 내림차순 정렬 및 상위 10개
-        scoreList.sort((o1, o2) -> Double.compare(o2.score, o1.score));
+        return SortingTopList(scoreList);
+    }
 
-        var count = scoreList.size();
-
-        if ( count > 10 )
-        {
-            count = 10;
-        }
-
-        return new ArrayList<>(scoreList.subList(0, count));
+    @Override
+    public ArrayList<Score> GetScoreListByMovie( Movie movie, int limit )
+    {
+        return null;
     }
 
     private List<User> GetFilteredUserList(
@@ -295,7 +343,8 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
                     age,
                     occupation,
                     userList,
-                    unknownCount - 1);
+                    unknownCount - 1
+            );
         }
 
         return result;
@@ -305,36 +354,26 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             List<User> filteredUserList,
             List<Movie> filteredMovieList,
             ArrayList<Rating> ratingList
-    )
+    ) throws Exception
     {
-        Predictor predictor = new PredictorImpl(dataReader);
-
         if ( !predictor.LoadModel() )
         {
             if ( !predictor.CreateModel(ratingList) )
             {
-                System.out.println("Error: Create model failed");
-
-                predictor.Close();
-                return null;
+                throw new Exception("Create model failed");
             }
         }
 
-        var predictList =
-                predictor.GetPredictList(
-                        filteredUserList,
-                        filteredMovieList
-                );
-
-        predictor.Close();
-
-        return predictList;
+        return predictor.GetPredictList(
+                filteredUserList,
+                filteredMovieList
+        );
     }
 
     private ArrayList<Score> ToScoreList(
             List<Movie> filteredMovieList,
             List<Rating> predictList
-    )
+    ) throws Exception
     {
         if ( filteredMovieList.isEmpty() ) return null;
 
@@ -371,6 +410,22 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         });
 
         return scoreList;
+    }
+
+    private ArrayList<Score> SortingTopList( ArrayList<Score> scoreList )
+    {
+        scoreList.sort(
+                (o1, o2) -> Double.compare(o2.score, o1.score)
+        );
+
+        var count = scoreList.size();
+
+        if ( count > 10 )
+        {
+            count = 10;
+        }
+
+        return new ArrayList<>(scoreList.subList(0, count));
     }
 }
 

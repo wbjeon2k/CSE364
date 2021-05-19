@@ -53,7 +53,7 @@ public class User
     public Occupation occupation;
     public String zipCode;
 
-    public static Gender ConvertGender( char _gender )
+    public static Gender ConvertGender( char _gender ) throws Exception
     {
         switch ( _gender )
         {
@@ -64,16 +64,14 @@ public class User
                 return Gender.FEMALE;
         }
 
-        System.out.println("Error: Invalid gender character");
-        return null;
+        throw new Exception("Invalid gender character");
     }
 
-    public static Gender ConvertGender( String _gender )
+    public static Gender ConvertGender( String _gender ) throws Exception
     {
         if ( _gender == null )
         {
-            System.out.println("Error: Invalid gender string");
-            return null;
+            throw new Exception("Invalid gender string");
         }
 
         if ( _gender.isEmpty() )
@@ -83,8 +81,7 @@ public class User
 
         if ( _gender.length() != 1 )
         {
-            System.out.println("Error: Invalid gender string");
-            return null;
+            throw new Exception("Invalid gender string");
         }
 
         return ConvertGender(_gender.charAt(0));
@@ -122,12 +119,11 @@ public class User
         }
     }
 
-    public static Age ConvertAge( String _age )
+    public static Age ConvertAge( String _age ) throws Exception
     {
         if ( _age == null )
         {
-            System.out.println("Error: Invalid age string");
-            return null;
+            throw new Exception("Invalid age string");
         }
 
         if ( _age.isEmpty() )
@@ -141,10 +137,8 @@ public class User
         }
         catch ( Exception e )
         {
-            System.out.println("Error: Invalid age string");
+            throw new Exception("Invalid age string");
         }
-
-        return null;
     }
 
     public static Occupation ConvertOccupationByIndex( int _occupation )
@@ -152,12 +146,11 @@ public class User
         return Occupation.values()[_occupation];
     }
 
-    public static Occupation ConvertOccupationByText( String _occupation )
+    public static Occupation ConvertOccupationByText( String _occupation ) throws Exception
     {
         if ( _occupation == null )
         {
-            System.out.println("Error: Invalid occupation string");
-            return null;
+            throw new Exception("Invalid occupation string");
         }
 
         if ( _occupation.isEmpty() )
@@ -195,7 +188,6 @@ public class User
             }
         }
 
-        System.out.println("Error: Invalid occupation string");
-        return null;
+        throw new Exception("Invalid occupation string");
     }
 }

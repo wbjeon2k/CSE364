@@ -5,6 +5,7 @@ import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.spark.mllib.recommendation.Rating;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -12,13 +13,14 @@ import java.util.ArrayList;
 
 import static kr.twww.mrs.data.DataType.*;
 
+@Service
 public class DataReaderImpl extends DataReaderBase implements DataReader
 {
     private final String PATH_DATA = "./data/";
     private final String SUFFIX = "s.dat";
 
     @Override
-    public String GetPathFromDataType( DataType dataType )
+    public String GetPathFromDataType( DataType dataType ) throws Exception
     {
         if ( dataType != null )
         {
@@ -26,12 +28,12 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             return PATH_DATA + dataType.name().toLowerCase() + SUFFIX;
         }
 
-        System.out.println("Error: Invalid data type");
-        return null;
+        throw new Exception("Invalid data type");
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
-    public String ReadTextFromFile( String path )
+    public String ReadTextFromFile( String path ) throws Exception
     {
         if ( path == null ) return null;
         if ( path.isEmpty() ) return null;
@@ -54,14 +56,12 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         }
         catch ( IOException e )
         {
-            System.out.println("Error: Reading file failed");
+            throw new Exception("Reading file failed");
         }
-
-        return null;
     }
 
     @Override
-    public ArrayList<User> GetUserList()
+    public ArrayList<User> GetUserList() throws Exception
     {
         var path = GetPathFromDataType(USER);
         var text = ReadTextFromFile(path);
@@ -70,7 +70,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     }
 
     @Override
-    public ArrayList<Movie> GetMovieList()
+    public ArrayList<Movie> GetMovieList() throws Exception
     {
         var path = GetPathFromDataType(MOVIE);
         var text = ReadTextFromFile(path);
@@ -79,7 +79,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     }
 
     @Override
-    public ArrayList<Rating> GetRatingList()
+    public ArrayList<Rating> GetRatingList() throws Exception
     {
         var path = GetPathFromDataType(RATING);
         var text = ReadTextFromFile(path);
@@ -88,7 +88,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     }
 
     @Override
-    public ArrayList<Link> GetLinkList()
+    public ArrayList<Link> GetLinkList() throws Exception
     {
         var path = GetPathFromDataType(LINK);
         var text = ReadTextFromFile(path);
@@ -97,7 +97,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     }
 
     @Override
-    public ArrayList<User> ToUserList( String text )
+    public ArrayList<User> ToUserList( String text ) throws Exception
     {
         if ( text == null ) return null;
         if ( text.isEmpty() ) return new ArrayList<>();
@@ -124,7 +124,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     }
 
     @Override
-    public ArrayList<Movie> ToMovieList( String text )
+    public ArrayList<Movie> ToMovieList( String text ) throws Exception
     {
         if ( text == null ) return null;
         if ( text.isEmpty() ) return new ArrayList<>();
@@ -140,12 +140,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             var newMovie = new Movie();
             newMovie.movieId = Integer.parseInt(splitData[0]);
             newMovie.title = splitData[1];
-
-            ArrayList<Movie.Genre> genreList = GetGenreList(splitData[2]);
-
-            if ( genreList == null ) return null;
-
-            newMovie.genres = genreList;
+            newMovie.genres = GetGenreList(splitData[2]);
 
             result.add(newMovie);
         }
@@ -153,18 +148,14 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         return result;
     }
 
-    private ArrayList<Movie.Genre> GetGenreList( String genresText )
+    private ArrayList<Movie.Genre> GetGenreList( String genresText ) throws Exception
     {
         var genreList = new ArrayList<Movie.Genre>();
         var splitGenre = genresText.split("\\|");
 
-        for( String j : splitGenre )
+        for ( String j : splitGenre )
         {
-            var genre = Movie.ConvertGenre(j);
-
-            if ( genre == null ) return null;
-
-            genreList.add(genre);
+            genreList.add(Movie.ConvertGenre(j));
         }
 
         return genreList;
