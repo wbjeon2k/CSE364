@@ -75,17 +75,6 @@ public class RecommendationControllerTest
                         .status()
                         .isOk()
         );
-
-        mvc.perform(
-                MockMvcRequestBuilders
-                        .get("/users/recommendations")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"genre\": \"\"}")
-        ).andExpect(
-                MockMvcResultMatchers
-                        .status()
-                        .isOk()
-        );
     }
 
     @Test
@@ -119,28 +108,6 @@ public class RecommendationControllerTest
                         .get("/movies/recommendations")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}")
-        ).andExpect(
-                MockMvcResultMatchers
-                        .status()
-                        .isOk()
-        );
-
-        mvc.perform(
-                MockMvcRequestBuilders
-                        .get("/movies/recommendations")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"limit\": \"\"}")
-        ).andExpect(
-                MockMvcResultMatchers
-                        .status()
-                        .isOk()
-        );
-
-        mvc.perform(
-                MockMvcRequestBuilders
-                        .get("/movies/recommendations")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"limit\": \"10\"}")
         ).andExpect(
                 MockMvcResultMatchers
                         .status()

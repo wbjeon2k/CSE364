@@ -23,11 +23,6 @@ public class RecommendationController
             @RequestBody RequestByUser requestByUser
     ) throws Exception
     {
-        if ( requestByUser.getGenre() == null )
-        {
-            requestByUser.setGender("");
-        }
-
         var result = preprocessor.GetRecommendList(
                 requestByUser.getGender(),
                 requestByUser.getAge(),
@@ -49,11 +44,6 @@ public class RecommendationController
             @RequestBody RequestByMovie requestByMovie
     ) throws Exception
     {
-        if ( requestByMovie.getLimit() != null && requestByMovie.getLimit().isEmpty() )
-        {
-            requestByMovie.setLimit("10");
-        }
-
         var result = preprocessor.GetRecommendList(
                 requestByMovie.getTitle(),
                 requestByMovie.getLimit()

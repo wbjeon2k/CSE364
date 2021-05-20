@@ -88,11 +88,27 @@ public class PreprocessorImplTest
     @Test
     public void TestGetCategoryList() throws Exception
     {
-        var result = preprocessor.GetCategoryList("");
+        try
+        {
+            preprocessor.GetCategoryList(
+                    null
+            );
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
+
+        var result = preprocessor.GetCategoryList(
+                ""
+        );
         assertNotNull(result);
         assertTrue(result.isEmpty());
 
-        var result2 = preprocessor.GetCategoryList("action");
+        var result2 = preprocessor.GetCategoryList(
+                "action"
+        );
         assertNotNull(result2);
         assertEquals(1, result2.size());
         assertEquals(Movie.Genre.ACTION, result2.get(0));

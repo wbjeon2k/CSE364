@@ -79,7 +79,15 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     @Override
     public ArrayList<Movie.Genre> GetCategoryList( String genreText ) throws Exception
     {
-        if ( genreText.isEmpty() ) return new ArrayList<>();
+        if ( genreText == null )
+        {
+            throw new Exception("Invalid genre string");
+        }
+
+        if ( genreText.isEmpty() )
+        {
+            return new ArrayList<>();
+        }
 
         var result = new ArrayList<Movie.Genre>();
 
@@ -135,7 +143,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 
             if ( result <= 0 )
             {
-                throw new Exception("Limit must be greater than zero");
+                throw new Exception("Limit must be positive integer greater than zero");
             }
 
             return result;

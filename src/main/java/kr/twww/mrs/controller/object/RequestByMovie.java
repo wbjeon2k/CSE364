@@ -3,7 +3,7 @@ package kr.twww.mrs.controller.object;
 public class RequestByMovie
 {
     private String title;
-    private String limit;
+    private String limit = "10";
 
     public RequestByMovie() {
     }
