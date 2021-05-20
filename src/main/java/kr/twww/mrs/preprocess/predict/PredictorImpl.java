@@ -165,6 +165,8 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
                 "predict"
         );
 
+        javaSparkContext.setLogLevel("OFF");
+
         model = null;
     }
 
