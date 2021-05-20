@@ -163,7 +163,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         }
 
             return result;
-        }
+    }
 
     private ArrayList<Movie.Genre> GetGenreList( String genresText ) throws Exception
     {
@@ -216,7 +216,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         }
 
             return result;
-        }
+    }
 
     @Override
     public ArrayList<Link> ToLinkList( String text ) throws Exception

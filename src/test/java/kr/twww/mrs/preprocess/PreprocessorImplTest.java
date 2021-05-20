@@ -2,6 +2,10 @@ package kr.twww.mrs.preprocess;
 
 import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
+import kr.twww.mrs.preprocess.object.Score;
+import kr.twww.mrs.preprocess.predict.PredictorImpl;
+import mockit.Mock;
+import mockit.MockUp;
 import org.apache.spark.mllib.recommendation.Rating;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +26,7 @@ public class PreprocessorImplTest
     private PreprocessorImpl preprocessor;
 
     @Test
-    public void TestGetRecommendList()
+    public void TestGetRecommendList() throws Exception
     {
         try
         {
@@ -38,6 +42,47 @@ public class PreprocessorImplTest
         {
             assertTrue(true);
         }
+
+        new MockUp<PreprocessorImpl>() {
+            @Mock
+            public ArrayList<Score> GetScoreListByUser(
+                    User.Gender gender,
+                    User.Age age,
+                    User.Occupation occupation,
+                    ArrayList<Movie.Genre> genreList
+            )
+            {
+                return new ArrayList<>();
+            }
+        };
+
+        var result = preprocessor.GetRecommendList(
+                "",
+                "",
+                ""
+        );
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+
+        new MockUp<PreprocessorImpl>() {
+            @Mock
+            public ArrayList<Score> GetScoreListByMovie(
+                    Movie movie,
+                    int limit
+            )
+            {
+                return new ArrayList<>();
+            }
+        };
+
+        var result2 = preprocessor.GetRecommendList(
+                "toystory(1995)",
+                "10"
+        );
+
+        assertNotNull(result2);
+        assertTrue(result2.isEmpty());
     }
 
     @Test
@@ -64,6 +109,77 @@ public class PreprocessorImplTest
     }
 
     @Test
+    public void TestGetMovieFromTitle() throws Exception
+    {
+        try
+        {
+            preprocessor.GetMovieFromTitle(null);
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
+
+        try
+        {
+            preprocessor.GetMovieFromTitle("");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
+
+        var result = preprocessor.GetMovieFromTitle("toystory(1995)");
+
+        assertNotNull(result);
+        assertEquals(
+                "Toy Story (1995)",
+                result.title
+        );
+    }
+
+    @Test
+    public void TestConvertLimit() throws Exception
+    {
+        try
+        {
+            preprocessor.ConvertLimit(null);
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
+
+        try
+        {
+            preprocessor.ConvertLimit("one");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
+
+        try
+        {
+            preprocessor.ConvertLimit("-1");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
+
+        assertEquals(
+                123,
+                preprocessor.ConvertLimit("123")
+        );
+    }
+
+    @Test
     public void TestGetScoreListByUser() throws Exception
     {
         var genreList = new ArrayList<Movie.Genre>();
@@ -79,15 +195,41 @@ public class PreprocessorImplTest
 
         assertNotNull(result);
         assertEquals(10, result.size());
-        assertTrue(result.get(0).score >= result.get(1).score);
-        assertTrue(result.get(1).score >= result.get(2).score);
-        assertTrue(result.get(2).score >= result.get(3).score);
-        assertTrue(result.get(3).score >= result.get(4).score);
-        assertTrue(result.get(4).score >= result.get(5).score);
-        assertTrue(result.get(5).score >= result.get(6).score);
-        assertTrue(result.get(6).score >= result.get(7).score);
-        assertTrue(result.get(7).score >= result.get(8).score);
-        assertTrue(result.get(8).score >= result.get(9).score);
+
+        for ( var i = 0; i < 9; ++i )
+        {
+            assertTrue(
+                    result.get(i).score
+                            >= result.get(i + 1).score
+            );
+        }
+    }
+
+    @Test
+    public void TestGetScoreListByMovie() throws Exception
+    {
+        var movie = new Movie();
+        movie.movieId = 1;
+        movie.title = "Toy Story (1995)";
+        movie.genres = new ArrayList<>();
+        movie.genres.add(Movie.Genre.ANIMATION);
+        movie.genres.add(Movie.Genre.CHILDREN_S);
+        movie.genres.add(Movie.Genre.COMEDY);
+
+        var result = preprocessor.GetScoreListByMovie(
+                movie,
+                10
+        );
+
+        assertNotNull(result);
+        assertEquals(10, result.size());
+
+        result.forEach(
+                score -> assertNotEquals(
+                    movie.movieId,
+                    score.movie.movieId
+                )
+        );
     }
 
     @Test
@@ -130,6 +272,38 @@ public class PreprocessorImplTest
                             preprocessor,
                             ratingList,
                             filteredUserList,
+                            filteredMovieList
+                    )
+            );
+        }
+        catch ( Exception e )
+        {
+            fail();
+        }
+    }
+
+    @Test
+    public void TestSelectPredict()
+    {
+        try
+        {
+            var method = PreprocessorImpl
+                    .class
+                    .getDeclaredMethod("SelectPredict", List.class, List.class);
+            method.setAccessible(true);
+
+            var predictList = new ArrayList<Rating>();
+            predictList.add(new Rating(1, 0, 0.0));
+            predictList.add(new Rating(2, 0, 0.0));
+
+            var filteredMovieList = new ArrayList<Movie>();
+            filteredMovieList.add(new Movie());
+
+            assertEquals(
+                    predictList,
+                    method.invoke(
+                            preprocessor,
+                            predictList,
                             filteredMovieList
                     )
             );
@@ -230,33 +404,6 @@ public class PreprocessorImplTest
     }
 
     @Test
-    public void TestGetFilteredUserStream()
-    {
-        try
-        {
-            var method = PreprocessorImpl
-                    .class
-                    .getDeclaredMethod("GetFilteredUserStream", User.Gender.class, User.Age.class, User.Occupation.class, List.class, int.class);
-            method.setAccessible(true);
-
-            assertNotNull(
-                    method.invoke(
-                            preprocessor,
-                            User.Gender.UNKNOWN,
-                            User.Age.UNKNOWN,
-                            User.Occupation.UNKNOWN,
-                            new ArrayList<>(),
-                            3
-                    )
-            );
-        }
-        catch ( Exception e )
-        {
-            fail();
-        }
-    }
-
-    @Test
     public void TestGetFilteredMovieList()
     {
         try
@@ -285,6 +432,113 @@ public class PreprocessorImplTest
                             new ArrayList<>(),
                             filteredMovieList,
                             ratingList
+                    )
+            );
+
+            try
+            {
+                method.invoke(
+                        preprocessor,
+                        new ArrayList<>(),
+                        filteredMovieList,
+                        new ArrayList<>()
+                );
+                fail();
+            }
+            catch ( Exception exception )
+            {
+                assertTrue(true);
+            }
+        }
+        catch ( Exception e )
+        {
+            fail();
+        }
+    }
+
+    @Test
+    public void TestGetFilteredUserStream()
+    {
+        try
+        {
+            var method = PreprocessorImpl
+                    .class
+                    .getDeclaredMethod("GetFilteredUserStream", User.Gender.class, User.Age.class, User.Occupation.class, List.class, int.class);
+            method.setAccessible(true);
+
+            assertNotNull(
+                    method.invoke(
+                            preprocessor,
+                            User.Gender.UNKNOWN,
+                            User.Age.UNKNOWN,
+                            User.Occupation.UNKNOWN,
+                            new ArrayList<>(),
+                            3
+                    )
+            );
+        }
+        catch ( Exception e )
+        {
+            fail();
+        }
+    }
+
+    @Test
+    public void TestGetPredictList()
+    {
+        new MockUp<PredictorImpl>() {
+            @Mock
+            public boolean LoadModel()
+            {
+                return false;
+            }
+
+            @Mock
+            public boolean CreateModel(
+                    ArrayList<Rating> ratingList
+            )
+            {
+                return false;
+            }
+        };
+
+        try
+        {
+            var method = PreprocessorImpl
+                    .class
+                    .getDeclaredMethod("GetPredictList", List.class, List.class, ArrayList.class);
+            method.setAccessible(true);
+
+            assertNotNull(
+                    method.invoke(
+                            preprocessor,
+                            null,
+                            null,
+                            null
+                    )
+            );
+            fail();
+        }
+        catch ( Exception e )
+        {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void TestSortingTopList()
+    {
+        try
+        {
+            var method = PreprocessorImpl
+                    .class
+                    .getDeclaredMethod("SortingTopList", ArrayList.class);
+            method.setAccessible(true);
+
+            assertNotNull(
+                    method.invoke(
+                            preprocessor,
+                            new ArrayList<>()
                     )
             );
         }

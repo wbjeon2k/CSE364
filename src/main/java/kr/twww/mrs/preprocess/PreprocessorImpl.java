@@ -27,7 +27,11 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     private final int MIN_RATING_COUNT = 10;
 
     @Override
-    public ArrayList<Score> GetRecommendList( String _gender, String _age, String _occupation ) throws Exception
+    public ArrayList<Score> GetRecommendList(
+            String _gender,
+            String _age,
+            String _occupation
+    ) throws Exception
     {
         return GetRecommendList(
                 _gender,
@@ -38,7 +42,12 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     }
 
     @Override
-    public ArrayList<Score> GetRecommendList( String _gender, String _age, String _occupation, String _categories ) throws Exception
+    public ArrayList<Score> GetRecommendList(
+            String _gender,
+            String _age,
+            String _occupation,
+            String _categories
+    ) throws Exception
     {
         var gender = User.ConvertGender(_gender);
         var age = User.ConvertAge(_age);
@@ -54,7 +63,10 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     }
 
     @Override
-    public ArrayList<Score> GetRecommendList( String _title, String _limit ) throws Exception
+    public ArrayList<Score> GetRecommendList(
+            String _title,
+            String _limit
+    ) throws Exception
     {
         var title = GetMovieFromTitle(_title);
         var limit = ConvertLimit(_limit);
@@ -118,19 +130,21 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             throw new Exception("Invalid limit string");
         }
 
-        var result = Integer.parseInt(_limit);
+        try
+        {
+            var result = Integer.parseInt(_limit);
 
-        if ( !Integer.toString(result).equals(_limit) )
+            if ( result <= 0 )
+            {
+                throw new Exception("Limit must be greater than zero");
+            }
+
+            return result;
+        }
+        catch ( Exception exception )
         {
             throw new Exception("Invalid limit string");
         }
-
-        if ( result <= 0 )
-        {
-            throw new Exception("Invalid limit string");
-        }
-
-        return result;
     }
 
     @Override
