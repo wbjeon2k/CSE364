@@ -40,8 +40,8 @@ public class PredictorImplTest
     @Before
     public void setUp()
     {
-        predictor.Close();
-        predictor.Setup();
+        predictor.destroy();
+        predictor.afterPropertiesSet();
     }
 
     @Test
