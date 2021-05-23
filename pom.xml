@@ -262,6 +262,8 @@
                 <version>2.22.2</version>
                 <configuration>
                     <argLine>
+                        -Xms1g
+                        -Xmx4g
                         -javaagent:${settings.localRepository}/org/jmockit/jmockit/${jmockit.version}/jmockit-${jmockit.version}.jar
                         -javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/${jacoco.version}/org.jacoco.agent-${jacoco.version}-runtime.jar=destfile=${project.build.directory}/jacoco.exec
                     </argLine>
