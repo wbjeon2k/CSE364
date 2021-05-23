@@ -30,6 +30,7 @@ import java.util.List;
 public class PredictorImpl extends PredictorBase implements Predictor, InitializingBean, DisposableBean
 {
     private final String PATH_DATA = "./data/";
+    private final String PATH_DATA_CHECKPOINT = PATH_DATA + "checkpoint";
     private final String PATH_DATA_CHECKSUM = PATH_DATA + "checksum";
     private final String PATH_DATA_MODEL = PATH_DATA + "model";
 
@@ -166,6 +167,7 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
         );
 
         javaSparkContext.setLogLevel("OFF");
+        javaSparkContext.setCheckpointDir(PATH_DATA_CHECKPOINT);
 
         model = null;
     }
