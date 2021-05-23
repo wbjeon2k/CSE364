@@ -25,7 +25,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings({"SpringJavaAutowiredFieldsWarningInspection", "FieldCanBeLocal"})
+@SuppressWarnings({"SpringJavaAutowiredFieldsWarningInspection", "FieldCanBeLocal", "ResultOfMethodCallIgnored"})
 @Service
 public class PredictorImpl extends PredictorBase implements Predictor, InitializingBean, DisposableBean
 {
@@ -202,7 +202,6 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
         return dataReader.ReadTextFromFile(PATH_DATA_CHECKSUM);
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     public void SaveChecksum( String checksum ) throws Exception
     {
