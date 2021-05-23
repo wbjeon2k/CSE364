@@ -20,8 +20,12 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
     @RequestMapping("/error")
     public Error HandleError( HttpServletRequest request )
     {
-        var errorStatusCode = (Integer)request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-        var errorMessage = HttpStatus.valueOf(errorStatusCode).getReasonPhrase();
+        var errorStatusCode = (Integer)request
+                .getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+
+        var errorMessage = HttpStatus
+                .valueOf(errorStatusCode)
+                .getReasonPhrase();
 
         return new Error(
                 errorStatusCode,

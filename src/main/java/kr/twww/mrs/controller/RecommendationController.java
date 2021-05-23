@@ -24,20 +24,23 @@ public class RecommendationController
             @RequestBody RequestByUser requestByUser
     ) throws Exception
     {
-        var result = preprocessor.GetRecommendList(
-                requestByUser.getGender(),
-                requestByUser.getAge(),
-                requestByUser.getOccupation(),
-                requestByUser.getGenre()
-        );
+        var result = preprocessor
+                .GetRecommendList(
+                        requestByUser.getGender(),
+                        requestByUser.getAge(),
+                        requestByUser.getOccupation(),
+                        requestByUser.getGenre()
+                );
 
-        return (ArrayList<Recommendation>)result.stream().map(
-                score -> new Recommendation(
-                        score.movie.title,
-                        score.movie.GetGenresText(),
-                        score.link.GetURL()
-                )
-        ).collect(Collectors.toList());
+        return (ArrayList<Recommendation>)result
+                .stream()
+                .map(
+                        score -> new Recommendation(
+                                score.movie.title,
+                                score.movie.GetGenresText(),
+                                score.link.GetURL()
+                        )
+                ).collect(Collectors.toList());
     }
 
     @GetMapping("/movies/recommendations")
@@ -45,17 +48,20 @@ public class RecommendationController
             @RequestBody RequestByMovie requestByMovie
     ) throws Exception
     {
-        var result = preprocessor.GetRecommendList(
-                requestByMovie.getTitle(),
-                requestByMovie.getLimit()
-        );
+        var result = preprocessor
+                .GetRecommendList(
+                        requestByMovie.getTitle(),
+                        requestByMovie.getLimit()
+                );
 
-        return (ArrayList<Recommendation>)result.stream().map(
-                score -> new Recommendation(
-                        score.movie.title,
-                        score.movie.GetGenresText(),
-                        score.link.GetURL()
-                )
-        ).collect(Collectors.toList());
+        return (ArrayList<Recommendation>)result
+                .stream()
+                .map(
+                        score -> new Recommendation(
+                                score.movie.title,
+                                score.movie.GetGenresText(),
+                                score.link.GetURL()
+                        )
+                ).collect(Collectors.toList());
     }
 }
