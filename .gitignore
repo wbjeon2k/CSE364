@@ -1,5 +1,6 @@
 /.idea/
 /target/
 /*.iml
+/data/checkpoint/
 /data/checksum
 /data/model/

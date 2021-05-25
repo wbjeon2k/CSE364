@@ -10,8 +10,12 @@ import org.apache.spark.mllib.recommendation.ALS;
 import org.apache.spark.mllib.recommendation.MatrixFactorizationModel;
 import org.apache.spark.mllib.recommendation.Rating;
 import org.apache.spark.rdd.RDD;
-import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import scala.Tuple2;
 
 import java.io.File;
@@ -25,18 +29,23 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
+@SuppressWarnings("ConstantConditions")
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class PredictorImplTest
 {
-    private final PredictorImpl predictor = new PredictorImpl(new DataReaderImpl());
+    @Autowired
+    private PredictorImpl predictor;
 
-    @After
-    public void tearDown()
+    @Before
+    public void setUp()
     {
-        predictor.Close();
+        predictor.destroy();
+        predictor.afterPropertiesSet();
     }
 
     @Test
-    public void TestLoadModel()
+    public void TestLoadModel() throws Exception
     {
         new MockUp<PredictorImpl>() {
             @Mock
@@ -103,8 +112,6 @@ public class PredictorImplTest
             }
         };
 
-        assertTrue(predictor.LoadModel());
-
         new MockUp<MatrixFactorizationModel>() {
             @Mock
             public MatrixFactorizationModel load( SparkContext var0, String var1 )
@@ -114,10 +121,21 @@ public class PredictorImplTest
         };
 
         assertFalse(predictor.LoadModel());
+
+        new MockUp<MatrixFactorizationModel>() {
+            @Mock
+            public MatrixFactorizationModel load( SparkContext var0, String var1 )
+            {
+                return new MatrixFactorizationModel(0, null, null);
+            }
+        };
+
+        assertTrue(predictor.LoadModel());
+        assertTrue(predictor.LoadModel());
     }
 
     @Test
-    public void TestCreateModel()
+    public void TestCreateModel() throws Exception
     {
         new MockUp<MatrixFactorizationModel>() {
             @Mock
@@ -179,7 +197,7 @@ public class PredictorImplTest
                 }
             };
 
-            assertEquals(true, method.invoke(predictor));
+            method.invoke(predictor);
 
             new MockUp<Files>() {
                 @Mock
@@ -200,7 +218,7 @@ public class PredictorImplTest
                 public void deleteDirectory( File directory ) {}
             };
 
-            assertEquals(true, method.invoke(predictor));
+            method.invoke(predictor);
 
             new MockUp<Files>() {
                 @Mock
@@ -213,7 +231,7 @@ public class PredictorImplTest
                 public void delete( Path path ) {}
             };
 
-            assertEquals(true, method.invoke(predictor));
+            method.invoke(predictor);
 
             new MockUp<Files>() {
                 @Mock
@@ -223,26 +241,37 @@ public class PredictorImplTest
                 }
             };
 
-            assertEquals(false, method.invoke(predictor));
+            try
+            {
+                method.invoke(predictor);
+                fail();
+            }
+            catch ( Exception exception )
+            {
+                assertTrue(true);
+            }
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
             fail();
         }
-
-        assertTrue(true);
     }
 
     @Test
     public void TestGetPredictList()
     {
-        assertNull(
-                predictor.GetPredictList(
-                        null,
-                        null
-                )
-        );
+        try
+        {
+            predictor.GetPredictList(
+                    null,
+                    null
+            );
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
     }
 
     @Test
@@ -256,11 +285,19 @@ public class PredictorImplTest
             }
         };
 
-        assertNull(predictor.GetChecksum());
+        try
+        {
+            predictor.GetChecksum();
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
     }
 
     @Test
-    public void TestGetSavedChecksum()
+    public void TestGetSavedChecksum() throws Exception
     {
         new MockUp<Files>() {
             @Mock
@@ -270,7 +307,9 @@ public class PredictorImplTest
             }
         };
 
-        assertNull(predictor.GetSavedChecksum());
+        assertNull(
+                predictor.GetSavedChecksum()
+        );
 
         new MockUp<Files>() {
             @Mock
@@ -315,7 +354,15 @@ public class PredictorImplTest
                 );
             }
 
-            predictor.SaveChecksum(null);
+            try
+            {
+                predictor.SaveChecksum(null);
+                fail();
+            }
+            catch ( Exception exception )
+            {
+                assertTrue(true);
+            }
 
             assertFalse(Files.exists(original.toPath()));
 
@@ -327,9 +374,8 @@ public class PredictorImplTest
                 );
             }
         }
-        catch ( Exception e )
+        catch ( Exception exception )
         {
-            e.printStackTrace();
             fail();
         }
     }

@@ -1,5 +1,275 @@
 CSE364 Group 4, Team Woongbae without Woongbae (TWwW)
 ===
+# [Milestone 3] Readme
+
+## 1. Milestone 3 Design for Part 1 and Part 2
+
+### 1.1 Part 1: REST API  
+
+A brief workflow of a REST API service consist of 3 steps.  
+First, a `Controller` class, annotated as `@RestController`, receives an input as a JSON type.  
+Second, `@RequestBody` annotation enables to convert the given input as a `Resource` class.  
+Third, the `Controller` processes the input and returns the corresponding output.  
+
+Following contents of part `1.1` is a description about each components of our implementation of REST API.
+
+#### 1.1.1 Controller class  
+
+A controller class is mapped to a certain url via `@GetMapping` annotation.  
+Then, the controller receives the input as a resource class form via `@RequestBody` annotation.  
+Finally, the controller processes the input and returns an ouput, or returns an exception if there is an error.  
+
+A `@RestControllerAdvice` class is not mapped to a certain url.  
+Instead, it works as a global manager of all controllers and process exception handling.  
+
+There are 2 controller classes, and a controller advice in our project. Below is the description about those 3 controller classes.  
+
+- RecommendationController  
+
+    `RecommendationController` is mapped to the url `/users/recommendations`. This is the controller responsible for user inputs.  
+
+    `RecommendationController` has 2 methods, those are `Recommend( @RequestBody RequestByUser)` and `Recommend( @RequestBody RequestByMovie)`.
+`Recommend( @RequestBody RequestByUser)` returns the output for the input given with user informations; gender, age, occupation, and genre.
+`Recommend( @RequestBody RequestByMovie)` returns the ouput for the input given with movie title and limit.
+
+- ErrorController
+
+    `ErrorController` is mapped to the url `/error`.  
+
+    This is the controller which handles exception thrown from web query operation.  
+    It mainly handles errors for invalid CRUD methods, ill-typed inputs, and other various request errors.  
+
+    ErrorController returns web request error, which corresponds to HTTP error code 4XX.
+
+    For example, if an input is given as an invalid `PUT` method instead of the valid `GET` method,  
+Errorcontroller receives the exception from the Servlet, extracts the error code and the error message,  
+and returns this information to the ExceptionController as an Exception type.  
+
+- ExceptionController  
+
+    ExceptionController is annotated as `@RestControllerAdvice`, which is a global exception handler for the whole application.  
+    Every exceptions made during the application operations could be handled in here, even though there is no designated controller for the exception.  
+
+    ExceptionController returns Internal server error, which corresponds to HTTP error code 5XX.
+
+    Exceptions due to internal server operations are not handled by the ErrorController.  
+    They are sent directly to the ExceptionController in the Exception type.  
+    For example, exceptions thrown in `preprocessimpl` are made by the `Spark` library operation, and they are catched at this ExceptionController.  
+
+#### 1.1.2 Resource Class  
+
+An input given in JSON form is converted into a resource class via @Requestbody annotation.  
+
+A typical resource class consist of private attributes, and correspoding getter/setter for each attributes.  
+
+There are 4 resource classes in this project.  
+
+- RequestByUser  
+
+    RequestByUser includes 4 attributes: gender, age, occupation, genre.  
+    RequestByUser is used to get user input with above 4 attributes.  
+
+- RequestByMovie  
+
+    RequestByMovie includes 2 attributes: title, limit.  
+    RequestByMovie is used to get user input with above 2 attributes.  
+    `limit` is set by 10 as a default value.  
+
+- Recommendation  
+    Recommendation includes 3 attributes: title, genre, imdb.  
+    `title` is the title of the recommended movie.  
+    `genre` is the corresponding genre of the recommended movie.  
+    `imdb` is the corresponding imdb link of the movie.  
+
+- Error
+
+    Error includes 2 attributes: statuscode, message.
+    statuscode is the error code, typically indicates HTTP 4XX or 5XX errors.  
+    message is the error message in the Exception, to indicate what kind of error occured in which operation.  
+
+### 1.2 Part 2: Recommendation based on movie title  
+
+Recommendation based on a movie title uses the prediction model implemented in the Milestone 2.  
+
+Below is the pseudocode of the recommendation algorithm.  
+
+0. Find the given movie from the entire movie list
+    - Regularize the given title into lower-case letters, remove blanks.  
+    - Find the movie from the movie list with the processed title.
+1. Generate the expected rating of the given movie for all users.  
+    - Filter out the given movie to prevent duplicate recommendation.  
+2. Sort the users by expected rating and generate the user sample.  
+    - Filter out users with too less rating reviews to enhance recommendation quality.  
+    - Sort the users with the expected rating of the given movie.  
+    - Pick `U` number of users from the top.  
+    - Maximum size of user sample is defined by `MAX_PAIR_COUNT / filteredMovieList.size()`, which is approximately 200.  
+3. Generate recommendation movie pool
+    - Filter out movies with too less rating reviews to enhance recommendation quality.  
+    - Filter out the given movie to prevent duplicate recommendation.  
+    - Assume size of the movie pool as `M`.
+4. Generate expected rating for all movies in movie pool, for all users in user sample.  
+    - Size of the user sample is `U`.
+    - Size of the movie pool is `M`.
+    - Generate `U*M` number of expected ratings.  
+5. Calculate average expected rating of each movies in the movie pool.
+6. Select top `limit` number of movies with genre and average rating.  
+    - Pick up to `limit/2` movies with similar genre with the given movie.  
+        - For example, given a genre list of `A|B|C`,
+        - Pick 5 highest rating movies with genre `A|B|C`.  
+        - If there are less than 5 of them, pick from `A|B`, `B|C`, `C|A` groups.
+        - If there are less than 5 of them, pick from `A`, `B`, `C` groups.
+    - Pick rest of `limit/2` movies with the highest average rating.
+        - Do not pick duplicates selected from the previous step.  
+7. Return the recommendation list.  
+
+  
+## 2. How to Use  
+
+- An input with gender, age, occupation, genre:  
+`curl -X GET http://localhost:8080/users/recommendations -H "Content-type:application/json" -d '{"gender": "F", "age": "25", "occupation": "Grad student", "genre": "Action"}'`  
+- An input with title, limit:  
+`curl -X GET http://localhost:8080/movies/recommendations -H 'Content-type:application/json' -d '{"title": "Toy Story (1995)", "limit": 20}'`  
+
+
+## 3. Handling Errors  
+
+- This program handles various errors via java `Exception` class.  
+Displaying all errors are nearly impossible, so we present some of the error messages here.  
+
+- 404 error message:  
+`{"statusCode":404,"message":"Not Found"}`  
+
+  
+## 4. Example Output  
+
+This is an example output for `curl -X GET http://localhost:8080/movies/recommendations -H 'Content-type:application/json' -d '{"title": "Toy Story (1995)", "limit": 20}'`  
+
+```JSON
+[
+  {
+    "title": "Toy Story 2 (1999)",
+    "genre": "Animation|Children's|Comedy",
+    "imdb": "http://www.imdb.com/title/tt0120363"
+  },
+  {
+    "title": "Bug's Life, A (1998)",
+    "genre": "Animation|Children's|Comedy",
+    "imdb": "http://www.imdb.com/title/tt0120623"
+  },
+  {
+    "title": "Chicken Run (2000)",
+    "genre": "Animation|Children's|Comedy",
+    "imdb": "http://www.imdb.com/title/tt0120630"
+  },
+  {
+    "title": "Saludos Amigos (1943)",
+    "genre": "Animation|Children's|Comedy",
+    "imdb": "http://www.imdb.com/title/tt0036326"
+  },
+  {
+    "title": "American Tail, An (1986)",
+    "genre": "Animation|Children's|Comedy",
+    "imdb": "http://www.imdb.com/title/tt0090633"
+  },
+  {
+    "title": "Aladdin and the King of Thieves (1996)",
+    "genre": "Animation|Children's|Comedy",
+    "imdb": "http://www.imdb.com/title/tt0115491"
+  },
+  {
+    "title": "American Tail: Fievel Goes West, An (1991)",
+    "genre": "Animation|Children's|Comedy",
+    "imdb": "http://www.imdb.com/title/tt0101329"
+  },
+  {
+    "title": "Rugrats Movie, The (1998)",
+    "genre": "Animation|Children's|Comedy",
+    "imdb": "http://www.imdb.com/title/tt0134067"
+  },
+  {
+    "title": "Adventures of Rocky and Bullwinkle, The (2000)",
+    "genre": "Animation|Children's|Comedy",
+    "imdb": "http://www.imdb.com/title/tt0131704"
+  },
+  {
+    "title": "Wrong Trousers, The (1993)",
+    "genre": "Animation|Comedy",
+    "imdb": "http://www.imdb.com/title/tt0108598"
+  },
+  {
+    "title": "Passion in the Desert (1998)",
+    "genre": "Adventure|Drama",
+    "imdb": "http://www.imdb.com/title/tt0125980"
+  },
+  {
+    "title": "Chushingura (1962)",
+    "genre": "Drama",
+    "imdb": "http://www.imdb.com/title/tt0055850"
+  },
+  {
+    "title": "Before the Rain (Pred dozhdot) (1994)",
+    "genre": "Drama",
+    "imdb": "http://www.imdb.com/title/tt0110882"
+  },
+  {
+    "title": "Raiders of the Lost Ark (1981)",
+    "genre": "Action|Adventure",
+    "imdb": "http://www.imdb.com/title/tt0082971"
+  },
+  {
+    "title": "Star Wars: Episode IV - A New Hope (1977)",
+    "genre": "Action|Adventure|Fantasy|Sci-Fi",
+    "imdb": "http://www.imdb.com/title/tt0076759"
+  },
+  {
+    "title": "Singin' in the Rain (1952)",
+    "genre": "Musical|Romance",
+    "imdb": "http://www.imdb.com/title/tt0045152"
+  },
+  {
+    "title": "Sanjuro (1962)",
+    "genre": "Action|Adventure",
+    "imdb": "http://www.imdb.com/title/tt0056443"
+  },
+  {
+    "title": "It's a Wonderful Life (1946)",
+    "genre": "Drama",
+    "imdb": "http://www.imdb.com/title/tt0038650"
+  },
+  {
+    "title": "Maya Lin: A Strong Clear Vision (1994)",
+    "genre": "Documentary",
+    "imdb": "http://www.imdb.com/title/tt0110480"
+  },
+  {
+    "title": "Schindler's List (1993)",
+    "genre": "Drama|War",
+    "imdb": "http://www.imdb.com/title/tt0108052"
+  }
+]
+
+```
+
+> The output can be different if the trained model is not the same.
+
+## 5. Roles of Each Member  
+
+- Kim Taeyeong
+  * Designed and implemented resource classes and REST controller.  
+  * Designed and implemented the movie recommendation mechanism.
+  * Improved Spark recommendation engine reliability by adding checkpoint.
+
+- Park Sangbeen, 
+  * Designed and implemented the movie recommendation mechanism.
+
+- Jeon Woongbae:  
+  * Designed and implemented resource classes and REST controller.
+  * Designed the movie recommendation mechanism.
+  * FYI: Wrote this file!
+    
+- An Jinmyeong:  
+  * Designed and implemented resource classes and REST controller.
+  * Designed the movie recommendation mechanism.
 
 # [Milestone 2] Readme
 

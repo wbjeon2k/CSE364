@@ -26,11 +26,32 @@ public class Movie
         WESTERN
     }
 
+    private final String[] GENRE_TEXT = new String[] {
+            "Action",
+            "Adventure",
+            "Animation",
+            "Children's",
+            "Comedy",
+            "Crime",
+            "Documentary",
+            "Drama",
+            "Fantasy",
+            "Film-Noir",
+            "Horror",
+            "Musical",
+            "Mystery",
+            "Romance",
+            "Sci-Fi",
+            "Thriller",
+            "War",
+            "Western"
+    };
+
     public int movieId;
     public String title;
     public ArrayList<Genre> genres;
 
-    public static Genre ConvertGenre( String _genre )
+    public static Genre ConvertGenre( String _genre ) throws Exception
     {
         _genre = _genre.replaceAll("[^a-zA-Z0-9]", "");
         _genre = _genre.toUpperCase();
@@ -47,7 +68,19 @@ public class Movie
             }
         }
 
-        System.out.println("Error: Invalid genre string");
-        return null;
+        throw new Exception("Invalid genre string");
+    }
+
+    public String GetGenresText()
+    {
+        var genreTextList = new ArrayList<String>();
+
+        genres.forEach(genre ->
+                genreTextList.add(
+                        GENRE_TEXT[genre.ordinal()]
+                )
+        );
+
+        return String.join("|", genreTextList);
     }
 }

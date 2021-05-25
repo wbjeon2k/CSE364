@@ -1,7 +1,5 @@
 package kr.twww.mrs.preprocess;
 
-import kr.twww.mrs.data.DataReaderImpl;
-import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
 import kr.twww.mrs.preprocess.object.Score;
@@ -10,438 +8,244 @@ import mockit.Mock;
 import mockit.MockUp;
 import org.apache.spark.mllib.recommendation.Rating;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class PreprocessorImplTest
 {
-    private final PreprocessorImpl preprocessor = new PreprocessorImpl();
+    @Autowired
+    private PreprocessorImpl preprocessor;
 
     @Test
-    public void TestGetRecommendList()
+    public void TestGetRecommendList() throws Exception
     {
+        try
+        {
+            preprocessor.GetRecommendList(
+                    null,
+                    null,
+                    null
+            );
+
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
+
+        new MockUp<PreprocessorImpl>() {
+            @Mock
+            public ArrayList<Score> GetScoreListByUser(
+                    User.Gender gender,
+                    User.Age age,
+                    User.Occupation occupation,
+                    ArrayList<Movie.Genre> genreList
+            )
+            {
+                return new ArrayList<>();
+            }
+        };
+
         var result = preprocessor.GetRecommendList(
-                null,
-                null,
-                null
+                "",
+                "",
+                ""
         );
 
-        assertNull(result);
-    }
-
-    @Test
-    public void TestGetCategoryList()
-    {
-        assertNull(
-                preprocessor.GetCategoryList(null)
-        );
-
-        var result = preprocessor.GetCategoryList("");
         assertNotNull(result);
         assertTrue(result.isEmpty());
 
-        var result2 = preprocessor.GetCategoryList("action");
+        new MockUp<PreprocessorImpl>() {
+            @Mock
+            public ArrayList<Score> GetScoreListByMovie(
+                    Movie movie,
+                    int limit
+            )
+            {
+                return new ArrayList<>();
+            }
+        };
+
+        var result2 = preprocessor.GetRecommendList(
+                "toystory(1995)",
+                "10"
+        );
+
+        assertNotNull(result2);
+        assertTrue(result2.isEmpty());
+    }
+
+    @Test
+    public void TestGetCategoryList() throws Exception
+    {
+        try
+        {
+            preprocessor.GetCategoryList(
+                    null
+            );
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
+
+        var result = preprocessor.GetCategoryList(
+                ""
+        );
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+
+        var result2 = preprocessor.GetCategoryList(
+                "action"
+        );
         assertNotNull(result2);
         assertEquals(1, result2.size());
         assertEquals(Movie.Genre.ACTION, result2.get(0));
 
-        assertNull(
-                preprocessor.GetCategoryList("TEST")
-        );
+        try
+        {
+            preprocessor.GetCategoryList("TEST");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
     }
 
     @Test
-    public void TestGetScoreList()
+    public void TestGetMovieFromTitle() throws Exception
     {
-        assertNull(
-                preprocessor.GetScoreList(
-                        null,
-                        null,
-                        null,
-                        null)
-        );
+        try
+        {
+            preprocessor.GetMovieFromTitle(null);
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
 
-        assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        null,
-                        null,
-                        null)
-        );
+        try
+        {
+            preprocessor.GetMovieFromTitle("");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
 
-        assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        null,
-                        null)
-        );
+        var result = preprocessor.GetMovieFromTitle("toystory(1995)");
 
-        assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        null)
+        assertNotNull(result);
+        assertEquals(
+                "Toy Story (1995)",
+                result.title
         );
     }
 
     @Test
-    public void TestGetScoreList2()
+    public void TestConvertLimit() throws Exception
     {
-        new MockUp<DataReaderImpl>() {
-            @Mock
-            public String ReadTextFromFile( String path )
-            {
-                return "";
-            }
+        try
+        {
+            preprocessor.ConvertLimit(null);
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
 
-            @Mock
-            public ArrayList<Rating> GetRatingList()
-            {
-                return null;
-            }
-        };
+        try
+        {
+            preprocessor.ConvertLimit("one");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
 
-        assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
-        );
+        try
+        {
+            preprocessor.ConvertLimit("-1");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
 
-        new MockUp<DataReaderImpl>() {
-            @Mock
-            public ArrayList<Movie> GetMovieList()
-            {
-                return null;
-            }
-        };
-
-        assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
-        );
-
-        new MockUp<DataReaderImpl>() {
-            @Mock
-            public ArrayList<User> GetUserList()
-            {
-                return null;
-            }
-        };
-
-        assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
+        assertEquals(
+                123,
+                preprocessor.ConvertLimit("123")
         );
     }
 
     @Test
-    public void TestGetScoreList3()
-    {
-        new MockUp<DataReaderImpl>() {
-            @Mock
-            public ArrayList<User> GetUserList()
-            {
-                var result = new ArrayList<User>();
-                result.add(new User());
-
-                return result;
-            }
-
-            @Mock
-            public ArrayList<Movie> GetMovieList()
-            {
-                return new ArrayList<>();
-            }
-
-            @Mock
-            public ArrayList<Rating> GetRatingList()
-            {
-                return new ArrayList<>();
-            }
-        };
-
-        assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
-        );
-
-        new MockUp<DataReaderImpl>() {
-            @Mock
-            public ArrayList<User> GetUserList()
-            {
-                return new ArrayList<>();
-            }
-
-            @Mock
-            public ArrayList<Movie> GetMovieList()
-            {
-                return new ArrayList<>();
-            }
-
-            @Mock
-            public ArrayList<Rating> GetRatingList()
-            {
-                return new ArrayList<>();
-            }
-        };
-
-        new MockUp<PredictorImpl>() {
-            @Mock
-            boolean LoadModel()
-            {
-                return false;
-            }
-
-            @Mock
-            boolean CreateModel( ArrayList<Rating> ratingList )
-            {
-                return false;
-            }
-        };
-
-        assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
-        );
-
-        new MockUp<PredictorImpl>() {
-            @Mock
-            boolean LoadModel()
-            {
-                return false;
-            }
-
-            @Mock
-            boolean CreateModel( ArrayList<Rating> ratingList )
-            {
-                return true;
-            }
-
-            @Mock
-            List<Rating> GetPredictList(
-                    List<User> filteredUserList,
-                    List<Movie> filteredMovieList
-            )
-            {
-                return null;
-            }
-        };
-
-        assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
-        );
-
-        new MockUp<PredictorImpl>() {
-            @Mock
-            boolean LoadModel()
-            {
-                return true;
-            }
-
-            @Mock
-            boolean CreateModel( ArrayList<Rating> ratingList )
-            {
-                return true;
-            }
-
-            @Mock
-            List<Rating> GetPredictList(
-                    List<User> filteredUserList,
-                    List<Movie> filteredMovieList
-            )
-            {
-                return new ArrayList<>();
-            }
-        };
-
-        new MockUp<DataReaderImpl>() {
-            @Mock
-            ArrayList<Link> GetLinkList()
-            {
-                return null;
-            }
-        };
-
-        assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
-        );
-    }
-
-    @Test
-    public void TestGetScoreList4()
-    {
-        new MockUp<DataReaderImpl>() {
-            @Mock
-            public ArrayList<User> GetUserList()
-            {
-                return new ArrayList<>();
-            }
-
-            @Mock
-            public ArrayList<Movie> GetMovieList()
-            {
-                return new ArrayList<>();
-            }
-
-            @Mock
-            public ArrayList<Rating> GetRatingList()
-            {
-                return new ArrayList<>();
-            }
-        };
-
-        new MockUp<PredictorImpl>() {
-            @Mock
-            boolean LoadModel()
-            {
-                return true;
-            }
-
-            @Mock
-            boolean CreateModel( ArrayList<Rating> ratingList )
-            {
-                return true;
-            }
-
-            @Mock
-            public List<Rating> GetPredictList(
-                    List<User> filteredUserList,
-                    List<Movie> filteredMovieList
-            )
-            {
-                return new ArrayList<>();
-            }
-        };
-
-        assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
-        );
-
-        new MockUp<DataReaderImpl>() {
-            @Mock
-            public ArrayList<Movie> GetMovieList()
-            {
-                var result = new ArrayList<Movie>();
-
-                var movie = new Movie();
-                movie.movieId = 1;
-                result.add(movie);
-
-                return result;
-            }
-
-            @Mock
-            public ArrayList<Rating> GetRatingList()
-            {
-                var result = new ArrayList<Rating>();
-
-                var rating = new Rating(1, 1, 0.0);
-
-                for ( var i = 0; i < 10; ++i )
-                {
-                    result.add(rating);
-                }
-
-                return result;
-            }
-        };
-
-        new MockUp<PredictorImpl>() {
-            @Mock
-            public List<Rating> GetPredictList(
-                    List<User> filteredUserList,
-                    List<Movie> filteredMovieList
-            )
-            {
-                var result = new ArrayList<Rating>();
-                result.add(
-                        new Rating(0, 0, 0.0)
-                );
-
-                return result;
-            }
-        };
-
-        assertNotNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
-        );
-
-        new MockUp<DataReaderImpl>() {
-            @Mock
-            public ArrayList<Link> GetLinkList()
-            {
-                return null;
-            }
-        };
-
-        assertNull(
-                preprocessor.GetScoreList(
-                        User.Gender.UNKNOWN,
-                        User.Age.UNKNOWN,
-                        User.Occupation.UNKNOWN,
-                        new ArrayList<>())
-        );
-    }
-
-    @Test
-    public void TestGetScoreList5()
+    public void TestGetScoreListByUser() throws Exception
     {
         var genreList = new ArrayList<Movie.Genre>();
         genreList.add(Movie.Genre.ACTION);
         genreList.add(Movie.Genre.COMEDY);
 
-        var result = preprocessor.GetScoreList(
+        var result = preprocessor.GetScoreListByUser(
                 User.Gender.FEMALE,
                 User.Age.BETWEEN_25_34,
                 User.Occupation.COLLEGE_OR_GRAD_STUDENT,
-                genreList);
+                genreList
+        );
 
         assertNotNull(result);
         assertEquals(10, result.size());
-        assertTrue(result.get(0).score >= result.get(1).score);
-        assertTrue(result.get(1).score >= result.get(2).score);
-        assertTrue(result.get(2).score >= result.get(3).score);
-        assertTrue(result.get(3).score >= result.get(4).score);
-        assertTrue(result.get(4).score >= result.get(5).score);
-        assertTrue(result.get(5).score >= result.get(6).score);
-        assertTrue(result.get(6).score >= result.get(7).score);
-        assertTrue(result.get(7).score >= result.get(8).score);
-        assertTrue(result.get(8).score >= result.get(9).score);
+
+        for ( var i = 0; i < 9; ++i )
+        {
+            assertTrue(
+                    result.get(i).score
+                            >= result.get(i + 1).score
+            );
+        }
+    }
+
+    @Test
+    public void TestGetScoreListByMovie() throws Exception
+    {
+        var movie = new Movie();
+        movie.movieId = 1;
+        movie.title = "Toy Story (1995)";
+        movie.genres = new ArrayList<>();
+        movie.genres.add(Movie.Genre.ANIMATION);
+        movie.genres.add(Movie.Genre.CHILDREN_S);
+        movie.genres.add(Movie.Genre.COMEDY);
+
+        var result = preprocessor.GetScoreListByMovie(
+                movie,
+                10
+        );
+
+        assertNotNull(result);
+        assertEquals(10, result.size());
+
+        result.forEach(
+                score -> assertNotEquals(
+                    movie.movieId,
+                    score.movie.movieId
+                )
+        );
     }
 
     @Test
@@ -484,12 +288,44 @@ public class PreprocessorImplTest
                             preprocessor,
                             ratingList,
                             filteredUserList,
-                            filteredMovieList)
+                            filteredMovieList
+                    )
             );
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void TestSelectPredict()
+    {
+        try
+        {
+            var method = PreprocessorImpl
+                    .class
+                    .getDeclaredMethod("SelectPredict", List.class, List.class);
+            method.setAccessible(true);
+
+            var predictList = new ArrayList<Rating>();
+            predictList.add(new Rating(1, 0, 0.0));
+            predictList.add(new Rating(2, 0, 0.0));
+
+            var filteredMovieList = new ArrayList<Movie>();
+            filteredMovieList.add(new Movie());
+
+            assertEquals(
+                    predictList,
+                    method.invoke(
+                            preprocessor,
+                            predictList,
+                            filteredMovieList
+                    )
+            );
+        }
+        catch ( Exception e )
+        {
             fail();
         }
     }
@@ -579,35 +415,6 @@ public class PreprocessorImplTest
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
-            fail();
-        }
-    }
-
-    @Test
-    public void TestGetFilteredUserStream()
-    {
-        try
-        {
-            var method = PreprocessorImpl
-                    .class
-                    .getDeclaredMethod("GetFilteredUserStream", User.Gender.class, User.Age.class, User.Occupation.class, List.class, int.class);
-            method.setAccessible(true);
-
-            assertNotNull(
-                    method.invoke(
-                            preprocessor,
-                            User.Gender.UNKNOWN,
-                            User.Age.UNKNOWN,
-                            User.Occupation.UNKNOWN,
-                            new ArrayList<>(),
-                            3
-                    )
-            );
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
             fail();
         }
     }
@@ -640,12 +447,119 @@ public class PreprocessorImplTest
                             preprocessor,
                             new ArrayList<>(),
                             filteredMovieList,
-                            ratingList)
+                            ratingList
+                    )
+            );
+
+            try
+            {
+                method.invoke(
+                        preprocessor,
+                        new ArrayList<>(),
+                        filteredMovieList,
+                        new ArrayList<>()
+                );
+                fail();
+            }
+            catch ( Exception exception )
+            {
+                assertTrue(true);
+            }
+        }
+        catch ( Exception e )
+        {
+            fail();
+        }
+    }
+
+    @Test
+    public void TestGetFilteredUserStream()
+    {
+        try
+        {
+            var method = PreprocessorImpl
+                    .class
+                    .getDeclaredMethod("GetFilteredUserStream", User.Gender.class, User.Age.class, User.Occupation.class, List.class, int.class);
+            method.setAccessible(true);
+
+            assertNotNull(
+                    method.invoke(
+                            preprocessor,
+                            User.Gender.UNKNOWN,
+                            User.Age.UNKNOWN,
+                            User.Occupation.UNKNOWN,
+                            new ArrayList<>(),
+                            3
+                    )
             );
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void TestGetPredictList()
+    {
+        new MockUp<PredictorImpl>() {
+            @Mock
+            public boolean LoadModel()
+            {
+                return false;
+            }
+
+            @Mock
+            public boolean CreateModel(
+                    ArrayList<Rating> ratingList
+            )
+            {
+                return false;
+            }
+        };
+
+        try
+        {
+            var method = PreprocessorImpl
+                    .class
+                    .getDeclaredMethod("GetPredictList", List.class, List.class, ArrayList.class);
+            method.setAccessible(true);
+
+            assertNotNull(
+                    method.invoke(
+                            preprocessor,
+                            null,
+                            null,
+                            null
+                    )
+            );
+            fail();
+        }
+        catch ( Exception e )
+        {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void TestSortingTopList()
+    {
+        try
+        {
+            var method = PreprocessorImpl
+                    .class
+                    .getDeclaredMethod("SortingTopList", ArrayList.class);
+            method.setAccessible(true);
+
+            assertNotNull(
+                    method.invoke(
+                            preprocessor,
+                            new ArrayList<>()
+                    )
+            );
+        }
+        catch ( Exception e )
+        {
             fail();
         }
     }

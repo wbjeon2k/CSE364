@@ -4,17 +4,33 @@ import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
 import mockit.Expectations;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.*;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class DataReaderImplTest
 {
-    private final DataReaderImpl dataReader = new DataReaderImpl();
+    @Autowired
+    private DataReaderImpl dataReader;
 
     @Test
-    public void TestGetPathFromDataType()
+    public void TestGetPathFromDataType() throws Exception
     {
-        assertNull(dataReader.GetPathFromDataType(null));
+        try
+        {
+            dataReader.GetPathFromDataType(null);
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
+
         assertEquals("./data/users.dat",
                 dataReader.GetPathFromDataType(DataType.USER));
         assertEquals("./data/movies.dat",
@@ -26,126 +42,222 @@ public class DataReaderImplTest
     }
 
     @Test
-    public void TestReadTextFromFile()
+    public void TestReadTextFromFile() throws Exception
     {
-        assertNull(
-                dataReader.ReadTextFromFile(null)
-        );
+        try
+        {
+            dataReader.ReadTextFromFile(null);
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
 
-        assertNull(
-                dataReader.ReadTextFromFile("")
-        );
+        try
+        {
+            dataReader.ReadTextFromFile("");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
 
         assertEquals(
                 "TEST",
-                dataReader.ReadTextFromFile("./data/test/test.dat")
+                dataReader.ReadTextFromFile("./data/test.dat")
         );
 
-        assertNull(
-                dataReader.ReadTextFromFile("xExRxRxOxRx")
-        );
+        try
+        {
+            dataReader.ReadTextFromFile("xExRxRxOxRx");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
     }
 
     @Test
-    public void TestGetList()
+    public void TestGetList() throws Exception
     {
         new Expectations(dataReader) {{
             dataReader.ReadTextFromFile(anyString);
             result = "";
         }};
 
-        var result = dataReader.GetUserList();
-        assertNotNull(result);
-        assertTrue(result.isEmpty());
+        try
+        {
+            dataReader.GetUserList();
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
 
-        var result2 = dataReader.GetMovieList();
-        assertNotNull(result2);
-        assertTrue(result2.isEmpty());
+        try
+        {
+            dataReader.GetMovieList();
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
 
-        var result3 = dataReader.GetRatingList();
-        assertNotNull(result3);
-        assertTrue(result3.isEmpty());
+        try
+        {
+            dataReader.GetRatingList();
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
 
-        var result4 = dataReader.GetLinkList();
-        assertNotNull(result4);
-        assertTrue(result4.isEmpty());
+        try
+        {
+            dataReader.GetLinkList();
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
     }
 
     @Test
-    public void TestToUserList()
+    public void TestToUserList() throws Exception
     {
-        assertNull(
-                dataReader.ToUserList(null)
-        );
+        try
+        {
+            dataReader.ToUserList("");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
 
-        var result = dataReader.ToUserList("");
-        assertNotNull(result);
-        assertTrue(result.isEmpty());
+        try
+        {
+            dataReader.ToUserList(" ");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
 
-        var result2 = dataReader.ToUserList("0::M::17::0::TEST");
-        assertEquals(1, result2.size());
-        assertEquals(0, result2.get(0).userId);
-        assertEquals(User.Gender.MALE, result2.get(0).gender);
-        assertEquals(User.Age.UNDER_18, result2.get(0).age);
-        assertEquals(User.Occupation.OTHER, result2.get(0).occupation);
-        assertEquals("TEST", result2.get(0).zipCode);
-    }
-
-
-    @Test
-    public void TestToMovieList()
-    {
-        assertNull(
-                dataReader.ToMovieList(null)
-        );
-
-        var result = dataReader.ToMovieList("");
-        assertNotNull(result);
-
-        var result2 = dataReader.ToMovieList("0::TEST::action");
-        assertEquals(1, result2.size());
-        assertEquals(0, result2.get(0).movieId);
-        assertEquals("TEST", result2.get(0).title);
-        assertEquals(1, result2.get(0).genres.size());
-        assertEquals(Movie.Genre.ACTION, result2.get(0).genres.get(0));
-
-        assertNull(
-                dataReader.ToMovieList("0::TEST::aXcXtXiXoXn")
-        );
+        var result = dataReader.ToUserList("0::M::17::0::TEST");
+        assertEquals(1, result.size());
+        assertEquals(0, result.get(0).userId);
+        assertEquals(User.Gender.MALE, result.get(0).gender);
+        assertEquals(User.Age.UNDER_18, result.get(0).age);
+        assertEquals(User.Occupation.OTHER, result.get(0).occupation);
+        assertEquals("TEST", result.get(0).zipCode);
     }
 
     @Test
-    public void TestToRatingList()
+    public void TestToMovieList() throws Exception
     {
-        assertNull(
-                dataReader.ToRatingList(null)
-        );
+        try
+        {
+            dataReader.ToMovieList("");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
 
-        var result = dataReader.ToRatingList("");
-        assertNotNull(result);
-        assertTrue(result.isEmpty());
+        try
+        {
+            dataReader.ToMovieList(" ");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
 
-        var result2 = dataReader.ToRatingList("0::1::2::3");
-        assertEquals(1, result2.size());
-        assertEquals(0, result2.get(0).user());
-        assertEquals(1, result2.get(0).product());
-        assertEquals(2, result2.get(0).rating(), 0.0);
+        var result = dataReader.ToMovieList("0::TEST::action");
+        assertEquals(1, result.size());
+        assertEquals(0, result.get(0).movieId);
+        assertEquals("TEST", result.get(0).title);
+        assertEquals(1, result.get(0).genres.size());
+        assertEquals(Movie.Genre.ACTION, result.get(0).genres.get(0));
+
+        try
+        {
+            dataReader.ToMovieList("0::TEST::aXcXtXiXoXn");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
     }
 
     @Test
-    public void TestToLinkList()
+    public void TestToRatingList() throws Exception
     {
-        assertNull(
-                dataReader.ToLinkList(null)
-        );
+        try
+        {
+            dataReader.ToRatingList("");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
 
-        var result = dataReader.ToLinkList("");
-        assertNotNull(result);
-        assertTrue(result.isEmpty());
+        try
+        {
+            dataReader.ToRatingList(" ");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
 
-        var result2 = dataReader.ToLinkList("0::TEST");
-        assertEquals(1, result2.size());
-        assertEquals(0, result2.get(0).movieId);
-        assertEquals("TEST", result2.get(0).imdbId);
+        var result = dataReader.ToRatingList("0::1::2::3");
+        assertEquals(1, result.size());
+        assertEquals(0, result.get(0).user());
+        assertEquals(1, result.get(0).product());
+        assertEquals(2, result.get(0).rating(), 0.0);
+    }
+
+    @Test
+    public void TestToLinkList() throws Exception
+    {
+        try
+        {
+            dataReader.ToLinkList("");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
+
+        try
+        {
+            dataReader.ToLinkList(" ");
+            fail();
+        }
+        catch ( Exception exception )
+        {
+            assertTrue(true);
+        }
+
+        var result = dataReader.ToLinkList("0::TEST");
+        assertEquals(1, result.size());
+        assertEquals(0, result.get(0).movieId);
+        assertEquals("TEST", result.get(0).imdbId);
     }
 }
