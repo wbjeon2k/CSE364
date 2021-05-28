@@ -25,12 +25,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings({"SpringJavaAutowiredFieldsWarningInspection", "FieldCanBeLocal", "ResultOfMethodCallIgnored"})
+@SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Service
 public class PredictorImpl extends PredictorBase implements Predictor, InitializingBean, DisposableBean
 {
     private final String PATH_DATA = "./data/";
-    private final String PATH_DATA_CHECKPOINT = PATH_DATA + "checkpoint";
     private final String PATH_DATA_CHECKSUM = PATH_DATA + "checksum";
     private final String PATH_DATA_MODEL = PATH_DATA + "model";
 
@@ -167,7 +166,6 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
         );
 
         javaSparkContext.setLogLevel("OFF");
-        javaSparkContext.setCheckpointDir(PATH_DATA_CHECKPOINT);
 
         model = null;
     }
@@ -202,6 +200,7 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
         return dataReader.ReadTextFromFile(PATH_DATA_CHECKSUM);
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     public void SaveChecksum( String checksum ) throws Exception
     {
