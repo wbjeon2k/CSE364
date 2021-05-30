@@ -3,7 +3,8 @@ FROM ubuntu:20.04
 
 # 2.Install all packages that are needed to run your program, such as vim, git, java 11, maven, etc.
 RUN apt-get update
-RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install vim git openjdk-11-jdk maven curl
+RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install vim git openjdk-11-jdk maven curl wget gnupg systemctl mongodb-org
+
 
 # 3.Create /root/project folder
 RUN mkdir /root/project
