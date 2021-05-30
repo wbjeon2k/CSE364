@@ -1,5 +1,6 @@
 package kr.twww.mrs;
 
+import kr.twww.mrs.data.MongoTest;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -13,8 +14,10 @@ public class Main
     public static void main( String[] args )
     {
         DisableWarning();
-
-        SpringApplication.run(Main.class, args);
+        MongoTest mt = new MongoTest();
+        mt.mockmethod();
+        //SpringApplication.run(Main.class, args);
+        System.out.println("end");
     }
 
     private static void DisableWarning()
