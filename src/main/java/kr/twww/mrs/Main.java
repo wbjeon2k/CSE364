@@ -8,12 +8,12 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import sun.misc.Unsafe;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class Main
 {
     public static void main( String[] args )
     {
-        DisableWarning();
+        //DisableWarning();
         MongoTest mt = new MongoTest();
         mt.mockmethod();
         //SpringApplication.run(Main.class, args);

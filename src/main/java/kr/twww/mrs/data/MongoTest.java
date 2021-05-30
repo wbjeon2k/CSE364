@@ -1,15 +1,18 @@
 package kr.twww.mrs.data;
 
+import com.mongodb.*;
+
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.ServerAddress;
+import com.mongodb.MongoCredential;
+import com.mongodb.MongoClientOptions;
 
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 
 import org.bson.Document;
 import java.util.Arrays;
-import com.mongodb.Block;
 
 import com.mongodb.client.MongoCursor;
 import static com.mongodb.client.model.Filters.*;
@@ -19,7 +22,6 @@ import com.mongodb.client.result.UpdateResult;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -47,7 +49,11 @@ public class MongoTest {
     }
 
     public void mockmethod(){
-        MongoClient mongoClient = new MongoClient("localhost", PORT);
+        MongoCredential mongoCredential = MongoCredential.createCredential("testUser", DATABASE_NAME, "pwd".toCharArray());
+        MongoClientOptions options = MongoClientOptions.builder().build();
+        MongoClientURI connectionString = new MongoClientURI("mongodb://localhost:27017");
+        MongoClient mongoClient = new MongoClient(new ServerAddress("host1", 27017), Arrays.asList(mongoCredential), options);
+
 
         MongoDatabase db = mongoClient.getDatabase(DATABASE_NAME);
 
