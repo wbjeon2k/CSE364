@@ -3,7 +3,9 @@ package kr.twww.mrs.data;
 import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
+import kr.twww.mrs.data.repository.MovieRepository;
 import org.apache.spark.mllib.recommendation.Rating;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -18,6 +20,10 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 {
     private final String PATH_DATA = "./data/";
     private final String SUFFIX = "s.dat";
+
+    @Autowired
+    public MovieRepository movieRepository;
+    private boolean movieRepoInit = false;
 
     @Override
     public String GetPathFromDataType( DataType dataType ) throws Exception
@@ -71,10 +77,15 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public ArrayList<Movie> GetMovieList() throws Exception
     {
-        var path = GetPathFromDataType(MOVIE);
-        var text = ReadTextFromFile(path);
+        if(movieRepoInit == false){
 
-        return ToMovieList(text);
+            var path = GetPathFromDataType(MOVIE);
+            var text = ReadTextFromFile(path);
+
+            movieRepoInit = true;
+            return ToMovieList(text);
+        }
+        return (ArrayList<Movie>) movieRepository.findAll();
     }
 
     @Override
@@ -154,6 +165,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 newMovie.title = splitData[1];
                 newMovie.genres = GetGenreList(splitData[2]);
 
+                movieRepository.save(newMovie);
                 result.add(newMovie);
             }
         }

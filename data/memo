@@ -3,6 +3,8 @@ https://developer.mongodb.com/quickstart/java-mapping-pojos/
 https://spring.io/guides/gs/accessing-mongodb-data-rest/
 https://spring.io/guides/gs/accessing-data-mongodb/
 https://dwfox.tistory.com/64
+https://myjamong.tistory.com/104
+https://mongodb.github.io/mongo-java-driver/3.4/driver/getting-started/quick-start/#query-the-collection
 
 mongoimport --db=movielink-test --collection=movie-link-test --type=csv \
    --columnsHaveTypes \

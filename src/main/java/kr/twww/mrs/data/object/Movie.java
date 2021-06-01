@@ -1,6 +1,7 @@
 package kr.twww.mrs.data.object;
 
 import java.util.ArrayList;
+import org.springframework.data.annotation.*;
 
 public class Movie
 {
@@ -47,7 +48,9 @@ public class Movie
             "Western"
     };
 
+    @Id
     public int movieId;
+
     public String title;
     public ArrayList<Genre> genres;
 
