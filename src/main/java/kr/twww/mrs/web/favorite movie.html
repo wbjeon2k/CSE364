@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSE364</title>
+  <meta charset="utf-8">
+    <style>
+        a:link{
+            color: black;
+        }
+        a:visited{
+            color: black;
+        }
+        #top_menu {
+            height: 75px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+        #top_menu span {
+            list-style: none;
+            color: white;
+            background-color: #2d2d2d;
+            float: left;
+            width: 33.3%;
+            line-height: 50px;
+            vertical-align: middle;
+            text-align: center;
+        }
+        #top_menu .menuLink {
+            text-decoration:none;
+            color: white;
+            display: block;
+            width: 100%;
+            font-size: 150%;
+            font-weight: bold;
+            font-family: "Trebuchet MS", Dotum, Arial;
+        }
+        #top_menu .menuLink:hover {
+            color: red;
+            background-color: #4d4d4d;
+        }
+        h1{
+            padding-top:50px;
+        }
+    </style>
+    <nav id="top_menu">
+        <span><a class="menuLink" href="index.html">Home</a></span>
+        <span><a class="menuLink" href="userinformation.html">User information</a></span>
+        <span><a class="menuLink" href="favorite%20movie.html">favorite movie</a></span>
+    </nav>
+</head>
+<body bgcolor="gray">
+<h1>Favorite movie</h1>
+<form>
+    <b>Favorite Movie Title:</b>
+    <input type="text" name="title" value="">
+    <input type="submit" value="Search">
+</form>
+<h2>Recommended Movies</h2>
+<script language="JavaScript">
+    var favoritemovie_image = ""
+    var favoritemovie_address = ""
+    for(i=0;i<10;i++){
+        document.write("<a href='https://www.imdb.com/title/tt0435761/?ref_=nv_sr_srsg_6' target='_blank'><img src=https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@..jpg width=19% border='2'></a>")
+    }
+</script>
+</body>
+</html>
