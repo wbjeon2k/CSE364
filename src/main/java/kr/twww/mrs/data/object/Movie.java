@@ -5,7 +5,8 @@ import org.springframework.data.annotation.*;
 
 public class Movie
 {
-    public enum Genre
+    public enum
+    Genre
     {
         ACTION,
         ADVENTURE,
