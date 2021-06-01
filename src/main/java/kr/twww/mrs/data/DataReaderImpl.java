@@ -171,7 +171,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         }
         catch ( Exception exception )
         {
-            throw new Exception("Invalid movie data");
+            throw new Exception("ToMovieList error : Invalid movie data" + exception.getMessage());
         }
 
             return result;

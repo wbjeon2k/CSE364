@@ -10,3 +10,5 @@ mongoimport --db=movielink-test --collection=movie-link-test --type=csv \
    --columnsHaveTypes \
    --fields="movieID.int32(),imdbID.string()" \
    --file=/volumebind/data/links.csv
+
+curl -X GET http://localhost:8080/users/recommendations -H "Content-type:application/json" -d '{"gender": "F", "age": "25", "occupation": "Grad student", "genre": "Action"}'
