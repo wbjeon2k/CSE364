@@ -8,7 +8,7 @@ import java.util.List;
 public interface MovieRepository extends CrudRepository<Movie, Integer> {
 
     Movie findBytitle(String Title);
-    Movie findBymovieID(int id);
+    Movie findBymovieId(int id);
     List<Movie> findByGenre(Movie.Genre genre);
 
 }
