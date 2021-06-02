@@ -6,6 +6,11 @@ https://dwfox.tistory.com/64
 https://myjamong.tistory.com/104
 https://mongodb.github.io/mongo-java-driver/3.4/driver/getting-started/quick-start/#query-the-collection
 
+http://junil-hwang.com/blog/docker-mongodb/
+https://docs.docker.com/compose/networking/
+https://developer.mongodb.com/community/forums/t/error-couldnt-connect-to-server-127-0-0-1-27017/705/16
+https://league-cat.tistory.com/266
+
 mongoimport --db=movielink-test --collection=movie-link-test --type=csv \
    --columnsHaveTypes \
    --fields="movieID.int32(),imdbID.string()" \

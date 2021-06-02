@@ -10,13 +10,18 @@ services:
             MONGO_INITDB_ROOT_PASSWORD: password
         container_name: "mongodb" # container의 name을 정의합니다.
         ports:                # service port를 정의합니다.
-        - "27017:27017"     # local:container
+        - "27017"     # local:container
 
     spring-server:
         #image: wbjeon2k/image_milestone4
         container_name: "spring-server"
         #restart: always
-        build: .
+        build:
+            context: . 
+            dockerfile: Dockerfile
+        
+        links:
+            - mongodb
         depends_on: 
             - mongodb
         stdin_open: true # docker run -i
