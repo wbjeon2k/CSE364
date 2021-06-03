@@ -102,9 +102,12 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 
             var path = GetPathFromDataType(MOVIE);
             var text = ReadTextFromFile(path);
-
+            var result =ToMovieList(text);
+            for(int i=0;i< result.size();++i){
+                movieRepository.save(result.get(i));
+            }
             movieRepoInit = true;
-            return ToMovieList(text);
+            return result;
         }
         return (ArrayList<Movie>) movieRepository.findAll();
     }
@@ -194,10 +197,6 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         catch ( Exception exception )
         {
             throw new Exception("ToMovieList error : Invalid movie data" + exception.getMessage());
-        }
-
-        for(int i=0;i< result.size();++i){
-            movieRepository.save(result.get(i));
         }
 
         return result;
