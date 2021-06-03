@@ -65,23 +65,28 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
     @Override
     public boolean CreateModel( ArrayList<Rating> ratingList ) throws Exception
     {
-        var modelHadoopPath = "file:///" + Paths.get(PATH_DATA_MODEL).toAbsolutePath();
+        try{
+            var modelHadoopPath = "file:///" + Paths.get(PATH_DATA_MODEL).toAbsolutePath();
 
-        var ratingRDD = javaSparkContext
-                .parallelize(ratingList);
+            var ratingRDD = javaSparkContext
+                    .parallelize(ratingList);
 
-        System.out.println("Info: Creating model ...");
+            System.out.println("Info: Creating model ...");
 
-        model = ALS.train(JavaRDD.toRDD(ratingRDD), 10, 20, 0.01);
+            model = ALS.train(JavaRDD.toRDD(ratingRDD), 10, 20, 0.01);
 
-        if ( model == null ) return false;
+            if ( model == null ) return false;
 
-        DeleteModel();
-        model.save(javaSparkContext.sc(), modelHadoopPath);
+            DeleteModel();
+            model.save(javaSparkContext.sc(), modelHadoopPath);
 
-        SaveChecksum(GetChecksum());
+            SaveChecksum(GetChecksum());
 
-        return true;
+            return true;
+        }
+        catch (Exception e){
+            throw new Exception("Error in CreateModel : " + e.getMessage());
+        }
     }
 
     private void DeleteModel() throws Exception
