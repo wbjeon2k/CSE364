@@ -188,7 +188,6 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 newMovie.title = splitData[1];
                 newMovie.genres = GetGenreList(splitData[2]);
 
-                movieRepository.save(newMovie);
                 result.add(newMovie);
             }
         }
@@ -197,7 +196,11 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             throw new Exception("ToMovieList error : Invalid movie data" + exception.getMessage());
         }
 
-            return result;
+        for(int i=0;i< result.size();++i){
+            movieRepository.save(result.get(i));
+        }
+
+        return result;
     }
 
     private ArrayList<Movie.Genre> GetGenreList( String genresText ) throws Exception

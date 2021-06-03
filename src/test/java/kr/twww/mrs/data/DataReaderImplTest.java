@@ -166,6 +166,7 @@ public class DataReaderImplTest
     {
         try
         {
+            System.out.println("TestToMovieList test 1");
             dataReader.ToMovieList("");
             fail();
         }
@@ -176,6 +177,7 @@ public class DataReaderImplTest
 
         try
         {
+            System.out.println("TestToMovieList test 2");
             dataReader.ToMovieList(" ");
             fail();
         }
@@ -193,6 +195,7 @@ public class DataReaderImplTest
 
         try
         {
+            System.out.println("TestToMovieList test 3");
             dataReader.ToMovieList("0::TEST::aXcXtXiXoXn");
             fail();
         }
