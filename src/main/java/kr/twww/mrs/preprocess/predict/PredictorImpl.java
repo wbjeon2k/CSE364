@@ -73,12 +73,12 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
 
             System.out.println("Info: Creating model ...");
 
-            model = ALS.train(JavaRDD.toRDD(ratingRDD), 5, 20, 0.01);
+            model = ALS.train(JavaRDD.toRDD(ratingRDD), 10, 10, 0.01);
 
             System.out.println("Info: Finish training ...");
 
             if ( model == null ){
-                System.out.println("Info: Creating model failed ...");
+                //System.out.println("Info: Creating model failed ...");
                 return false;
             }
 

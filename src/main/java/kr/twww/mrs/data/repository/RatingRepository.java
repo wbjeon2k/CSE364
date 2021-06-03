@@ -1,7 +1,8 @@
 package kr.twww.mrs.data.repository;
 
 import kr.twww.mrs.data.object.Movie;
-import kr.twww.mrs.data.object.Poster;
+import org.apache.spark.ml.recommendation.ALS;
+import org.apache.spark.mllib.recommendation.Rating;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public interface PosterRepository extends MongoRepository<Poster, Integer> {
+public interface RatingRepository extends MongoRepository<Rating, Integer> {
 
     //Movie findBytitle(String Title);
     //Movie findBymovieId(int id);

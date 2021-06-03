@@ -5,6 +5,7 @@ import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
 import kr.twww.mrs.data.repository.MovieRepository;
 import kr.twww.mrs.data.repository.PosterRepository;
+import kr.twww.mrs.data.repository.RatingRepository;
 import org.apache.spark.mllib.recommendation.Rating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,14 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 
     boolean movieRepoInit = false;
     boolean posterRepoInit = false;
+    boolean ratingRepoInit = false;
 
     @Autowired
     public MovieRepository movieRepository;
-
     @Autowired
     public PosterRepository posterRepository;
+    @Autowired
+    public RatingRepository ratingRepository;
 
     @Override
     public String GetPathFromDataType( DataType dataType ) throws Exception
@@ -114,10 +117,18 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public ArrayList<Rating> GetRatingList() throws Exception
     {
-        var path = GetPathFromDataType(RATING);
-        var text = ReadTextFromFile(path);
+        if(ratingRepoInit == false){
+            var path = GetPathFromDataType(RATING);
+            var text = ReadTextFromFile(path);
 
-        return ToRatingList(text);
+            var result = ToRatingList(text);
+            for(int i=0;i< result.size();++i){
+                ratingRepository.save(result.get(i));
+            }
+            ratingRepoInit = true;
+            return result;
+        }
+        return (ArrayList<Rating>) ratingRepository.findAll();
     }
 
     @Override
