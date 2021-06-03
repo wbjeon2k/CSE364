@@ -2,6 +2,7 @@ package kr.twww.mrs.data;
 
 import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
+import kr.twww.mrs.data.object.Poster;
 import kr.twww.mrs.data.object.User;
 import org.apache.spark.mllib.recommendation.Rating;
 
@@ -52,5 +53,6 @@ public interface DataReader
     ArrayList<Link> GetLinkList() throws Exception;
 
     //포스터 링크 return.
-    String GetPosterLink(int id) throws Exception;
+    //ArrayList<Poster> GetPosterList() throws Exception;
+    Poster GetPoster(int movID) throws Exception;
 }

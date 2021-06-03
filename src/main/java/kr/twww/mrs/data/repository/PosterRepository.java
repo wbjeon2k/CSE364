@@ -13,7 +13,7 @@ import java.util.List;
 public interface PosterRepository extends MongoRepository<Poster, Integer> {
 
     //Movie findBytitle(String Title);
-    //Movie findBymovieId(int id);
+    Poster findBymovID(int id);
     //List<Movie> findBygenres(ArrayList<Movie.Genre> genreList);
 
 }

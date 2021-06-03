@@ -1,7 +1,9 @@
 package kr.twww.mrs.preprocess;
 
 import kr.twww.mrs.data.DataReader;
+import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
+import kr.twww.mrs.data.object.Poster;
 import kr.twww.mrs.data.object.User;
 import kr.twww.mrs.preprocess.object.Score;
 import kr.twww.mrs.preprocess.predict.Predictor;
@@ -512,19 +514,25 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 
         var linkList = dataReader.GetLinkList();
 
-        linkList.forEach(link -> {
+        for (Link link : linkList) {
             var movieId = link.movieId;
 
-            if ( movieId > max ) return;
+            if (movieId > max) continue;
 
             var score = scoreFullList.get(movieId);
 
-            if ( score.movie == null ) return;
+            if (score.movie == null) continue;
 
             score.link = link;
+            try {
+                score.poster = dataReader.GetPoster(movieId);
+            } catch (Exception e) {
+                throw new Exception("ToScoreList error: error in adding poster + " + e.getMessage());
+            }
 
             scoreList.add(score);
-        });
+        }
+
 
         return scoreList;
     }

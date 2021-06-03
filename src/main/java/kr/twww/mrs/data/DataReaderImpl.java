@@ -1,9 +1,13 @@
 package kr.twww.mrs.data;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
+import kr.twww.mrs.data.object.Poster;
 import kr.twww.mrs.data.object.User;
 import kr.twww.mrs.data.repository.*;
+import org.apache.hadoop.yarn.webapp.hamlet.Hamlet;
 import org.apache.spark.mllib.recommendation.Rating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,16 +83,32 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         }
     }
 
-    public void ReadPosterCsv(){
 
+
+    public void readCsvToPoster() throws Exception {
+        try{
+            String filePath = PATH_DATA + "movie_poster" + SUFFIX_CSV;
+            CSVReader reader = new CSVReader(new FileReader(filePath)); // 1
+            String [] nextLine;
+            while ((nextLine = reader.readNext()) != null) {   // 2
+                String mid, posterlink;
+                mid = nextLine[0];
+                posterlink = nextLine[1];
+                posterRepository.save(new Poster(Integer.parseInt(mid), posterlink));
+            }
+        }
+        catch (Exception e){
+            throw new Exception("Error in readCsvToPoster: "+ e.getMessage());
+        }
     }
 
     @Override
-    public String GetPosterLink(int id) throws Exception {
+    public Poster GetPoster(int movID) throws Exception {
         if(posterRepoInit == false){
-
+            readCsvToPoster();
+            posterRepoInit = true;
         }
-        return null;
+        return posterRepository.findBymovID(movID);
     }
 
     @Override
