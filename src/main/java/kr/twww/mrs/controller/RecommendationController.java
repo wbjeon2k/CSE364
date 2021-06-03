@@ -7,6 +7,7 @@ import kr.twww.mrs.preprocess.Preprocessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -19,17 +20,21 @@ public class RecommendationController
     @Autowired
     private Preprocessor preprocessor;
 
-    @GetMapping("/users/recommendations")
+    @GetMapping("/users/recommendations.html")
     public ArrayList<Recommendation> Recommend(
-            @RequestBody RequestByUser requestByUser
+            // changed @RequestBody into @RequestParam for HTTP requests
+            @RequestParam("gender") String gender,
+            @RequestParam("age") String age,
+            @RequestParam("occupation") String occupation,
+            @RequestParam("genres") String genres
     ) throws Exception
     {
         var result = preprocessor
                 .GetRecommendList(
-                        requestByUser.getGender(),
-                        requestByUser.getAge(),
-                        requestByUser.getOccupation(),
-                        requestByUser.getGenre()
+                        gender,
+                        age,
+                        occupation,
+                        genres
                 );
 
         return (ArrayList<Recommendation>)result
@@ -43,15 +48,16 @@ public class RecommendationController
                 ).collect(Collectors.toList());
     }
 
-    @GetMapping("/movies/recommendations")
+    @GetMapping("/movies/recommendations.html")
     public ArrayList<Recommendation> Recommend(
-            @RequestBody RequestByMovie requestByMovie
+            @RequestParam("title") String title,
+            @RequestParam("limit") String limit
     ) throws Exception
     {
         var result = preprocessor
                 .GetRecommendList(
-                        requestByMovie.getTitle(),
-                        requestByMovie.getLimit()
+                        title,
+                        limit
                 );
 
         return (ArrayList<Recommendation>)result
