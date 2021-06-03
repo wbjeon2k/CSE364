@@ -3,10 +3,7 @@ package kr.twww.mrs.data;
 import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
-import kr.twww.mrs.data.repository.MovieRepository;
-import kr.twww.mrs.data.repository.PosterRepository;
-import kr.twww.mrs.data.repository.RatingRepository;
-import kr.twww.mrs.data.repository.UserRepository;
+import kr.twww.mrs.data.repository.*;
 import org.apache.spark.mllib.recommendation.Rating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +26,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     boolean posterRepoInit = false;
     boolean ratingRepoInit = false;
     boolean userRepoInit = false;
+    boolean linkRepoInit = false;
 
     @Autowired
     public MovieRepository movieRepository;
@@ -38,6 +36,8 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     public RatingRepository ratingRepository;
     @Autowired
     public UserRepository userRepository;
+    @Autowired
+    public LinkRepository linkRepository;
 
     @Override
     public String GetPathFromDataType( DataType dataType ) throws Exception
@@ -146,10 +146,18 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public ArrayList<Link> GetLinkList() throws Exception
     {
-        var path = GetPathFromDataType(LINK);
-        var text = ReadTextFromFile(path);
+        if(linkRepoInit == false){
+            var path = GetPathFromDataType(LINK);
+            var text = ReadTextFromFile(path);
 
-        return ToLinkList(text);
+            var result =  ToLinkList(text);
+            for(int i=0;i< result.size();++i){
+                linkRepository.save(result.get(i));
+            }
+            linkRepoInit = true;
+            return result;
+        }
+        return (ArrayList<Link>) linkRepository.findAll();
     }
 
 
