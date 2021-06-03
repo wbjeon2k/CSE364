@@ -3,7 +3,7 @@ package kr.twww.mrs.controller;
 import kr.twww.mrs.controller.object.Recommendation;
 import kr.twww.mrs.controller.object.RequestByMovie;
 import kr.twww.mrs.controller.object.RequestByUser;
-import kr.twww.mrs.data.repository.MovieRepository;
+import kr.twww.mrs.data.repository.*;
 import kr.twww.mrs.preprocess.Preprocessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +19,14 @@ public class RecommendationController
 {
     @Autowired
     private final MovieRepository movieRepository;
+    @Autowired
+    public PosterRepository posterRepository;
+    @Autowired
+    public RatingRepository ratingRepository;
+    @Autowired
+    public UserRepository userRepository;
+    @Autowired
+    public LinkRepository linkRepository;
 
     @Autowired
     private Preprocessor preprocessor;
@@ -47,7 +55,8 @@ public class RecommendationController
                         score -> new Recommendation(
                                 score.movie.title,
                                 score.movie.GetGenresText(),
-                                score.link.GetURL()
+                                score.link.GetURL(),
+                                score.poster.getPosterLink()
                         )
                 ).collect(Collectors.toList());
     }
@@ -69,7 +78,8 @@ public class RecommendationController
                         score -> new Recommendation(
                                 score.movie.title,
                                 score.movie.GetGenresText(),
-                                score.link.GetURL()
+                                score.link.GetURL(),
+                                score.poster.getPosterLink()
                         )
                 ).collect(Collectors.toList());
     }

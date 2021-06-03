@@ -18,7 +18,9 @@ public class Poster {
 
     public Poster(int movID, String posterLink){
         this.movID = movID;
-        this.posterLink = posterLink;
+
+        if(posterLink != null) posterLink = posterLink;
+        else posterLink = "";
     }
 
     public int getMovID() {
@@ -33,6 +35,7 @@ public class Poster {
     }
 
     public void setPosterLink(String posterLink) {
-        this.posterLink = posterLink;
+        if(posterLink != null) posterLink = posterLink;
+        else posterLink = "";
     }
 }
