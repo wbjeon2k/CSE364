@@ -23,6 +23,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 
     @Autowired
     public MovieRepository movieRepository;
+
     private boolean movieRepoInit = false;
 
     @Override

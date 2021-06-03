@@ -3,6 +3,9 @@ package kr.twww.mrs.data.object;
 import java.util.ArrayList;
 import org.springframework.data.annotation.*;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class Movie
 {
     public enum
@@ -51,7 +54,6 @@ public class Movie
 
     @Id
     public int movieId;
-
     public String title;
     public ArrayList<Genre> genres;
 
