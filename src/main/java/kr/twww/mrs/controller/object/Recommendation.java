@@ -37,4 +37,8 @@ public class Recommendation
     public void setImdb(String imdb) {
         this.imdb = imdb;
     }
+
+    public String getPoster() { return poster; }
+
+    public void setPoster(String poster) { this.poster = poster; }
 }
