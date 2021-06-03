@@ -82,9 +82,13 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
                 return false;
             }
 
+            System.out.println("Info: Deletemodel() in Creating model ...");
             DeleteModel();
+
+            System.out.println("Info: Creating model model.save start ...");
             model.save(javaSparkContext.sc(), modelHadoopPath);
 
+            System.out.println("Info: Creating model savechecksum start ...");
             SaveChecksum(GetChecksum());
 
             System.out.println("Info: Creating model end ...");
