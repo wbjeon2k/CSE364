@@ -75,13 +75,19 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
 
             model = ALS.train(JavaRDD.toRDD(ratingRDD), 10, 20, 0.01);
 
-            if ( model == null ) return false;
+            System.out.println("Info: Finish training ...");
+
+            if ( model == null ){
+                System.out.println("Info: Creating model failed ...");
+                return false;
+            }
 
             DeleteModel();
             model.save(javaSparkContext.sc(), modelHadoopPath);
 
             SaveChecksum(GetChecksum());
 
+            System.out.println("Info: Creating model end ...");
             return true;
         }
         catch (Exception e){
