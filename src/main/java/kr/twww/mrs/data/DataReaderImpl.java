@@ -24,7 +24,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 {
     private final String PATH_DATA = "./data/";
     private final String SUFFIX = "s.dat";
-    private final String SUFFIX_CSV = "s.csv";
+    private final String SUFFIX_CSV = ".csv";
 
     boolean movieRepoInit = false;
     boolean posterRepoInit = false;
