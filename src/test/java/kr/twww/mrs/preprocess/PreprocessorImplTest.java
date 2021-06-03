@@ -7,6 +7,7 @@ import kr.twww.mrs.preprocess.predict.PredictorImpl;
 import mockit.Mock;
 import mockit.MockUp;
 import org.apache.spark.mllib.recommendation.Rating;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PreprocessorImplTest
@@ -198,6 +200,7 @@ public class PreprocessorImplTest
     @Test
     public void TestGetScoreListByUser() throws Exception
     {
+        System.out.println("TestGetScoreListByUser start");
         var genreList = new ArrayList<Movie.Genre>();
         genreList.add(Movie.Genre.ACTION);
         genreList.add(Movie.Genre.COMEDY);
@@ -219,11 +222,13 @@ public class PreprocessorImplTest
                             >= result.get(i + 1).score
             );
         }
+        System.out.println("TestGetScoreListByUser end");
     }
 
     @Test
     public void TestGetScoreListByMovie() throws Exception
     {
+        System.out.println("TestGetScoreListByMovie start");
         var movie = new Movie();
         movie.movieId = 1;
         movie.title = "Toy Story (1995)";
@@ -246,6 +251,7 @@ public class PreprocessorImplTest
                     score.movie.movieId
                 )
         );
+        System.out.println("TestGetScoreListByMovie end");
     }
 
     @Test
