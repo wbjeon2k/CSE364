@@ -31,27 +31,6 @@ public class Movie
         WESTERN
     }
 
-    private final String[] GENRE_TEXT = new String[] {
-            "Action",
-            "Adventure",
-            "Animation",
-            "Children's",
-            "Comedy",
-            "Crime",
-            "Documentary",
-            "Drama",
-            "Fantasy",
-            "Film-Noir",
-            "Horror",
-            "Musical",
-            "Mystery",
-            "Romance",
-            "Sci-Fi",
-            "Thriller",
-            "War",
-            "Western"
-    };
-
     @Id
     public int movieId;
     public String title;
@@ -100,6 +79,28 @@ public class Movie
 
     public String GetGenresText()
     {
+        final String[] GENRE_TEXT = new String[] {
+                "Action",
+                "Adventure",
+                "Animation",
+                "Children's",
+                "Comedy",
+                "Crime",
+                "Documentary",
+                "Drama",
+                "Fantasy",
+                "Film-Noir",
+                "Horror",
+                "Musical",
+                "Mystery",
+                "Romance",
+                "Sci-Fi",
+                "Thriller",
+                "War",
+                "Western"
+        };
+
+
         var genreTextList = new ArrayList<String>();
 
         genres.forEach(genre ->
@@ -110,4 +111,5 @@ public class Movie
 
         return String.join("|", genreTextList);
     }
+
 }
