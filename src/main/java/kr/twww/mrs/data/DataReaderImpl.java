@@ -97,6 +97,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public ArrayList<Movie> GetMovieList() throws Exception
     {
+        //if(movieRepoInit || !movieRepoInit){
         if(movieRepoInit == false){
 
             var path = GetPathFromDataType(MOVIE);
