@@ -26,7 +26,7 @@ public class MovieController
     ) throws Exception
     {
         try{
-            movieRepository.save(new Movie(1, "testM", "Action"));
+            //movieRepository.save(new Movie(1, "testM", "Action"));
             return (ArrayList<Movie>) movieRepository.findAll();
         }
         catch (Exception e){

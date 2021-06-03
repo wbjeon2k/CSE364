@@ -50,4 +50,7 @@ public interface DataReader
      * @return 링크 데이터 리스트
      */
     ArrayList<Link> GetLinkList() throws Exception;
+
+    //포스터 링크 return.
+    String GetPosterLink(int id) throws Exception;
 }

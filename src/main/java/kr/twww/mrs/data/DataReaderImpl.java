@@ -4,6 +4,7 @@ import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
 import kr.twww.mrs.data.repository.MovieRepository;
+import kr.twww.mrs.data.repository.PosterRepository;
 import org.apache.spark.mllib.recommendation.Rating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,17 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 {
     private final String PATH_DATA = "./data/";
     private final String SUFFIX = "s.dat";
+    private final String SUFFIX_CSV = "s.csv";
+
+    private boolean movieRepoInit = false;
+    private boolean posterRepoInit = false;
 
     @Autowired
     public MovieRepository movieRepository;
 
-    private boolean movieRepoInit = false;
+    @Autowired
+    public PosterRepository posterRepository;
+
 
     @Override
     public String GetPathFromDataType( DataType dataType ) throws Exception
@@ -64,6 +71,18 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         {
             throw new Exception("Reading file failed");
         }
+    }
+
+    public void ReadPosterCsv(){
+
+    }
+
+    @Override
+    public String GetPosterLink(int id) throws Exception {
+        if(posterRepoInit == false){
+
+        }
+        return null;
     }
 
     @Override
@@ -106,6 +125,8 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 
         return ToLinkList(text);
     }
+
+
 
     @Override
     public ArrayList<User> ToUserList( String text ) throws Exception

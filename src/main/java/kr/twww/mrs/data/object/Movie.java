@@ -35,6 +35,7 @@ public class Movie
     public int movieId;
     public String title;
     public ArrayList<Genre> genres;
+    public String posterLink;
 
     public Movie(){}
 
@@ -42,6 +43,7 @@ public class Movie
         this.title = title;
         this.movieId = mov_id;
         this.genres = getGenreListInit(genrelist);
+        this.posterLink = "";
     }
 
     private ArrayList<Movie.Genre> getGenreListInit( String genresText ) throws Exception
