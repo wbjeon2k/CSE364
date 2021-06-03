@@ -6,6 +6,7 @@ import kr.twww.mrs.data.object.User;
 import kr.twww.mrs.data.repository.MovieRepository;
 import kr.twww.mrs.data.repository.PosterRepository;
 import kr.twww.mrs.data.repository.RatingRepository;
+import kr.twww.mrs.data.repository.UserRepository;
 import org.apache.spark.mllib.recommendation.Rating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     boolean movieRepoInit = false;
     boolean posterRepoInit = false;
     boolean ratingRepoInit = false;
+    boolean userRepoInit = false;
 
     @Autowired
     public MovieRepository movieRepository;
@@ -34,6 +36,8 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     public PosterRepository posterRepository;
     @Autowired
     public RatingRepository ratingRepository;
+    @Autowired
+    public UserRepository userRepository;
 
     @Override
     public String GetPathFromDataType( DataType dataType ) throws Exception
@@ -90,10 +94,18 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public ArrayList<User> GetUserList() throws Exception
     {
-        var path = GetPathFromDataType(USER);
-        var text = ReadTextFromFile(path);
+        if(userRepoInit == false){
+            var path = GetPathFromDataType(USER);
+            var text = ReadTextFromFile(path);
 
-        return ToUserList(text);
+            var result =  ToUserList(text);
+            for(int i=0;i< result.size();++i){
+                userRepository.save(result.get(i));
+            }
+            userRepoInit = true;
+            return result;
+        }
+        return (ArrayList<User>) userRepository.findAll();
     }
 
     @Override
