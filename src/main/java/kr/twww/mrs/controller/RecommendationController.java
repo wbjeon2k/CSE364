@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @RestController
 public class RecommendationController
 {
+    /*
     @Autowired
     private final MovieRepository movieRepository;
     @Autowired
@@ -28,12 +29,15 @@ public class RecommendationController
     @Autowired
     public LinkRepository linkRepository;
 
-    @Autowired
-    private Preprocessor preprocessor;
+
 
     public RecommendationController(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
     }
+     */
+
+    @Autowired
+    private Preprocessor preprocessor;
 
 
     @GetMapping("/users/recommendations")
