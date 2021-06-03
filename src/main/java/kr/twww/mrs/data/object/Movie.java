@@ -57,6 +57,27 @@ public class Movie
     public String title;
     public ArrayList<Genre> genres;
 
+    public Movie(){}
+
+    public Movie(int mov_id, String title, String genrelist) throws Exception {
+        this.title = title;
+        this.movieId = mov_id;
+        this.genres = getGenreListInit(genrelist);
+    }
+
+    private ArrayList<Movie.Genre> getGenreListInit( String genresText ) throws Exception
+    {
+        var genreList = new ArrayList<Movie.Genre>();
+        var splitGenre = genresText.split("\\|");
+
+        for ( String j : splitGenre )
+        {
+            genreList.add(Movie.ConvertGenre(j));
+        }
+
+        return genreList;
+    }
+
     public static Genre ConvertGenre( String _genre ) throws Exception
     {
         _genre = _genre.replaceAll("[^a-zA-Z0-9]", "");
