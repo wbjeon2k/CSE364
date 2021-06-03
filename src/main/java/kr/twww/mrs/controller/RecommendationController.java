@@ -59,8 +59,8 @@ public class RecommendationController
                         score -> new Recommendation(
                                 score.movie.title,
                                 score.movie.GetGenresText(),
-                                score.link.GetURL(),
-                                score.poster.getPosterLink()
+                                score.link.GetURL()
+                                //, score.poster.getPosterLink()
                         )
                 ).collect(Collectors.toList());
     }
@@ -82,8 +82,8 @@ public class RecommendationController
                         score -> new Recommendation(
                                 score.movie.title,
                                 score.movie.GetGenresText(),
-                                score.link.GetURL(),
-                                score.poster.getPosterLink()
+                                score.link.GetURL()
+                                //, score.poster.getPosterLink()
                         )
                 ).collect(Collectors.toList());
     }
