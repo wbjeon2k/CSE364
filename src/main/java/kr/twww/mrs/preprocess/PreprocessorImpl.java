@@ -222,8 +222,11 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         System.out.println("Info: Loading data ...");
 
         var userList = dataReader.GetUserList();
+        System.out.println("Info: user load success ...");
         var movieList = dataReader.GetMovieList();
+        System.out.println("Info: movie load success ...");
         var ratingList = dataReader.GetRatingList();
+        System.out.println("Info: rating load success ...");
 
         System.out.println("Info: Preprocessing ...");
 
