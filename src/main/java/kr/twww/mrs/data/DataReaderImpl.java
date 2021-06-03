@@ -149,6 +149,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public ArrayList<Rating> GetRatingList() throws Exception
     {
+        /*
         if(ratingRepoInit == false){
             var path = GetPathFromDataType(RATING);
             var text = ReadTextFromFile(path);
@@ -161,6 +162,13 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             return result;
         }
         return (ArrayList<Rating>) ratingRepository.findAll();
+         */
+
+        //mongodb query 1M calls are too slow. for test
+        var path = GetPathFromDataType(RATING);
+        var text = ReadTextFromFile(path);
+
+        return ToRatingList(text);
     }
 
     @Override
