@@ -2,10 +2,12 @@ package kr.twww.mrs.controller;
 
 import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
+import kr.twww.mrs.data.object.Poster;
 import kr.twww.mrs.preprocess.PreprocessorImpl;
 import kr.twww.mrs.preprocess.object.Score;
 import mockit.Mock;
 import mockit.MockUp;
+import org.apache.hadoop.yarn.webapp.hamlet.Hamlet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,6 +61,9 @@ public class RecommendationControllerTest
                 score.link = new Link();
                 score.link.imdbId = "";
 
+                score.poster = new Poster();
+                score.poster.posterLink = "";
+
                 scoreList.add(score);
 
                 return scoreList;
@@ -96,6 +101,9 @@ public class RecommendationControllerTest
                 score.movie.genres.add(Movie.Genre.ACTION);
                 score.link = new Link();
                 score.link.imdbId = "";
+
+                score.poster = new Poster();
+                score.poster.posterLink = "";
 
                 scoreList.add(score);
 
