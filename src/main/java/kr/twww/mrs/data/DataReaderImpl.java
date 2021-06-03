@@ -23,15 +23,14 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     private final String SUFFIX = "s.dat";
     private final String SUFFIX_CSV = "s.csv";
 
-    private boolean movieRepoInit = false;
-    private boolean posterRepoInit = false;
+    boolean movieRepoInit = false;
+    boolean posterRepoInit = false;
 
     @Autowired
     public MovieRepository movieRepository;
 
     @Autowired
     public PosterRepository posterRepository;
-
 
     @Override
     public String GetPathFromDataType( DataType dataType ) throws Exception

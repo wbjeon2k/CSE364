@@ -19,7 +19,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-@Ignore
+//@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PreprocessorImplTest
@@ -30,8 +30,10 @@ public class PreprocessorImplTest
     @Test
     public void TestGetRecommendList() throws Exception
     {
+        System.out.println("TestGetRecommendList start");
         try
         {
+            System.out.println("TestGetRecommendList 1 start");
             preprocessor.GetRecommendList(
                     null,
                     null,
@@ -64,6 +66,7 @@ public class PreprocessorImplTest
                 ""
         );
 
+        System.out.println("TestGetRecommendList 2 start");
         assertNotNull(result);
         assertTrue(result.isEmpty());
 
@@ -83,6 +86,8 @@ public class PreprocessorImplTest
                 "10"
         );
 
+        System.out.println("TestGetRecommendList 3 start");
+
         assertNotNull(result2);
         assertTrue(result2.isEmpty());
     }
@@ -90,8 +95,10 @@ public class PreprocessorImplTest
     @Test
     public void TestGetCategoryList() throws Exception
     {
+        System.out.println("TestGetCategoryList start");
         try
         {
+            System.out.println("TestGetCategoryList 1 start");
             preprocessor.GetCategoryList(
                     null
             );
@@ -105,18 +112,21 @@ public class PreprocessorImplTest
         var result = preprocessor.GetCategoryList(
                 ""
         );
+        System.out.println("TestGetCategoryList 2 start");
         assertNotNull(result);
         assertTrue(result.isEmpty());
 
         var result2 = preprocessor.GetCategoryList(
                 "action"
         );
+        System.out.println("TestGetCategoryList 3 start");
         assertNotNull(result2);
         assertEquals(1, result2.size());
         assertEquals(Movie.Genre.ACTION, result2.get(0));
 
         try
         {
+            System.out.println("TestGetCategoryList 4 start");
             preprocessor.GetCategoryList("TEST");
             fail();
         }
