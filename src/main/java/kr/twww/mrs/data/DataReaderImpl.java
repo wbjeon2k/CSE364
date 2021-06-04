@@ -109,6 +109,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             readCsvToPoster();
             posterRepoInit = true;
         }
+        System.out.println("getposter for movID 1 : " + posterRepository.findBymovID(1).posterLink);
         return posterRepository.findBymovID(movID);
     }
 
