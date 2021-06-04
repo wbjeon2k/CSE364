@@ -534,7 +534,14 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 
             score.link = link;
             try {
-                score.poster = dataReader.GetPoster(movieId);
+                var tmpPoster = dataReader.GetPoster(movieId);
+                if(tmpPoster.equals(Optional.empty())){
+                    var p = new Poster();
+                    p.movID = movieId;
+                    p.posterLink = "";
+                    score.poster = p;
+                }
+                else score.poster = tmpPoster;
             } catch (Exception e) {
                 throw new Exception("ToScoreList error: error in adding poster + " + e.getMessage());
             }

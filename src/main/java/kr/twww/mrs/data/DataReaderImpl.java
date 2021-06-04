@@ -87,6 +87,9 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 
 
     public void readCsvToPoster() throws Exception {
+        boolean[] readChk = new boolean[10000];
+        for( var i : readChk) { i = false;}
+
         try{
             String filePath = PATH_DATA + "movie_poster" + SUFFIX_CSV;
             CSVReader reader = new CSVReader(new FileReader(filePath)); // 1
@@ -97,6 +100,10 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 posterlink = nextLine[1];
                 var p = new Poster();
                 p.movID = Integer.parseInt(mid);
+
+                if(readChk[p.movID] == true) continue;
+                else readChk[p.movID] = true;
+
                 p.posterLink = posterlink;
                 posterRepository.save(p);
             }
@@ -108,8 +115,6 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 
     @Override
     public Poster GetPoster(int movID) throws Exception {
-        var ret = posterRepository.findBymovID(movID);
-        if(ret.equals(Optional.empty()) == false) return ret;
 
         if(posterRepoInit == false){
             posterRepository.deleteAll();
@@ -117,15 +122,8 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             posterRepoInit = true;
         }
 
-        ret = posterRepository.findBymovID(movID);
-        if(ret.equals(Optional.empty())){
-            var p = new Poster();
-            p.movID = movID;
-            p.posterLink = "";
-            posterRepository.save(p);
-            return p;
-        }
-        else return ret;
+        var ret = posterRepository.findBymovID(movID);
+        return ret;
     }
 
     @Override
