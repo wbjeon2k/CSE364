@@ -11,13 +11,6 @@ public class Poster {
     public int movID;
     public String posterLink;
 
-    public Poster(int movID, String posterLink){
-        this.movID = movID;
-
-        if(posterLink != null) this.posterLink = posterLink;
-        else this.posterLink = "";
-    }
-
     public int getMovID() {
         return movID;
     }
