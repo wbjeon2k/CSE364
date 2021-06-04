@@ -61,7 +61,7 @@ public class RecommendationControllerTest
                 score.link = new Link();
                 score.link.imdbId = "";
 
-                score.poster = new Poster();
+                score.poster = new Poster(1,"");
                 score.poster.posterLink = "";
 
                 scoreList.add(score);
@@ -102,7 +102,7 @@ public class RecommendationControllerTest
                 score.link = new Link();
                 score.link.imdbId = "";
 
-                score.poster = new Poster();
+                score.poster = new Poster(1, "");
                 score.poster.posterLink = "";
 
                 scoreList.add(score);
