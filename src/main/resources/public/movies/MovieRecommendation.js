@@ -1,17 +1,17 @@
 $(document).ready(function() {
-    $("#title").click(function() {
-        var title_val = $(this).attr('value');
+    $("#title").keyup(function() {
+        let title_val = $("#title").val();
         $.ajax({
-            url: "http://localhost:8080/movies/recommendations.html",
+            url: "./recommendations.html",
             data: {title: title_val, limit: ""},
             method: "GET",
             dataType: "json"
         }).then(function (data) {
-            console.log(data[0].imdb)
-
             for (let i = 0; i < 10; i++) {
-                var link = data[i].imdb;
-                document.write("<a href = {link} target='_blank'><img src= width=19% border='2'></a>")
+                console.log(title_val)
+                console.log(data[i]['imdb'])
+                let link = data[i]['imdb'];
+                document.write("<a href = link target='_blank'><img src= width=19% border='2'></a>")
             }
         })
     })
