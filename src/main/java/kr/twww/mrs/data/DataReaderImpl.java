@@ -126,7 +126,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         try{
 
             if(posterRepoInit == false){
-                //posterRepository.deleteAll();
+                posterRepository.deleteAll();
                 readCsvToPoster();
                 posterRepoInit = true;
             }
