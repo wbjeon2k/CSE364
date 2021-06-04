@@ -94,7 +94,10 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 String mid, posterlink;
                 mid = nextLine[0];
                 posterlink = nextLine[1];
-                posterRepository.save(new Poster(Integer.parseInt(mid), posterlink));
+                var p = new Poster();
+                p.movID = Integer.parseInt(mid);
+                p.posterLink = posterlink;
+                posterRepository.save(p);
             }
         }
         catch (Exception e){
