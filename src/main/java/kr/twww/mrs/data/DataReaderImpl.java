@@ -109,6 +109,10 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                     continue;
                 }
 
+                if(p.movID < 0){
+                    throw new Exception("error: movID is below 0");
+                }
+
                 if(readChk[p.movID] == 1){
                     throw new Exception("error: duplicate movID in poster.csv");
                 }
@@ -128,7 +132,10 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         try{
 
             if(posterRepoInit == false){
-                posterRepository.deleteAll();
+                var initrepo = posterRepository.findAll();
+                if(initrepo.size() > 0){
+                    posterRepository.deleteAll();
+                }
                 readCsvToPoster();
                 posterRepoInit = true;
             }
