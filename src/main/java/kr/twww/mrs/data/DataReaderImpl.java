@@ -123,7 +123,15 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         }
 
         var ret = posterRepository.findBymovID(movID);
-        return ret;
+
+        if(ret.equals(Optional.empty())){
+            var tmp = new Poster();
+            tmp.movID = movID;
+            tmp.posterLink = "";
+            posterRepository.save(tmp);
+            return tmp;
+        }
+        else return ret;
     }
 
     @Override
