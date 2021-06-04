@@ -95,6 +95,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 mid = nextLine[0];
                 posterlink = nextLine[1];
                 posterRepository.save(new Poster(Integer.parseInt(mid), posterlink));
+                System.out.println("Poster: " + mid + " " + posterlink);
             }
         }
         catch (Exception e){

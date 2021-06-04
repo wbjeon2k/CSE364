@@ -11,16 +11,11 @@ public class Poster {
     public int movID;
     public String posterLink;
 
-    public Poster(){
-        movID = 0;
-        posterLink = "";
-    }
-
     public Poster(int movID, String posterLink){
         this.movID = movID;
 
-        if(posterLink != null) posterLink = posterLink;
-        else posterLink = "";
+        if(posterLink != null) this.posterLink = posterLink;
+        else this.posterLink = "";
     }
 
     public int getMovID() {
@@ -35,7 +30,7 @@ public class Poster {
     }
 
     public void setPosterLink(String posterLink) {
-        if(posterLink != null) posterLink = posterLink;
-        else posterLink = "";
+        if(posterLink != null) this.posterLink = posterLink;
+        else this.posterLink = "";
     }
 }

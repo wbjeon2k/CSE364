@@ -5,16 +5,16 @@ public class Recommendation
     private String title;
     private String genre;
     private String imdb;
-    //private String poster;
+    private String poster;
 
-    /*
+
     public Recommendation(String title, String genre, String imdb, String poster) {
         this.title = title;
         this.genre = genre;
         this.imdb = imdb;
-        //this.poster = poster;
+        this.poster = poster;
     }
-    */
+
 
     public Recommendation(String title, String genre, String imdb) {
         this.title = title;
