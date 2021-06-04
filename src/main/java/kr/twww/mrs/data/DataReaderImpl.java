@@ -133,16 +133,18 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 posterRepoInit = true;
             }
 
-            var ret = posterRepository.findBymovID(movID);
-
-            if(ret.equals(Optional.empty()) == true){
-                var tmp = new Poster();
-                tmp.movID = movID;
-                tmp.posterLink = "";
-                posterRepository.save(tmp);
-                return tmp;
+            var posterList = posterRepository.findAll();
+            for(var p : posterList){
+                if(p.getMovID() == movID){
+                    return p;
+                }
             }
-            else return ret;
+
+            //if there is no match
+            var tmpPoster = new Poster();
+            tmpPoster.movID = movID;
+            tmpPoster.posterLink = "";
+            return tmpPoster;
         }
         catch (Exception e){
             throw new Exception("Error in GetPoster : "+ e.getMessage());
