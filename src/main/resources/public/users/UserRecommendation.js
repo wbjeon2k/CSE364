@@ -4,6 +4,7 @@ $(document).ready(function() {
     user.html을 보면 select라는 테그가 있고, 각각 id가 있음
      */
     let gender_val = $("#gender option:selected").val();
+    let age_val = 
     let occupation_val = $("#occupation option:selected").val();
     let genres_val = $("#genres option:selected").val();
     $.ajax({
@@ -11,7 +12,7 @@ $(document).ready(function() {
             data:{gender: gender_val, age: "", occupation: occupation_val, genres: genres_val},
             method: "GET",
             dataType: "json"
-        }).then(function(data){
+        }).done(function(data){
             console.log(gender_val)
             console.log(occupation_val)
             console.log(genres_val)
