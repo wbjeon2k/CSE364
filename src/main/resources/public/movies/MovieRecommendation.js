@@ -1,5 +1,6 @@
 $(document).ready(function() {
-    $("#title").keyup(function() {
+    //$("#movies_button").on("click", function (){ 버튼 누르면 출력
+        //ToDo: html에서 입력받은 title과 limit(이건 상빈이가 만들면) 데이터를 이곳 변수에 넣기
         let title_val = $("#title").val();
         $.ajax({
             url: "./recommendations.html",
@@ -11,8 +12,9 @@ $(document).ready(function() {
                 console.log(title_val)
                 console.log(data[i]['imdb'])
                 let link = data[i]['imdb'];
+                //ToDo: UserRecommendation.js부분과 동일
                 document.write("<a href = link target='_blank'><img src= width=19% border='2'></a>")
             }
         })
-    })
+    //})
 })
