@@ -101,6 +101,12 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 var p = new Poster();
                 p.movID = Integer.parseInt(mid);
 
+                var ret = posterRepository.findBymovID(p.movID);
+                if(ret.equals(Optional.empty()) == false){
+                    System.out.println("duplicate poster : " + mid);
+                    continue;
+                }
+
                 if(readChk[p.movID] == true){
                     throw new Exception("error: duplicate movID in poster.csv");
                 }
@@ -118,8 +124,9 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public Poster GetPoster(int movID) throws Exception {
         try{
+
             if(posterRepoInit == false){
-                posterRepository.deleteAll();
+                //posterRepository.deleteAll();
                 readCsvToPoster();
                 posterRepoInit = true;
             }
