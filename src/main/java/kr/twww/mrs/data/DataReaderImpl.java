@@ -101,7 +101,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 mid = nextLine[0];
                 posterlink = nextLine[1];
                 var p = new Poster();
-                p.movID = Integer.parseInt(mid);
+                p.setMovID(Integer.parseInt(mid));
 
                 var ret = posterRepository.findBymovID(p.movID);
                 if(ret.equals(Optional.empty()) == false){
@@ -112,13 +112,12 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 if(p.movID < 0){
                     throw new Exception("error: movID is below 0");
                 }
-
                 if(readChk[p.movID] == 1){
                     throw new Exception("error: duplicate movID in poster.csv");
                 }
                 else readChk[p.movID] = 1;
 
-                p.posterLink = posterlink;
+                p.setPosterLink(posterlink);
                 posterRepository.save(p);
             }
         }
