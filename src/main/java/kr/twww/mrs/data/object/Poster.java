@@ -3,9 +3,10 @@ package kr.twww.mrs.data.object;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
+@Document
 public class Poster {
 
+    @Id
     public int movID;
     public String posterLink;
 
