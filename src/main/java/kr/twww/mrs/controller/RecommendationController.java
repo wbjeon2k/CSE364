@@ -82,7 +82,7 @@ public class RecommendationController
                                 score.movie.title,
                                 score.movie.GetGenresText(),
                                 score.link.GetURL()
-                                //, score.poster.getPosterLink()
+                                , score.poster.getPosterLink()
                         )
                 ).collect(Collectors.toList());
     }
