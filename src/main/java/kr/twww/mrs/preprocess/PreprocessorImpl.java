@@ -301,10 +301,6 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             );
 
             for(var ith : result ){
-                ith.poster = dataReader.GetPoster(ith.movie.movieId);
-            }
-
-            for(var ith : result ){
                 System.out.println(ith.poster.posterLink);
             }
 
@@ -547,6 +543,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             if (score.movie == null) continue;
 
             score.link = link;
+            /*
             try {
                 var tmpPoster = dataReader.GetPoster(movieId);
                 if(tmpPoster.equals(Optional.empty())){
@@ -559,6 +556,8 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             } catch (Exception e) {
                 throw new Exception("ToScoreList error: error in adding poster + " + e.getMessage());
             }
+
+             */
 
             scoreList.add(score);
         }
