@@ -164,64 +164,69 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             ArrayList<Movie.Genre> genreList
     ) throws Exception
     {
-        System.out.println("Info: Loading data ...");
+        try{
+            System.out.println("Info: Loading data ...");
 
-        var userList = dataReader.GetUserList();
-        var movieList = dataReader.GetMovieList();
-        var ratingList = dataReader.GetRatingList();
+            var userList = dataReader.GetUserList();
+            var movieList = dataReader.GetMovieList();
+            var ratingList = dataReader.GetRatingList();
 
-        System.out.println("Info: Preprocessing ...");
+            System.out.println("Info: Preprocessing ...");
 
-        // 1. 조건에 해당하는 유저 필터
-        var filteredUserList = GetFilteredUserList(
-                gender,
-                age,
-                occupation,
-                userList
-        );
+            // 1. 조건에 해당하는 유저 필터
+            var filteredUserList = GetFilteredUserList(
+                    gender,
+                    age,
+                    occupation,
+                    userList
+            );
 
-        // 2. 조건에 해당하는 영화 필터 (최소 평가 개수 필터)
-        var filteredMovieList = GetFilteredMovieList(
-                genreList,
-                movieList,
-                ratingList
-        );
+            // 2. 조건에 해당하는 영화 필터 (최소 평가 개수 필터)
+            var filteredMovieList = GetFilteredMovieList(
+                    genreList,
+                    movieList,
+                    ratingList
+            );
 
-        // 3. 상위 최대 N명 유저 선택
-        filteredUserList = SelectFilteredUser(
-                ratingList,
-                filteredUserList,
-                filteredMovieList
-        );
+            // 3. 상위 최대 N명 유저 선택
+            filteredUserList = SelectFilteredUser(
+                    ratingList,
+                    filteredUserList,
+                    filteredMovieList
+            );
 
-        // 4. 해당유저-해당영화 -> 평점 예측
-        var predictList = GetPredictList(
-                filteredUserList,
-                filteredMovieList,
-                ratingList
-        );
+            // 4. 해당유저-해당영화 -> 평점 예측
+            var predictList = GetPredictList(
+                    filteredUserList,
+                    filteredMovieList,
+                    ratingList
+            );
 
-        // 5. Score 리스트 작성
-        var scoreList = ToScoreList(
-                filteredMovieList,
-                predictList
-        );
+            // 5. Score 리스트 작성
+            var scoreList = ToScoreList(
+                    filteredMovieList,
+                    predictList
+            );
 
-        // 6. 내림차순 정렬 및 상위 10개 선택
-        var result = SortingTopList(scoreList);
-        
-        // 7. poster 추가?
-        for(var ith : result ){
-            ith.poster = dataReader.GetPoster(ith.movie.movieId);
+            // 6. 내림차순 정렬 및 상위 10개 선택
+            var result = SortingTopList(scoreList);
+
+            // 7. poster 추가?
+            for(var ith : result ){
+                ith.poster = dataReader.GetPoster(ith.movie.movieId);
+            }
+
+            for(var ith : result ){
+                System.out.println(ith.poster.posterLink);
+            }
+
+            System.out.println("Info: Done");
+
+            return result;
         }
-
-        for(var ith : result ){
-            System.out.println(ith.poster.posterLink);
+        catch (Exception e){
+            throw new Exception("Error in GetScoreListByUser : " + e.getMessage());
         }
-
-        System.out.println("Info: Done");
-
-        return result;
     }
 
     @Override
@@ -230,77 +235,82 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             int limit
     ) throws Exception
     {
-        System.out.println("Info: Loading data ...");
+        try{
+            System.out.println("Info: Loading data ...");
 
-        var userList = dataReader.GetUserList();
-        System.out.println("Info: user load success ...");
-        var movieList = dataReader.GetMovieList();
-        System.out.println("Info: movie load success ...");
-        var ratingList = dataReader.GetRatingList();
-        System.out.println("Info: rating load success ...");
+            var userList = dataReader.GetUserList();
+            System.out.println("Info: user load success ...");
+            var movieList = dataReader.GetMovieList();
+            System.out.println("Info: movie load success ...");
+            var ratingList = dataReader.GetRatingList();
+            System.out.println("Info: rating load success ...");
 
-        System.out.println("Info: Preprocessing ...");
+            System.out.println("Info: Preprocessing ...");
 
-        // 0. 주어진 영화 제외
-        movieList.removeIf(
-                _movie -> _movie.movieId == movie.movieId
-        );
+            // 0. 주어진 영화 제외
+            movieList.removeIf(
+                    _movie -> _movie.movieId == movie.movieId
+            );
 
-        // 1. 전체유저-주어진영화 -> 평점 예측
-        var predictList = GetPredictList(
-                userList,
-                Collections.singletonList(movie),
-                ratingList
-        );
-        
-        // 2. 전체 영화 필터 (최소 평가 개수 필터)
-        var filteredMovieList = GetFilteredMovieList(
-                new ArrayList<>(),
-                movieList,
-                ratingList
-        );
+            // 1. 전체유저-주어진영화 -> 평점 예측
+            var predictList = GetPredictList(
+                    userList,
+                    Collections.singletonList(movie),
+                    ratingList
+            );
 
-        // 3. 높게 평가한 상위 최대 N개 선택
-        predictList = SelectPredict(
-                predictList,
-                filteredMovieList
-        );
+            // 2. 전체 영화 필터 (최소 평가 개수 필터)
+            var filteredMovieList = GetFilteredMovieList(
+                    new ArrayList<>(),
+                    movieList,
+                    ratingList
+            );
 
-        // 4-1. 유저 리스트 매핑
-        var selectedUserList = predictList
-                .stream()
-                .map(rating -> {
-                    var user = new User();
-                    user.userId = rating.user();
+            // 3. 높게 평가한 상위 최대 N개 선택
+            predictList = SelectPredict(
+                    predictList,
+                    filteredMovieList
+            );
 
-                    return user;
-                }).collect(Collectors.toList());
+            // 4-1. 유저 리스트 매핑
+            var selectedUserList = predictList
+                    .stream()
+                    .map(rating -> {
+                        var user = new User();
+                        user.userId = rating.user();
 
-        // 4-2. 해당유저-해당영화 -> 평점 예측
-        predictList = GetPredictList(
-                selectedUserList,
-                filteredMovieList,
-                ratingList
-        );
+                        return user;
+                    }).collect(Collectors.toList());
 
-        // 5. Score 리스트 작성
-        var scoreList = ToScoreList(
-                filteredMovieList,
-                predictList
-        );
+            // 4-2. 해당유저-해당영화 -> 평점 예측
+            predictList = GetPredictList(
+                    selectedUserList,
+                    filteredMovieList,
+                    ratingList
+            );
 
-        // 6. 동일 장르 영화 상위 최대 절반(반올림) 선택
-        //    + 나머지 다른 장르 상위 선택
-        //    (동일 장르 > 평점 순으로 정렬)
-        var result = GetCandidateScoreList(
-                movie,
-                limit,
-                scoreList
-        );
+            // 5. Score 리스트 작성
+            var scoreList = ToScoreList(
+                    filteredMovieList,
+                    predictList
+            );
 
-        System.out.println("Info: Done");
+            // 6. 동일 장르 영화 상위 최대 절반(반올림) 선택
+            //    + 나머지 다른 장르 상위 선택
+            //    (동일 장르 > 평점 순으로 정렬)
+            var result = GetCandidateScoreList(
+                    movie,
+                    limit,
+                    scoreList
+            );
 
-        return result;
+            System.out.println("Info: Done");
+
+            return result;
+        }
+        catch (Exception e){
+            throw new Exception("Error in GetScoreListByMovie : " + e.getMessage());
+        }
     }
 
     private List<User> GetFilteredUserList(
