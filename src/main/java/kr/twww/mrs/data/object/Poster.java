@@ -11,6 +11,13 @@ public class Poster {
     public int movID;
     public String posterLink;
 
+    public Poster(){}
+
+    public Poster(int mid, String posterLink){
+        this.movID = mid;
+        this.posterLink = posterLink;
+    }
+
     public int getMovID() {
         return movID;
     }
