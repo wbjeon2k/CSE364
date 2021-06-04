@@ -115,23 +115,28 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 
     @Override
     public Poster GetPoster(int movID) throws Exception {
+        try{
+            if(posterRepoInit == false){
+                posterRepository.deleteAll();
+                readCsvToPoster();
+                posterRepoInit = true;
+            }
 
-        if(posterRepoInit == false){
-            posterRepository.deleteAll();
-            readCsvToPoster();
-            posterRepoInit = true;
+            var ret = posterRepository.findBymovID(movID);
+
+            if(ret.equals(Optional.empty())){
+                var tmp = new Poster();
+                tmp.movID = movID;
+                tmp.posterLink = "";
+                posterRepository.save(tmp);
+                return tmp;
+            }
+            else return ret;
+        }
+        catch (Exception e){
+            throw new Exception("Error in GetPoster : "+ e.getMessage());
         }
 
-        var ret = posterRepository.findBymovID(movID);
-
-        if(ret.equals(Optional.empty())){
-            var tmp = new Poster();
-            tmp.movID = movID;
-            tmp.posterLink = "";
-            posterRepository.save(tmp);
-            return tmp;
-        }
-        else return ret;
     }
 
     @Override
