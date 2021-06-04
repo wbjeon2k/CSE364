@@ -101,7 +101,9 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 var p = new Poster();
                 p.movID = Integer.parseInt(mid);
 
-                if(readChk[p.movID] == true) continue;
+                if(readChk[p.movID] == true){
+                    throw new Exception("error: duplicate movID in poster.csv");
+                }
                 else readChk[p.movID] = true;
 
                 p.posterLink = posterlink;
