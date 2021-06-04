@@ -215,6 +215,10 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             ith.poster = dataReader.GetPoster(ith.movie.movieId);
         }
 
+        for(var ith : result ){
+            System.out.println(ith.poster.posterLink);
+        }
+
         System.out.println("Info: Done");
 
         return result;

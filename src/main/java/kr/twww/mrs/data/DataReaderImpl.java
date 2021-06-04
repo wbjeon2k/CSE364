@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static kr.twww.mrs.data.DataType.*;
 
@@ -107,17 +108,31 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 
     @Override
     public Poster GetPoster(int movID) throws Exception {
+        var ret = posterRepository.findBymovID(movID);
+        if(ret.equals(Optional.empty()) == false) return ret;
+
         if(posterRepoInit == false){
+            posterRepository.deleteAll();
             readCsvToPoster();
             posterRepoInit = true;
         }
-        return posterRepository.findBymovID(movID);
+
+        ret = posterRepository.findBymovID(movID);
+        if(ret.equals(Optional.empty())){
+            var p = new Poster();
+            p.movID = movID;
+            p.posterLink = "";
+            posterRepository.save(p);
+            return p;
+        }
+        else return ret;
     }
 
     @Override
     public ArrayList<User> GetUserList() throws Exception
     {
         if(userRepoInit == false){
+            userRepository.deleteAll();
             var path = GetPathFromDataType(USER);
             var text = ReadTextFromFile(path);
 
@@ -136,7 +151,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     {
         //if(movieRepoInit || !movieRepoInit){
         if(movieRepoInit == false){
-
+            movieRepository.deleteAll();
             var path = GetPathFromDataType(MOVIE);
             var text = ReadTextFromFile(path);
             var result =ToMovieList(text);
@@ -178,6 +193,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     public ArrayList<Link> GetLinkList() throws Exception
     {
         if(linkRepoInit == false){
+            linkRepository.deleteAll();
             var path = GetPathFromDataType(LINK);
             var text = ReadTextFromFile(path);
 
