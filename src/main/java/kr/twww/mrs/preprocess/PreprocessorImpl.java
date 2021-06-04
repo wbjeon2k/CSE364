@@ -209,6 +209,11 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 
         // 6. 내림차순 정렬 및 상위 10개 선택
         var result = SortingTopList(scoreList);
+        
+        // 7. poster 추가?
+        for(var ith : result ){
+            ith.poster = dataReader.GetPoster(ith.movie.movieId);
+        }
 
         System.out.println("Info: Done");
 

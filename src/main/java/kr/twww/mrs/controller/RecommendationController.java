@@ -39,7 +39,6 @@ public class RecommendationController
     @Autowired
     private Preprocessor preprocessor;
 
-
     @GetMapping("/users/recommendations")
     public ArrayList<Recommendation> Recommend(
             @RequestBody RequestByUser requestByUser
@@ -60,7 +59,7 @@ public class RecommendationController
                                 score.movie.title,
                                 score.movie.GetGenresText(),
                                 score.link.GetURL()
-                                , score.poster.posterLink
+                                , score.poster.getPosterLink()
                         )
                 ).collect(Collectors.toList());
     }
