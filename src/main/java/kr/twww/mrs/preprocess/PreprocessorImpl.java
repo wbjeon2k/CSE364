@@ -300,8 +300,9 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
                     scoreList
             );
 
+            // 7. poster 추가?
             for(var ith : result ){
-                System.out.println(ith.poster.posterLink);
+                ith.poster = dataReader.GetPoster(ith.movie.movieId);
             }
 
             System.out.println("Info: Done");
