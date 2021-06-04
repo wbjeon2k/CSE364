@@ -11,10 +11,12 @@ import org.apache.hadoop.yarn.webapp.hamlet.Hamlet;
 import org.apache.spark.mllib.recommendation.Rating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import scala.Array;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 import static kr.twww.mrs.data.DataType.*;
@@ -87,8 +89,8 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 
 
     public void readCsvToPoster() throws Exception {
-        boolean[] readChk = new boolean[10000];
-        for( var i : readChk) { i = false;}
+        var readChk = new int[10000];
+        Arrays.fill(readChk, 0);
 
         try{
             String filePath = PATH_DATA + "movie_poster" + SUFFIX_CSV;
@@ -107,10 +109,10 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                     continue;
                 }
 
-                if(readChk[p.movID] == true){
+                if(readChk[p.movID] == 1){
                     throw new Exception("error: duplicate movID in poster.csv");
                 }
-                else readChk[p.movID] = true;
+                else readChk[p.movID] = 1;
 
                 p.posterLink = posterlink;
                 posterRepository.save(p);
