@@ -1,6 +1,8 @@
 package kr.twww.mrs.data;
 
 import com.opencsv.CSVReader;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
@@ -17,6 +19,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Optional;
 
 import static kr.twww.mrs.data.DataType.*;
@@ -95,30 +98,21 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         try{
             String filePath = PATH_DATA + "movie_poster" + SUFFIX_CSV;
             CSVReader reader = new CSVReader(new FileReader(filePath)); // 1
-            String [] nextLine;
-            while ((nextLine = reader.readNext()) != null) {   // 2
-                String mid, posterlink;
-                mid = nextLine[0];
-                posterlink = nextLine[1];
-                var p = new Poster();
-                p.setMovID(Integer.parseInt(mid));
+            CsvToBean<Poster> CTB = new CsvToBeanBuilder(reader)
+                    .withType(Poster.class)
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .build();
 
-                var ret = posterRepository.findBymovID(p.movID);
-                if(ret.equals(Optional.empty()) == false){
-                    System.out.println("duplicate poster : " + mid);
-                    continue;
-                }
+            Iterator<Poster> csvIterator = CTB.iterator();
 
-                if(p.movID < 0){
-                    throw new Exception("error: movID is below 0");
-                }
-                if(readChk[p.movID] == 1){
-                    throw new Exception("error: duplicate movID in poster.csv");
-                }
-                else readChk[p.movID] = 1;
+            while(csvIterator.hasNext()){
+                Poster poster = csvIterator.next();
 
-                p.setPosterLink(posterlink);
-                posterRepository.save(p);
+                assert(poster.movID >= 0);
+                if(readChk[poster.movID] == 1) continue;
+                else readChk[poster.movID] = 1;
+
+                posterRepository.save(poster);
             }
         }
         catch (Exception e){
