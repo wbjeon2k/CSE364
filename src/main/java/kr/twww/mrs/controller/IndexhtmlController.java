@@ -3,6 +3,9 @@ package kr.twww.mrs.controller;
 import kr.twww.mrs.controller.object.Error;
 import kr.twww.mrs.controller.object.IndexhtmlObject;
 import kr.twww.mrs.controller.object.Recommendation;
+import kr.twww.mrs.data.object.Link;
+import kr.twww.mrs.data.object.Movie;
+import kr.twww.mrs.data.object.Poster;
 import kr.twww.mrs.preprocess.Preprocessor;
 import kr.twww.mrs.preprocess.object.Score;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +28,17 @@ public class IndexhtmlController {
         //var allscoreList = preprocessor.getindexhtmlScoreList();
 
         List<Score> allscoreList = new ArrayList<>();
-        for(int i=0;i<11;++i)allscoreList.add(new Score());
+        for(int i=0;i<11;++i){
+            var S = new Score();
+            S.movie = new Movie();
+            S.movie.title = "";
+            S.movie.genres.add(Movie.Genre.ADVENTURE);
+            S.link = new Link();
+            S.link.imdbId = "0000000";
+            S.poster = new Poster();
+            S.poster.posterLink = "00000000";
+            allscoreList.add(S);
+        }
 
         var top10tmp = allscoreList.subList(0,10);
 
