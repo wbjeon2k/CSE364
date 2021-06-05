@@ -28,14 +28,16 @@ public class IndexhtmlController {
         ArrayList<Score> allscoreList;
         try{
             allscoreList = preprocessor.getindexhtmlScoreList();
+            System.out.println(allscoreList.size());
         }
         catch (Exception e){
             throw new Exception("Error in  IndexhtmlController homepageReturn getindexhtmlScoreList");
         }
 
-
         try{
-            var top10score = allscoreList.subList(0,10);
+            ArrayList<Score> top10score = new ArrayList<Score>();
+            for(int i=0;i<10;++i) top10score.add(allscoreList.get(i));
+
             var ret = new ArrayList<Recommendation>();
             for(Score s : top10score){
                 //private String title;String genre;String imdb;String poster;
