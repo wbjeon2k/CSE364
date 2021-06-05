@@ -55,4 +55,7 @@ public interface DataReader
     //포스터 링크 return.
     //ArrayList<Poster> GetPosterList() throws Exception;
     Poster GetPoster(int movID) throws Exception;
+
+    //init routine.
+    public void DataReaderImplInit() throws Exception;
 }

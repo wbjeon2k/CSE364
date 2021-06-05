@@ -32,6 +32,8 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     private final String SUFFIX = "s.dat";
     private final String SUFFIX_CSV = ".csv";
 
+    private static ArrayList<Rating> ratingListAsRepo;
+
     boolean movieRepoInit = false;
     boolean posterRepoInit = false;
     boolean ratingRepoInit = false;
@@ -48,6 +50,55 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     public UserRepository userRepository;
     @Autowired
     public LinkRepository linkRepository;
+
+    public void DataReaderImplInit() throws Exception {
+        System.out.println("Initializing DataReader");
+        InitPosterRepo();
+        InitMovieRepo();
+        InitLinkRepo();
+        InitUserRepo();
+        System.out.println("Initializing complete");
+    }
+
+    public void InitPosterRepo() throws Exception{
+        readCsvToPoster();
+        posterRepoInit = true;
+    }
+
+    public void InitUserRepo() throws Exception {
+        userRepository.deleteAll();
+        var path = GetPathFromDataType(USER);
+        var text = ReadTextFromFile(path);
+
+        var result =  ToUserList(text);
+        for(int i=0;i< result.size();++i){
+            userRepository.save(result.get(i));
+        }
+        userRepoInit = true;
+    }
+
+    public void InitMovieRepo() throws Exception {
+        movieRepository.deleteAll();
+        var path = GetPathFromDataType(MOVIE);
+        var text = ReadTextFromFile(path);
+        var result =ToMovieList(text);
+        for(int i=0;i< result.size();++i){
+            movieRepository.save(result.get(i));
+        }
+        movieRepoInit = true;
+    }
+
+    public void InitLinkRepo() throws Exception{
+        linkRepository.deleteAll();
+        var path = GetPathFromDataType(LINK);
+        var text = ReadTextFromFile(path);
+
+        var result =  ToLinkList(text);
+        for(int i=0;i< result.size();++i){
+            linkRepository.save(result.get(i));
+        }
+        linkRepoInit = true;
+    }
 
     @Override
     public String GetPathFromDataType( DataType dataType ) throws Exception
@@ -156,16 +207,8 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     public ArrayList<User> GetUserList() throws Exception
     {
         if(userRepoInit == false){
-            userRepository.deleteAll();
-            var path = GetPathFromDataType(USER);
-            var text = ReadTextFromFile(path);
-
-            var result =  ToUserList(text);
-            for(int i=0;i< result.size();++i){
-                userRepository.save(result.get(i));
-            }
+            InitUserRepo();
             userRepoInit = true;
-            return result;
         }
         return (ArrayList<User>) userRepository.findAll();
     }
@@ -173,17 +216,9 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public ArrayList<Movie> GetMovieList() throws Exception
     {
-        //if(movieRepoInit || !movieRepoInit){
         if(movieRepoInit == false){
-            movieRepository.deleteAll();
-            var path = GetPathFromDataType(MOVIE);
-            var text = ReadTextFromFile(path);
-            var result =ToMovieList(text);
-            for(int i=0;i< result.size();++i){
-                movieRepository.save(result.get(i));
-            }
+            InitMovieRepo();
             movieRepoInit = true;
-            return result;
         }
         return (ArrayList<Movie>) movieRepository.findAll();
     }
@@ -206,31 +241,25 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         return (ArrayList<Rating>) ratingRepository.findAll();
          */
 
-        //mongodb query 1M calls are too slow. for test
-        var path = GetPathFromDataType(RATING);
-        var text = ReadTextFromFile(path);
+        //mongodb query 1M calls are too slow. direct file access is faster.
+        if(ratingListAsRepo.isEmpty()){
+            var path = GetPathFromDataType(RATING);
+            var text = ReadTextFromFile(path);
 
-        return ToRatingList(text);
+            ratingListAsRepo = ToRatingList(text);
+        }
+        return ratingListAsRepo;
     }
 
     @Override
     public ArrayList<Link> GetLinkList() throws Exception
     {
         if(linkRepoInit == false){
-            linkRepository.deleteAll();
-            var path = GetPathFromDataType(LINK);
-            var text = ReadTextFromFile(path);
-
-            var result =  ToLinkList(text);
-            for(int i=0;i< result.size();++i){
-                linkRepository.save(result.get(i));
-            }
+            InitLinkRepo();
             linkRepoInit = true;
-            return result;
         }
         return (ArrayList<Link>) linkRepository.findAll();
     }
-
 
 
     @Override

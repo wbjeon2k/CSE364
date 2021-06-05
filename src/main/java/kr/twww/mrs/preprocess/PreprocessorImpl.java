@@ -24,8 +24,32 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     @Autowired
     private Predictor predictor;
 
+    public static ArrayList<Score> indexhtmlScoreList;
+
     private final int MAX_PAIR_COUNT = 624000;
     private final int MIN_RATING_COUNT = 10;
+
+    public void PreprocessorImplInit() throws Exception {
+        dataReader.DataReaderImplInit();
+        var gender = User.ConvertGender("");
+        var occupation = User.ConvertOccupationByText("");
+        var age = User.ConvertAge("");
+        var category = GetGenreList("");
+        indexhtmlScoreList = GetScoreListByUserAll(gender,age,occupation,category);
+    }
+
+    private ArrayList<Movie.Genre> GetGenreList( String genresText ) throws Exception
+    {
+        var genreList = new ArrayList<Movie.Genre>();
+        var splitGenre = genresText.split("\\|");
+
+        for ( String j : splitGenre )
+        {
+            genreList.add(Movie.ConvertGenre(j));
+        }
+
+        return genreList;
+    }
 
     @Override
     public ArrayList<Score> GetRecommendList(
@@ -219,6 +243,70 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             System.out.println("Info: Done");
 
             return result;
+        }
+        catch (Exception e){
+            throw new Exception("Error in GetScoreListByUser : " + e.getMessage());
+        }
+    }
+
+    public ArrayList<Score> GetScoreListByUserAll(
+            User.Gender gender,
+            User.Age age,
+            User.Occupation occupation,
+            ArrayList<Movie.Genre> genreList
+    ) throws Exception
+    {
+        try{
+            System.out.println("Info: Loading data ...");
+
+            var userList = dataReader.GetUserList();
+            var movieList = dataReader.GetMovieList();
+            var ratingList = dataReader.GetRatingList();
+
+            System.out.println("Info: Preprocessing ...");
+
+            // 1. 조건에 해당하는 유저 필터
+            var filteredUserList = GetFilteredUserList(
+                    gender,
+                    age,
+                    occupation,
+                    userList
+            );
+
+            // 2. 조건에 해당하는 영화 필터 (최소 평가 개수 필터)
+            var filteredMovieList = GetFilteredMovieList(
+                    genreList,
+                    movieList,
+                    ratingList
+            );
+
+            // 3. 상위 최대 N명 유저 선택
+            filteredUserList = SelectFilteredUser(
+                    ratingList,
+                    filteredUserList,
+                    filteredMovieList
+            );
+
+            // 4. 해당유저-해당영화 -> 평점 예측
+            var predictList = GetPredictList(
+                    filteredUserList,
+                    filteredMovieList,
+                    ratingList
+            );
+
+            // 5. Score 리스트 작성
+            var scoreList = ToScoreList(
+                    filteredMovieList,
+                    predictList
+            );
+
+            scoreList.sort(
+                    (o1, o2) -> Double.compare(o2.score, o1.score)
+            );
+
+            System.out.println("Info: Done");
+
+            return scoreList;
         }
         catch (Exception e){
             throw new Exception("Error in GetScoreListByUser : " + e.getMessage());

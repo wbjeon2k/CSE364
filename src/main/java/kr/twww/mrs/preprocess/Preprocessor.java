@@ -47,4 +47,7 @@ public interface Preprocessor
             String _title,
             String _limit
     ) throws Exception;
+
+    //init routine
+    public void PreprocessorImplInit() throws Exception;
 }

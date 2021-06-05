@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public abstract class DataReaderBase
 {
+    public abstract void DataReaderImplInit() throws Exception;
     public abstract ArrayList<User> ToUserList( String textList ) throws Exception;
     public abstract ArrayList<Movie> ToMovieList( String textList ) throws Exception;
     public abstract ArrayList<Rating> ToRatingList( String textList ) throws Exception;
