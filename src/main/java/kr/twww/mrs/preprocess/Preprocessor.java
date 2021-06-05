@@ -49,5 +49,5 @@ public interface Preprocessor
     ) throws Exception;
 
     //init routine
-    //public void PreprocessorImplInit() throws Exception;
+    public void PreprocessorImplInit() throws Exception;
 }

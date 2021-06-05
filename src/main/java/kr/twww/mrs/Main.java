@@ -4,6 +4,7 @@ import kr.twww.mrs.preprocess.Preprocessor;
 import kr.twww.mrs.preprocess.PreprocessorImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import sun.misc.Unsafe;
 
 @SpringBootApplication
@@ -16,15 +17,9 @@ public class Main
         SpringApplication.run(Main.class, args);
     }
 
-    private static void serverInit() {
-        System.out.println("Server resource initializing. Please wait. Do not turn off the server.");
-        Preprocessor tmp = new PreprocessorImpl();
-        try {
-            tmp.GetRecommendList("","");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("Server ready to run.");
+    @Bean(initMethod="PreprocessorImplInit")
+    public Preprocessor initTest() {
+        return new PreprocessorImpl();
     }
 
     private static void DisableWarning()
