@@ -140,12 +140,13 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             throw new Exception("Invalid title string");
         }
 
+        var b = _title
+                .toLowerCase()
+                .replaceAll("_", "")
+                .replaceAll("\\s+", "");
+
         var result = dataReader.GetMovieList().stream().filter(movie -> {
             var a = movie.title
-                    .toLowerCase()
-                    .replaceAll("\\s+", "");
-
-            var b = _title
                     .toLowerCase()
                     .replaceAll("\\s+", "");
 
