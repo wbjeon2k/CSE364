@@ -14,13 +14,6 @@ public class Score
 
     public Score()
     {
-        movie = new Movie();
-        movie.title = "";
-        movie.genres.add(Movie.Genre.ADVENTURE);
-        link = new Link();
-        link.imdbId = "0000000";
-        poster = new Poster();
-        poster.posterLink = "00000000";
         score = 0.0;
     }
 }
