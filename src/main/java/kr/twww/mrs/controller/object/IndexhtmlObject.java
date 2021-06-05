@@ -14,6 +14,7 @@ public class IndexhtmlObject {
 
     public IndexhtmlObject( ArrayList<Recommendation> Top10all){
         this.Top10all = Top10all;
+        Top10action = new ArrayList<>();
     }
 
     public void setTop10action(ArrayList<Recommendation> top10action) {

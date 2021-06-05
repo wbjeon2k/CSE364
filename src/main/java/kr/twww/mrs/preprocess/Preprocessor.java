@@ -49,5 +49,5 @@ public interface Preprocessor
     ) throws Exception;
 
     //init routine
-    public ArrayList<Score> getindexhtmlScoreList();
+    public ArrayList<Score> getindexhtmlScoreList() throws Exception;
 }

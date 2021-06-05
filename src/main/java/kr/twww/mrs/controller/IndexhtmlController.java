@@ -19,8 +19,8 @@ public class IndexhtmlController {
     private Preprocessor preprocessor;
 
     @GetMapping("/index.html")
-    public IndexhtmlObject homepageReturn (){
-        /*
+    public IndexhtmlObject homepageReturn () throws Exception {
+
         var allscoreList = preprocessor.getindexhtmlScoreList();
         var top10all = (ArrayList<Recommendation>) allscoreList.subList(0,10).stream()
                 .map(
@@ -32,7 +32,7 @@ public class IndexhtmlController {
                         )
                 ).collect(Collectors.toList());
 
-         */
-        return new IndexhtmlObject();
+
+        return new IndexhtmlObject(top10all);
     }
 }

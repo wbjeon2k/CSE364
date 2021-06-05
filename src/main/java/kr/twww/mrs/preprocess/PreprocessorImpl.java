@@ -41,7 +41,14 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     }
 
     @Override
-    public ArrayList<Score> getindexhtmlScoreList(){
+    public ArrayList<Score> getindexhtmlScoreList() throws Exception {
+        if(indexhtmlScoreList.isEmpty()){
+            var gender = User.ConvertGender("");
+            var occupation = User.ConvertOccupationByText("");
+            var age = User.ConvertAge("");
+            var category = GetCategoryList("");
+            indexhtmlScoreList = GetScoreListByUserAll(gender,age,occupation,category);
+        }
         return indexhtmlScoreList;
     }
 
