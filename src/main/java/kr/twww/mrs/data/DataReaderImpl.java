@@ -35,26 +35,26 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 
     private static ArrayList<Rating> ratingListAsRepo;
 
-    boolean movieRepoInit = false;
-    boolean posterRepoInit = false;
-    boolean ratingRepoInit = false;
-    boolean userRepoInit = false;
-    boolean linkRepoInit = false;
+    static boolean movieRepoInit = false;
+    static boolean posterRepoInit = false;
+    static boolean ratingRepoInit = false;
+    static boolean userRepoInit = false;
+    static boolean linkRepoInit = false;
 
     @Autowired
-    public MovieRepository movieRepository;
+    public static MovieRepository movieRepository;
 
     @Autowired
-    public PosterRepository posterRepository;
+    public static PosterRepository posterRepository;
 
     @Autowired
-    public RatingRepository ratingRepository;
+    public static RatingRepository ratingRepository;
 
     @Autowired
-    public UserRepository userRepository;
+    public static UserRepository userRepository;
 
     @Autowired
-    public LinkRepository linkRepository;
+    public static LinkRepository linkRepository;
 
     public void DataReaderImplInit() throws Exception {
         System.out.println("Initializing DataReader");
@@ -78,16 +78,12 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     public void InitUserRepo() throws Exception {
         System.out.println("InitUserRepo start");
         try{
-            System.out.println("try wait");
-            userRepository.wait(10);
-            System.out.println("try wait");
-            //userRepository.deleteAll();
             var path = GetPathFromDataType(USER);
             var text = ReadTextFromFile(path);
 
             var result =  ToUserList(text);
             for(User u : result){
-                userRepository.save(u);
+                userRepository.insert(u);
             }
             userRepoInit = true;
         }
@@ -243,8 +239,6 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 userRepoInit = true;
             }
 
-            System.out.println("try to insert userRepository.");
-            userRepository.insert(new User());
             System.out.println("try to access userRepository.");
             return (ArrayList<User>) userRepository.findAll();
         }
