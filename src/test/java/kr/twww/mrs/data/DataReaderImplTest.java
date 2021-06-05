@@ -81,6 +81,10 @@ public class DataReaderImplTest
         }
     }
 
+    /*
+    @PostConstruct 때문에 datareader 가 생성되어서 정상작동함.
+    정상작동 안한다는 가정이 붙은 이 테스트는 통과할 수 없음. 수정 예정.
+     */
     @Ignore
     @Test
     public void TestGetList() throws Exception

@@ -49,4 +49,5 @@ public class Recommendation
 
     public String getPoster() { return poster; }
     public void setPoster(String poster) { this.poster = poster; }
+
 }

@@ -40,6 +40,11 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     }
 
     @Override
+    public ArrayList<Score> getindexhtmlScoreList(){
+        return indexhtmlScoreList;
+    }
+
+    @Override
     public ArrayList<Score> GetRecommendList(
             String _gender,
             String _age,
@@ -288,6 +293,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
                     predictList
             );
 
+            //다른점: 전체 score return.
             scoreList.sort(
                     (o1, o2) -> Double.compare(o2.score, o1.score)
             );
