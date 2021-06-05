@@ -3,6 +3,7 @@ package kr.twww.mrs.data;
 import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
 import mockit.Expectations;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,7 @@ public class DataReaderImplTest
         }
     }
 
+    @Ignore
     @Test
     public void TestGetList() throws Exception
     {

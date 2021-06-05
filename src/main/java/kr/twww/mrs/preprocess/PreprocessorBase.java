@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public abstract class PreprocessorBase
 {
-    public abstract void PreprocessorImplInit() throws Exception;
+    //public abstract void PreprocessorImplInit() throws Exception;
 
     public abstract ArrayList<Movie.Genre> GetCategoryList( String genreText ) throws Exception;
 

@@ -11,6 +11,7 @@ import org.apache.spark.mllib.recommendation.Rating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,25 +30,13 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     private final int MAX_PAIR_COUNT = 624000;
     private final int MIN_RATING_COUNT = 10;
 
-    public void PreprocessorImplInit() throws Exception {
+    @PostConstruct
+    public void PreprocessorImplstart() throws Exception {
         var gender = User.ConvertGender("");
         var occupation = User.ConvertOccupationByText("");
         var age = User.ConvertAge("");
-        var category = GenreList("");
+        var category = GetCategoryList("");
         indexhtmlScoreList = GetScoreListByUserAll(gender,age,occupation,category);
-    }
-
-    private ArrayList<Movie.Genre> GenreList( String genresText ) throws Exception
-    {
-        var genreList = new ArrayList<Movie.Genre>();
-        var splitGenre = genresText.split("\\|");
-
-        for ( String j : splitGenre )
-        {
-            genreList.add(Movie.ConvertGenre(j));
-        }
-
-        return genreList;
     }
 
     @Override

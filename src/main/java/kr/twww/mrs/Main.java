@@ -17,10 +17,13 @@ public class Main
         SpringApplication.run(Main.class, args);
     }
 
+    /*
     @Bean(initMethod="PreprocessorImplInit")
     public Preprocessor initTest() {
         return new PreprocessorImpl();
     }
+    */
+
 
     private static void DisableWarning()
     {
