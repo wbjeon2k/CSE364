@@ -25,6 +25,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     @Autowired
     public Predictor predictor;
 
+    @Autowired
     public static ArrayList<Score> indexhtmlScoreList;
 
     private final int MAX_PAIR_COUNT = 624000;

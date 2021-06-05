@@ -21,8 +21,7 @@ public class IndexhtmlController {
     @GetMapping("/index.html")
     public IndexhtmlObject homepageReturn (){
         /*
-        ArrayList<Score> allscoreList = new ArrayList<Score>();
-        allscoreList = preprocessor.getindexhtmlScoreList();
+        var allscoreList = preprocessor.getindexhtmlScoreList();
         var top10all = (ArrayList<Recommendation>) allscoreList.subList(0,10).stream()
                 .map(
                         score -> new Recommendation(
