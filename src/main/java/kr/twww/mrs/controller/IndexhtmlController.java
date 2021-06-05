@@ -20,6 +20,7 @@ public class IndexhtmlController {
 
     @GetMapping("/index.html")
     public IndexhtmlObject homepageReturn (){
+        /*
         ArrayList<Score> allscoreList = new ArrayList<Score>();
         allscoreList = preprocessor.getindexhtmlScoreList();
         var top10all = (ArrayList<Recommendation>) allscoreList.subList(0,10).stream()
@@ -31,6 +32,8 @@ public class IndexhtmlController {
                                 , score.poster.getPosterLink()
                         )
                 ).collect(Collectors.toList());
-        return new IndexhtmlObject(top10all);
+
+         */
+        return new IndexhtmlObject();
     }
 }
