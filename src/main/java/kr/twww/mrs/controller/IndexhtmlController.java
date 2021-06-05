@@ -56,33 +56,13 @@ public class IndexhtmlController {
             throw new Exception("Error in IndexhtmlController homepageReturn objectmapping");
         }
 
-
-        /*
-        for(Score s : top10score){
-            String title, genre, imdb, poster;
-            try {
-                title = s.movie.title;
-                genre = s.movie.GetGenresText();
-                imdb = s.link.GetURL();
-                poster = s.poster.getPosterLink();
-            }
-            catch (Exception e){
-                    throw new Exception("Error in  IndexhtmlController homepageReturn score info");
-            }
-            try {
-                var tmp = new Recommendation(title, genre, imdb, poster);
-                ret.add(tmp);
-            }
-            catch (Exception e){
-                throw new Exception("Error in  IndexhtmlController homepageReturn add recommend");
-            }
-        }
-        */
         return ret;
     }
 
+    public ArrayList<Recommendation> getTop10all(){
+        return new ArrayList<>();
+    }
 
 
-        //return new ArrayList<>();
 }
 
