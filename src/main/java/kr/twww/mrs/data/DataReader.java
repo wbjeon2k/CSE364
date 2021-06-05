@@ -57,5 +57,5 @@ public interface DataReader
     Poster GetPoster(int movID) throws Exception;
 
     //init routine.
-    public void DataReaderImplInit() throws Exception;
+    //public void DataReaderImplInit() throws Exception;
 }

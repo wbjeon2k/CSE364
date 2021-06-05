@@ -30,7 +30,6 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     private final int MIN_RATING_COUNT = 10;
 
     public void PreprocessorImplInit() throws Exception {
-        dataReader.DataReaderImplInit();
         var gender = User.ConvertGender("");
         var occupation = User.ConvertOccupationByText("");
         var age = User.ConvertAge("");
