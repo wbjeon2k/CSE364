@@ -72,7 +72,7 @@ public class RecommendationControllerTest
 
         mvc.perform(
                 MockMvcRequestBuilders
-                        .get("/users/recommendations")
+                        .get("/users/recommendations.html")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}")
         ).andExpect(
@@ -113,7 +113,7 @@ public class RecommendationControllerTest
 
         mvc.perform(
                 MockMvcRequestBuilders
-                        .get("/movies/recommendations")
+                        .get("/movies/recommendations.html")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}")
         ).andExpect(
