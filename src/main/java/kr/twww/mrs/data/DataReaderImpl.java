@@ -226,11 +226,14 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public ArrayList<User> GetUserList() throws Exception
     {
+        System.out.println("GetUserList start.");
         try{
             if(userRepoInit == false){
+                System.out.println("userrepoinit start.");
                 InitUserRepo();
                 userRepoInit = true;
             }
+            System.out.println("try to access userRepository.");
             return (ArrayList<User>) userRepository.findAll();
         }
         catch (Exception e){
