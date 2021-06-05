@@ -19,10 +19,10 @@ import java.util.stream.Collectors;
 public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 {
     @Autowired
-    private DataReader dataReader;
+    public DataReader dataReader;
 
     @Autowired
-    private Predictor predictor;
+    public Predictor predictor;
 
     public static ArrayList<Score> indexhtmlScoreList;
 

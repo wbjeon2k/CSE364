@@ -1,5 +1,9 @@
 package kr.twww.mrs.data.object;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class User
 {
     public enum Gender
@@ -47,6 +51,7 @@ public class User
         UNKNOWN
     }
 
+    @Id
     public int userId;
     public Gender gender;
     public Age age;

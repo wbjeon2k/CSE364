@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends MongoRepository<User, Integer> {
+public interface UserRepository extends MongoRepository<User, Long> {
 
     //Movie findBytitle(String Title);
     //Movie findBymovieId(int id);

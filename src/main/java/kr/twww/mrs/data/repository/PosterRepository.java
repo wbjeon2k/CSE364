@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public interface PosterRepository extends MongoRepository<Poster, Integer> {
+public interface PosterRepository extends MongoRepository<Poster, Long> {
 
     //Movie findBytitle(String Title);
     //Poster findBymovID(int id);

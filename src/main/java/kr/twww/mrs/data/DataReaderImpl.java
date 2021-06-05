@@ -1,5 +1,6 @@
 package kr.twww.mrs.data;
 
+import com.mongodb.DBCursor;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -42,12 +43,16 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
 
     @Autowired
     public MovieRepository movieRepository;
+
     @Autowired
     public PosterRepository posterRepository;
+
     @Autowired
     public RatingRepository ratingRepository;
+
     @Autowired
     public UserRepository userRepository;
+
     @Autowired
     public LinkRepository linkRepository;
 
@@ -73,8 +78,10 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     public void InitUserRepo() throws Exception {
         System.out.println("InitUserRepo start");
         try{
+            System.out.println("try wait");
             userRepository.wait(10);
-            userRepository.deleteAll();
+            System.out.println("try wait");
+            //userRepository.deleteAll();
             var path = GetPathFromDataType(USER);
             var text = ReadTextFromFile(path);
 
@@ -235,8 +242,9 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 InitUserRepo();
                 userRepoInit = true;
             }
-            System.out.println("try wait userRepository.");
-            userRepository.wait(2);
+
+            System.out.println("try to insert userRepository.");
+            userRepository.insert(new User());
             System.out.println("try to access userRepository.");
             return (ArrayList<User>) userRepository.findAll();
         }

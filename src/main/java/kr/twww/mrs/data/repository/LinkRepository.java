@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public interface LinkRepository extends MongoRepository<Link, Integer> {
+public interface LinkRepository extends MongoRepository<Link, Long> {
 
     //Movie findBytitle(String Title);
     //Movie findBymovieId(int id);

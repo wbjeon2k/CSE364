@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public interface RatingRepository extends MongoRepository<Rating, Integer> {
+public interface RatingRepository extends MongoRepository<Rating, Long> {
 
     //Movie findBytitle(String Title);
     //Movie findBymovieId(int id);
