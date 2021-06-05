@@ -21,7 +21,11 @@ public class IndexhtmlController {
     @GetMapping("/index.html")
     public IndexhtmlObject homepageReturn () throws Exception {
 
-        var allscoreList = preprocessor.getindexhtmlScoreList();
+        //var allscoreList = preprocessor.getindexhtmlScoreList();
+
+        ArrayList<Score> allscoreList = new ArrayList<>();
+        for(int i=0;i<10;++i)allscoreList.add(new Score());
+
         var top10all = (ArrayList<Recommendation>) allscoreList.subList(0,10).stream()
                 .map(
                         score -> new Recommendation(
