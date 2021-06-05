@@ -38,6 +38,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         var age = User.ConvertAge("");
         var category = GetCategoryList("");
         indexhtmlScoreList = GetScoreListByUserAll(gender,age,occupation,category);
+        System.out.println("Initialization complete. Ready to run.");
     }
 
     @Override

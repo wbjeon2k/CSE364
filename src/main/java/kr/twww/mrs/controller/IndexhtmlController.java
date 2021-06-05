@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
@@ -23,10 +24,12 @@ public class IndexhtmlController {
 
         //var allscoreList = preprocessor.getindexhtmlScoreList();
 
-        ArrayList<Score> allscoreList = new ArrayList<>();
-        for(int i=0;i<10;++i)allscoreList.add(new Score());
+        List<Score> allscoreList = new ArrayList<>();
+        for(int i=0;i<11;++i)allscoreList.add(new Score());
 
-        var top10all = (ArrayList<Recommendation>) allscoreList.subList(0,10).stream()
+        var top10tmp = allscoreList.subList(0,10);
+
+        var top10all = (ArrayList<Recommendation>) top10tmp.stream()
                 .map(
                         score -> new Recommendation(
                                 score.movie.title,
