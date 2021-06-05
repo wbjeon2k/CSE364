@@ -71,14 +71,14 @@ public class RecommendationController
 
     @GetMapping("/movies/recommendations.html")
     public ArrayList<Recommendation> Recommend(
-            @RequestParam("title") String title,
-            @RequestParam("limit") String limit
+            @RequestParam(name = "title", required = true) String title,
+            @RequestParam(name = "limit", required = false, defaultValue = "10") String limits
     ) throws Exception
     {
         var result = preprocessor
                 .GetRecommendList(
                         title,
-                        limit
+                        limits
                 );
 
         return (ArrayList<Recommendation>)result
