@@ -8,6 +8,7 @@ import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.Poster;
 import kr.twww.mrs.preprocess.Preprocessor;
 import kr.twww.mrs.preprocess.object.Score;
+import org.apache.spark.internal.config.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,25 +30,24 @@ public class IndexhtmlController {
             allscoreList = preprocessor.getindexhtmlScoreList();
         }
         catch (Exception e){
-            throw new Exception("Error in  IndexhtmlController homepageReturn");
+            throw new Exception("Error in  IndexhtmlController homepageReturn getindexhtmlScoreList");
         }
 
 
         try{
             var top10score = allscoreList.subList(0,10);
-            return (ArrayList<Recommendation>)top10score
-                    .stream()
-                    .map(
-                            score -> new Recommendation(
-                                    score.movie.title,
-                                    score.movie.GetGenresText(),
-                                    score.link.GetURL()
-                                    ,score.poster.getPosterLink()
-                            )
-                    ).collect(Collectors.toList());
+            var ret = new ArrayList<Recommendation>();
+            for(Score s : top10score){
+                //private String title;String genre;String imdb;String poster;
+                var tmp = new Recommendation(s.movie.title, s.movie.GetGenresText(), s.link.GetURL(), s.poster.getPosterLink());
+                ret.add(tmp);
+            }
+            return ret;
         }
         catch (Exception e){
-            throw new Exception("Error in  IndexhtmlController homepageReturn");
+            throw new Exception("Error in  IndexhtmlController homepageReturn scorelistextract");
         }
+
+        //return new ArrayList<>();
     }
 }
