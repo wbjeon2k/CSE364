@@ -61,43 +61,63 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     }
 
     public void InitPosterRepo() throws Exception{
-        readCsvToPoster();
-        posterRepoInit = true;
+        try{
+            readCsvToPoster();
+            posterRepoInit = true;
+        }
+        catch (Exception e){
+            throw new Exception("Error in : InitPosterRepo");
+        }
     }
 
     public void InitUserRepo() throws Exception {
-        userRepository.deleteAll();
-        var path = GetPathFromDataType(USER);
-        var text = ReadTextFromFile(path);
+        try{
+            //userRepository.deleteAll();
+            var path = GetPathFromDataType(USER);
+            var text = ReadTextFromFile(path);
 
-        var result =  ToUserList(text);
-        for(int i=0;i< result.size();++i){
-            userRepository.save(result.get(i));
+            var result =  ToUserList(text);
+            for(int i=0;i< result.size();++i){
+                userRepository.save(result.get(i));
+            }
+            userRepoInit = true;
         }
-        userRepoInit = true;
+        catch (Exception e){
+            throw new Exception("Error in : InitUserRepo");
+        }
     }
 
     public void InitMovieRepo() throws Exception {
-        movieRepository.deleteAll();
-        var path = GetPathFromDataType(MOVIE);
-        var text = ReadTextFromFile(path);
-        var result =ToMovieList(text);
-        for(int i=0;i< result.size();++i){
-            movieRepository.save(result.get(i));
+        try{
+            //movieRepository.deleteAll();
+            var path = GetPathFromDataType(MOVIE);
+            var text = ReadTextFromFile(path);
+            var result =ToMovieList(text);
+            for(int i=0;i< result.size();++i){
+                movieRepository.save(result.get(i));
+            }
+            movieRepoInit = true;
         }
-        movieRepoInit = true;
+        catch (Exception e){
+            throw new Exception("Error in : InitMovieRepo");
+        }
     }
 
     public void InitLinkRepo() throws Exception{
-        linkRepository.deleteAll();
-        var path = GetPathFromDataType(LINK);
-        var text = ReadTextFromFile(path);
+        try{
+            //linkRepository.deleteAll();
+            var path = GetPathFromDataType(LINK);
+            var text = ReadTextFromFile(path);
 
-        var result =  ToLinkList(text);
-        for(int i=0;i< result.size();++i){
-            linkRepository.save(result.get(i));
+            var result =  ToLinkList(text);
+            for(int i=0;i< result.size();++i){
+                linkRepository.save(result.get(i));
+            }
+            linkRepoInit = true;
         }
-        linkRepoInit = true;
+        catch (Exception e){
+            throw new Exception("Error in : InitLinkRepo");
+        }
     }
 
     @Override

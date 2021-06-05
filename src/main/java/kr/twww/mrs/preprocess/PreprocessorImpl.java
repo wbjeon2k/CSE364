@@ -34,11 +34,11 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         var gender = User.ConvertGender("");
         var occupation = User.ConvertOccupationByText("");
         var age = User.ConvertAge("");
-        var category = GetGenreList("");
+        var category = GenreList("");
         indexhtmlScoreList = GetScoreListByUserAll(gender,age,occupation,category);
     }
 
-    private ArrayList<Movie.Genre> GetGenreList( String genresText ) throws Exception
+    private ArrayList<Movie.Genre> GenreList( String genresText ) throws Exception
     {
         var genreList = new ArrayList<Movie.Genre>();
         var splitGenre = genresText.split("\\|");
