@@ -24,19 +24,30 @@ public class IndexhtmlController {
 
     @GetMapping("/index.html")
     public ArrayList<Recommendation> homepageReturn () throws Exception {
+        ArrayList<Score> allscoreList;
+        try{
+            allscoreList = preprocessor.getindexhtmlScoreList();
+        }
+        catch (Exception e){
+            throw new Exception("Error in  IndexhtmlController homepageReturn");
+        }
 
-        var allscoreList = preprocessor.getindexhtmlScoreList();
-        var top10score = allscoreList.subList(0,10);
-        return (ArrayList<Recommendation>)top10score
-                .stream()
-                .map(
-                        score -> new Recommendation(
-                                score.movie.title,
-                                score.movie.GetGenresText(),
-                                score.link.GetURL()
-                                , score.poster.getPosterLink()
-                        )
-                ).collect(Collectors.toList());
 
+        try{
+            var top10score = allscoreList.subList(0,10);
+            return (ArrayList<Recommendation>)top10score
+                    .stream()
+                    .map(
+                            score -> new Recommendation(
+                                    score.movie.title,
+                                    score.movie.GetGenresText(),
+                                    score.link.GetURL()
+                                    ,score.poster.getPosterLink()
+                            )
+                    ).collect(Collectors.toList());
+        }
+        catch (Exception e){
+            throw new Exception("Error in  IndexhtmlController homepageReturn");
+        }
     }
 }
