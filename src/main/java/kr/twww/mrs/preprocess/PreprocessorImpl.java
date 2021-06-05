@@ -140,6 +140,11 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             throw new Exception("Invalid title string");
         }
 
+        /*
+        curl http://localhost:8080/movies/recommendations.html?title=Toy_Story_\(1995\)
+        형태로 받을 때 "Toy Story" 형태로 바로 받을 수 없음.
+        '_' 나 '%20' 형태로 변환해야함.
+         */
         var b = _title
                 .toLowerCase()
                 .replaceAll("_", "")
