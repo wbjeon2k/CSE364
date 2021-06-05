@@ -34,22 +34,37 @@ public class IndexhtmlController {
             throw new Exception("Error in  IndexhtmlController homepageReturn getindexhtmlScoreList");
         }
 
-        try{
-            ArrayList<Score> top10score = new ArrayList<Score>();
-            for(int i=0;i<10;++i) top10score.add(allscoreList.get(i));
 
-            var ret = new ArrayList<Recommendation>();
-            for(Score s : top10score){
-                //private String title;String genre;String imdb;String poster;
-                var tmp = new Recommendation(s.movie.title, s.movie.GetGenresText(), s.link.GetURL(), s.poster.getPosterLink());
+        ArrayList<Score> top10score = new ArrayList<Score>();
+        for(int i=0;i<10;++i) top10score.add(allscoreList.get(i));
+
+        ArrayList<Recommendation> ret = new ArrayList<Recommendation>();
+
+
+        for(Score s : top10score){
+            String title, genre, imdb, poster;
+            try {
+                title = s.movie.title;
+                genre = s.movie.GetGenresText();
+                imdb = s.link.GetURL();
+                poster = s.poster.getPosterLink();
+            }
+            catch (Exception e){
+                    throw new Exception("Error in  IndexhtmlController homepageReturn score info");
+            }
+            try {
+                var tmp = new Recommendation(title, genre, imdb, poster);
                 ret.add(tmp);
             }
-            return ret;
+            catch (Exception e){
+                throw new Exception("Error in  IndexhtmlController homepageReturn add recommend");
+            }
         }
-        catch (Exception e){
-            throw new Exception("Error in  IndexhtmlController homepageReturn scorelistextract");
-        }
+        return ret;
+    }
+
+
 
         //return new ArrayList<>();
-    }
 }
+
