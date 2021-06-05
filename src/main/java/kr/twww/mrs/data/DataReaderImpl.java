@@ -71,8 +71,10 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     }
 
     public void InitUserRepo() throws Exception {
+        System.out.println("InitUserRepo start");
         try{
-            //userRepository.deleteAll();
+            userRepository.wait(10);
+            userRepository.deleteAll();
             var path = GetPathFromDataType(USER);
             var text = ReadTextFromFile(path);
 
@@ -233,6 +235,8 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
                 InitUserRepo();
                 userRepoInit = true;
             }
+            System.out.println("try wait userRepository.");
+            userRepository.wait(2);
             System.out.println("try to access userRepository.");
             return (ArrayList<User>) userRepository.findAll();
         }
