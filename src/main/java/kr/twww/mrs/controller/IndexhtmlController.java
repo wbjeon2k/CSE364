@@ -23,26 +23,12 @@ public class IndexhtmlController {
     private Preprocessor preprocessor;
 
     @GetMapping("/index.html")
-    public IndexhtmlObject homepageReturn () throws Exception {
+    public ArrayList<Recommendation> homepageReturn () throws Exception {
 
-        //var allscoreList = preprocessor.getindexhtmlScoreList();
-
-        List<Score> allscoreList = new ArrayList<>();
-        for(int i=0;i<11;++i){
-            var S = new Score();
-            S.movie = new Movie();
-            S.movie.title = "";
-            S.movie.genres.add(Movie.Genre.ADVENTURE);
-            S.link = new Link();
-            S.link.imdbId = "0000000";
-            S.poster = new Poster();
-            S.poster.posterLink = "00000000";
-            allscoreList.add(S);
-        }
-
-        var top10tmp = allscoreList.subList(0,10);
-
-        var top10all = (ArrayList<Recommendation>) top10tmp.stream()
+        var allscoreList = preprocessor.getindexhtmlScoreList();
+        var top10score = allscoreList.subList(0,10);
+        return (ArrayList<Recommendation>)top10score
+                .stream()
                 .map(
                         score -> new Recommendation(
                                 score.movie.title,
@@ -52,7 +38,5 @@ public class IndexhtmlController {
                         )
                 ).collect(Collectors.toList());
 
-
-        return new IndexhtmlObject(top10all);
     }
 }

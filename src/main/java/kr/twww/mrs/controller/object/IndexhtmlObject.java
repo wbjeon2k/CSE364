@@ -32,4 +32,5 @@ public class IndexhtmlObject {
     public ArrayList<Recommendation> getTop10all() {
         return Top10all;
     }
+
 }
