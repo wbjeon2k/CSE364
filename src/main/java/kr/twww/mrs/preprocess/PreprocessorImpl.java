@@ -49,7 +49,8 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             var category = GetCategoryList("");
             indexhtmlScoreList = GetScoreListByUserAll(gender,age,occupation,category);
         }
-        return indexhtmlScoreList;
+        var tmpScoreList = indexhtmlScoreList;
+        return tmpScoreList;
     }
 
     @Override
