@@ -40,7 +40,24 @@ public class IndexhtmlController {
 
         ArrayList<Recommendation> ret = new ArrayList<Recommendation>();
 
+        try{
+            ret = (ArrayList<Recommendation>)top10score
+                    .stream()
+                    .map(
+                            score -> new Recommendation(
+                                    score.movie.title,
+                                    score.movie.GetGenresText(),
+                                    score.link.GetURL()
+                                    , score.poster.getPosterLink()
+                            )
+                    ).collect(Collectors.toList());
+        }
+        catch (Exception e){
+            throw new Exception("Error in IndexhtmlController homepageReturn objectmapping");
+        }
 
+
+        /*
         for(Score s : top10score){
             String title, genre, imdb, poster;
             try {
@@ -60,6 +77,7 @@ public class IndexhtmlController {
                 throw new Exception("Error in  IndexhtmlController homepageReturn add recommend");
             }
         }
+        */
         return ret;
     }
 
