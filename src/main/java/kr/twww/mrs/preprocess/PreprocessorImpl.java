@@ -302,6 +302,11 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
                     predictList
             );
 
+            // 7. poster 추가?
+            for(var ith : scoreList ){
+                ith.poster = dataReader.GetPoster(ith.movie.movieId);
+            }
+
             //다른점: 전체 score return.
             scoreList.sort(
                     (o1, o2) -> Double.compare(o2.score, o1.score)
