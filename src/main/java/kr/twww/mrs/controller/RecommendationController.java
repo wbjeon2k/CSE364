@@ -43,10 +43,10 @@ public class RecommendationController
     @GetMapping("/users/recommendations.html")
     public ArrayList<Recommendation> Recommend(
             // changed @RequestBody into @RequestParam for HTTP requests
-            @RequestParam("gender") String gender,
-            @RequestParam("age") String age,
-            @RequestParam("occupation") String occupation,
-            @RequestParam("genres") String genres
+            @RequestParam(value = "gender", required = false, defaultValue = "") String gender,
+            @RequestParam(value = "age", required = false, defaultValue = "") String age,
+            @RequestParam(value = "occupation", required = false, defaultValue = "") String occupation,
+            @RequestParam(value = "genres", required = false, defaultValue = "") String genres
     ) throws Exception
     {
         var result = preprocessor
