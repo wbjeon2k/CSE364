@@ -77,8 +77,8 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             var text = ReadTextFromFile(path);
 
             var result =  ToUserList(text);
-            for(int i=0;i< result.size();++i){
-                userRepository.save(result.get(i));
+            for(User u : result){
+                userRepository.save(u);
             }
             userRepoInit = true;
         }
@@ -226,21 +226,31 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public ArrayList<User> GetUserList() throws Exception
     {
-        if(userRepoInit == false){
-            InitUserRepo();
-            userRepoInit = true;
+        try{
+            if(userRepoInit == false){
+                InitUserRepo();
+                userRepoInit = true;
+            }
+            return (ArrayList<User>) userRepository.findAll();
         }
-        return (ArrayList<User>) userRepository.findAll();
+        catch (Exception e){
+            throw new Exception("Error in GetUserList : " + e.getMessage());
+        }
     }
 
     @Override
     public ArrayList<Movie> GetMovieList() throws Exception
     {
-        if(movieRepoInit == false){
-            InitMovieRepo();
-            movieRepoInit = true;
+        try{
+            if(movieRepoInit == false){
+                InitMovieRepo();
+                movieRepoInit = true;
+            }
+            return (ArrayList<Movie>) movieRepository.findAll();
         }
-        return (ArrayList<Movie>) movieRepository.findAll();
+        catch (Exception e) {
+            throw new Exception("Error in GetMovieList: " + e.getMessage());
+        }
     }
 
     @Override
