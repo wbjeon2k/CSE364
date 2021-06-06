@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./mongdinstall.sh
+./mongod_install.sh
 rm -rf CSE364
 git clone -b feature-mongodb https://github.com/wbjeon2k/CSE364.git
 cd ./CSE364

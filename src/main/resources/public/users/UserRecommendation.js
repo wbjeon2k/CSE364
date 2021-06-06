@@ -25,8 +25,6 @@ $(document).ready(function () {
             for (let i = 0; i < 10; i++) {
                 let url = data[i]['imdb'];
                 console.log(data[i]['imdb']);
-                //ToDo: url 변수를 a태그 속에 넣기(그냥 href=url은 작동 안함)
-                document.write("<a href=\"' + url + '\" target='_blank'><img src= width=19% border='2'></a>")
             }
         })
     //})

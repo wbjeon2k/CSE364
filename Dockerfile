@@ -24,8 +24,8 @@ WORKDIR /root/project
 # dbPath 를 /data/db로 미리 설정한 conf 파일 로드.
 COPY mongod.conf /etc/mongod.conf
 COPY run.sh /root/project/run.sh
-COPY mongod_install.sh /root/project/mongdinstall.sh
-RUN chmod a+x /root/project/run.sh /root/project/mongdinstall.sh /etc/mongod.conf
+COPY mongod_install.sh /root/project/mongod_install.sh
+RUN chmod a+x /root/project/run.sh /root/project/mongod_install.sh /etc/mongod.conf
 
 # 5. The container should execute a bash shell by default when the built image is launched.
 ENTRYPOINT /bin/bash
