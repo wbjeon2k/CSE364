@@ -3,7 +3,10 @@ package kr.twww.mrs.controller.object;
 import java.util.ArrayList;
 
 public class IndexhtmlObject {
+    //전체 top 10
     private ArrayList<Recommendation> Top10all;
+
+    //action, comedy, adventure, drama 4개 장르 고정 top 10
     private ArrayList<Recommendation> Top10action;
     private ArrayList<Recommendation> Top10Comedy;
     private ArrayList<Recommendation> Top10Adventure;

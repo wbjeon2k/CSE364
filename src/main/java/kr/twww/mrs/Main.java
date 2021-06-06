@@ -14,7 +14,7 @@ public class Main
     {
         DisableWarning();
         //serverInit();
-        System.out.println("Spring server ready to run!");
+        System.out.println("Info: Spring server ready to initialize.");
         SpringApplication.run(Main.class, args);
     }
 

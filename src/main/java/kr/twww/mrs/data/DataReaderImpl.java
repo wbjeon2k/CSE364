@@ -206,7 +206,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         return (ArrayList<Rating>) ratingRepository.findAll();
          */
 
-        //mongodb query 1M calls are too slow. for test
+        //mongodb query 1M calls are too slow. direct read is faster.
         var path = GetPathFromDataType(RATING);
         var text = ReadTextFromFile(path);
 

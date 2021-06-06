@@ -28,11 +28,17 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     //@Autowired
     //public static ArrayList<Score> indexhtmlScoreList;
 
+    //index.html 에서 사용하는 전체 scorelist.
     public ArrayList<Score> indexhtmlScoreList;
 
     private final int MAX_PAIR_COUNT = 624000;
     private final int MIN_RATING_COUNT = 10;
 
+    /*
+    main 실행 되고나서 초기화 루틴.
+    GetScoreListByUserAll 로 전체 scorelist 를 구하면서,
+    model 생성/학습, user/movie 등 전체 db에 업로드.
+     */
     @PostConstruct
     public void PreprocessorImplstart() throws Exception {
         var gender = User.ConvertGender("");
