@@ -42,18 +42,20 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         indexhtmlScoreList = GetScoreListByUserAll(gender,age,occupation,category);
         System.out.println("\n" +
                 "\n" +
-                "=============================================================" +
+                "=============================================================\n" +
                 "   ______                                   _    _    \n" +
                 " .' ___  |                                 | |  | |   \n" +
                 "/ .'   \\_| _ .--.   .--.   __   _  _ .--.  | |__| |_  \n" +
                 "| |   ____[ `/'`\\]/ .'`\\ \\[  | | |[ '/'`\\ \\|____   _| \n" +
                 "\\ `.___]  || |    | \\__. | | \\_/ |,| \\__/ |    _| |_  \n" +
-                " `._____.'[___]    '.__.'  '.__.'_/| ;.__/    |_____| \n" +
+                " `._____.'[___]    '.__.'  '.__.'1`_/| ;.__/    |_____| \n" +
                 "                                  [__|                \n" +
-                "=============================================================" +
+                "=============================================================\n" +
                 " ******* Initialization complete. Ready to run. *******\n" +
+                " MongoDB log is on, to show that this program is using MongoDB.\n"+
+                " Disable MongoDB log manually if you wish.\n" +
+                "=============================================================\n" +
                 "\n");
-        System.out.println();
     }
 
     @Override
