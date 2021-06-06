@@ -40,6 +40,16 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         var age = User.ConvertAge("");
         var category = GetCategoryList("");
         indexhtmlScoreList = GetScoreListByUserAll(gender,age,occupation,category);
+        System.out.println("\n" +
+                "\n" +
+                "   ______                                   _    _    \n" +
+                " .' ___  |                                 | |  | |   \n" +
+                "/ .'   \\_| _ .--.   .--.   __   _  _ .--.  | |__| |_  \n" +
+                "| |   ____[ `/'`\\]/ .'`\\ \\[  | | |[ '/'`\\ \\|____   _| \n" +
+                "\\ `.___]  || |    | \\__. | | \\_/ |,| \\__/ |    _| |_  \n" +
+                " `._____.'[___]    '.__.'  '.__.'_/| ;.__/    |_____| \n" +
+                "                                  [__|                \n" +
+                "\n");
         System.out.println("Initialization complete. Ready to run.");
     }
 

@@ -18,3 +18,6 @@ mongoimport --db=movielink-test --collection=movie-link-test --type=csv \
 
 curl -X GET http://localhost:8080/users/recommendations -H "Content-type:application/json" -d '{"gender": "F", "age": "25", "occupation": "Grad student", "genre": "Action"}'
 curl -X GET http://localhost:8080/movies/recommendations -H 'Content-type:application/json' -d '{"title": "Toy Story (1995)", "limit": 20}'
+
+http://localhost:8080/users/recommendations.html?gender=M&age=&occupation=retired&genres=/
+http://localhost:8080/users/recommendations.html?title="Toy Story (1995)"
