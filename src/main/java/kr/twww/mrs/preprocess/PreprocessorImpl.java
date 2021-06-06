@@ -42,6 +42,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
         indexhtmlScoreList = GetScoreListByUserAll(gender,age,occupation,category);
         System.out.println("\n" +
                 "\n" +
+                "=============================================================" +
                 "   ______                                   _    _    \n" +
                 " .' ___  |                                 | |  | |   \n" +
                 "/ .'   \\_| _ .--.   .--.   __   _  _ .--.  | |__| |_  \n" +
@@ -49,8 +50,10 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
                 "\\ `.___]  || |    | \\__. | | \\_/ |,| \\__/ |    _| |_  \n" +
                 " `._____.'[___]    '.__.'  '.__.'_/| ;.__/    |_____| \n" +
                 "                                  [__|                \n" +
+                "=============================================================" +
+                " ******* Initialization complete. Ready to run. *******\n" +
                 "\n");
-        System.out.println("Initialization complete. Ready to run.");
+        System.out.println();
     }
 
     @Override
