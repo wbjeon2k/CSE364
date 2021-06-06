@@ -10,22 +10,25 @@ $(document).ready(function () {
         let gender_val = $("#gender option:selected").val();
         // age 부분 필요
         let occupation_val = $("#occupation option:selected").val();
-        let genres_val = $("#genres option:selected").val();
+        let genres_val = [];
+        $("input[name='genres']:checked").each(function ()
+        {
+            genres_val.push(parseInt($(this).val()));
+        });
+        forEach()
+        let genres =
+
         $.ajax({
             url: "./recommendations.html",
-            data: {gender: gender_val, age: "", occupation: occupation_val, genres: genres_val},
+            data: {gender: gender_val, age: "", occupation: occupation_val, genres: genres},
             method: "GET",
             dataType: "json"
         }).done(function (data) {
             console.log(gender_val)
             console.log(occupation_val)
-            console.log(genres_val)
+            console.log(genres)
             console.log(data)
 
-            for (let i = 0; i < 10; i++) {
-                let url = data[i]['imdb'];
-                console.log(data[i]['imdb']);
-            }
         })
     //})
 })

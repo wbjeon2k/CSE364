@@ -23,8 +23,9 @@ public class IndexhtmlController {
     index.html 전용 controller.
     index.html 출력 예시는 링크 참조. https://pastebin.com/wntxJbPW
     순서대로 반환되지 않음! all - action - comedy - adventure - drama 순으로 나오지 않는다.
+    index.html 대신 /homepageContents 로 mapping.
      */
-    @GetMapping("/index.html")
+    @GetMapping("/homepageContents")
     public IndexhtmlObject homepageReturn () throws Exception {
 
         try{

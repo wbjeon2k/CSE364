@@ -3,7 +3,7 @@
 <head>
     <title>CSE364</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="temp.js"></script>
+    <script src="hello.js"></script>
     <meta charset="utf-8">
     <style>
         a:link{
@@ -54,12 +54,17 @@
     </nav>
 </head>
 <body bgcolor="gray">
+<div>
+    <p class="greeting-id">The ID is </p>
+    <p class="greeting-content">The content is </p>
+</div>
+
 <h1>Home</h1>
 <script language="JavaScript">
-    var image1 = JSON.parse(JSON.stringify(top10all.poster));
-    var address1 = JSON.parse(JSON.stringify(top10all.imdb));
+    //let image1[] = JSON.parse(JSON.stringify(top10all.poster));
+    //let address1[] = JSON.parse(JSON.stringify(top10all.imdb));
     for(i=0;i<10;i++){
-        document.write("<a href='address1' target='_blank'><img src=image1 width=19% border='2'></a>")
+        document.write("<a href='address1[i]' target='_blank'><img src='image1[i]' width=19% border='2'></a>")
     }
 </script>
 <p>
