@@ -1,9 +1,19 @@
 #!/bin/bash
 
-./mongod_install.sh
+git clone -b feature-mongodb https://github.com/wbjeon2k/CSE364.git
+#제출 시에는 master branch!
+#git clone https://github.com/wbjeon2k/CSE364.git
 rm -rf CSE364
 git clone -b feature-mongodb https://github.com/wbjeon2k/CSE364.git
 cd ./CSE364
+
+cp mongod.conf ../../../etc/mongod.conf
+cp mongod_install.sh ../mongod_install.sh
+
+cd ..
+chmod a+x mongod_install.sh
+./mongod_install.sh
+
 #run mongod at background. logging on console is on.
 mongod &
 mvn clean package

@@ -22,10 +22,13 @@ WORKDIR /root/project
 
 # 4. Add your run.sh file to /root/project in the docker container. Your run.sh must include command lines that git clone your_repository, cd your_repository, mvn instll, and java command to run your code. The details are given in Submission Instructions.
 # dbPath 를 /data/db로 미리 설정한 conf 파일 로드.
-COPY mongod.conf /etc/mongod.conf
+#COPY mongod.conf /etc/mongod.conf
+#COPY run.sh /root/project/run.sh
+#COPY mongod_install.sh /root/project/mongod_install.sh
+#RUN chmod a+x /root/project/run.sh /root/project/mongod_install.sh /etc/mongod.conf
+
 COPY run.sh /root/project/run.sh
-COPY mongod_install.sh /root/project/mongod_install.sh
-RUN chmod a+x /root/project/run.sh /root/project/mongod_install.sh /etc/mongod.conf
+RUN chmod a+x /root/project/run.sh
 
 # 5. The container should execute a bash shell by default when the built image is launched.
 ENTRYPOINT /bin/bash
