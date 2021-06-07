@@ -6,3 +6,4 @@ $(document).ready(function() {
         $('.greeting-content').append(data.content);
     });
 });
+//{"id": 1, "content" : "Hll"}

@@ -1,7 +1,10 @@
 package kr.twww.mrs.controller.object;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.ArrayList;
 
+@Document
 public class IndexhtmlObject {
     //전체 top 10
     private ArrayList<Recommendation> Top10all;
