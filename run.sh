@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git clone -b feature-mongodb https://github.com/wbjeon2k/CSE364.git
+#git clone -b feature-mongodb https://github.com/wbjeon2k/CSE364.git
 #제출 시에는 master branch!
 #git clone https://github.com/wbjeon2k/CSE364.git
 rm -rf CSE364
