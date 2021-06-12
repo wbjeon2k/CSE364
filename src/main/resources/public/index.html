@@ -1,32 +1,11 @@
 <!DOCTYPE html>
 
-<html>
-<head>
-    <title>Hello jQuery</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="hello.js"></script>
-    <script src="hello2.js"></script>
-
-</head>
-
-<body>
-<div>
-    <p class="greeting-id">The ID is </p>
-    <p class="greeting-content">The content is </p>
-</div>
-<div>
-    <p class="top10all">The ID is </p>
-</div>
-</body>
-</html>
-
 <!--
 https://rwd337.tistory.com/172
 https://stackoverflow.com/questions/4935632/parse-json-in-javascript?noredirect=1&lq=1
 https://stackoverflow.com/questions/5289078/parse-json-from-jquery-ajax-success-data
 -->
 
-<!--
 <html>
 <head>
     <title>CSE364</title>
@@ -71,90 +50,35 @@ https://stackoverflow.com/questions/5289078/parse-json-from-jquery-ajax-success-
             color: red;
             background-color: #4d4d4d;
         }
-        h1{
-            padding-top:50px;
+        body {
+            padding-top: 50px;
+            margin: 0;
+        }
+        main {
+            margin: 8px;
+        }
+        .movies {
+            margin-bottom: 50px;
         }
     </style>
-    <nav id="top_menu">
-        <span><a class="menuLink" href="index.html">Home</a></span>
-        <span><a class="menuLink" href="users/users.html">User information</a></span>
-        <span><a class="menuLink" href="movies/movies.html">favorite movie</a></span>
-    </nav>
 </head>
 <body bgcolor="gray">
-<div>
-    <p class="greeting-id">The ID is </p>
-    <p class="greeting-content">The content is </p>
-</div>
-
-<h1>Home</h1>
-<script language="JavaScript">
-    //let image1[] = JSON.parse(JSON.stringify(top10all.poster));
-    //let address1[] = JSON.parse(JSON.stringify(top10all.imdb));
-    for(i=0;i<10;i++){
-        document.write("<a href='address1[i]' target='_blank'><img src='image1[i]' width=19% border='2'></a>")
-    }
-</script>
-<p>
-<h2>Action</h2>
-<script language="JavaScript">
-    var image2 = ""
-    var address2 = ""
-    for(i=0;i<10;i++){
-        document.write("<img src= width=20%>")
-    }
-</script>
-</p>
-<p>
-<h2>Adventure</h2>
-</p>
-<p>
-<h2>Animation</h2>
-</p>
-<p>
-<h2>Childern's</h2>
-</p>
-<p>
-<h2>Comedy</h2>
-</p>
-<p>
-<h2>Crime</h2>
-</p>
-<p>
-<h2>Documentary</h2>
-</p>
-<p>
-<h2>Drama</h2>
-</p>
-<p>
-<h2>Fantasy</h2>
-</p>
-<p>
-<h2>Film-Noir</h2>
-</p>
-<p>
-<h2>Horror</h2>
-</p>
-<p>
-<h2>Musical</h2>
-</p>
-<p>
-<h2>Mystery</h2>
-</p>
-<p>
-<h2>Romance</h2>
-</p>
-<p>
-<h2>Sci-Fi</h2>
-</p>
-<p>
-<h2>Thriller</h2>
-</p>
-<p>
-<h2>War</h2>
-</p>
-<p>
-<h2>Western</h2>
-</p>
+    <nav id="top_menu">
+        <span><a class="menuLink" href="index.html">Home</a></span>
+        <span><a class="menuLink" href="users.html">User information</a></span>
+        <span><a class="menuLink" href="movies.html">favorite movie</a></span>
+    </nav>
+    <main>
+        <h2>TOP 10 - All Genre</h2>
+        <div id="all" class="movies"></div>
+        <h2>TOP 10 - Action Genre</h2>
+        <div id="action" class="movies"></div>
+        <h2>TOP 10 - Adventure Genre</h2>
+        <div id="adventure" class="movies"></div>
+        <h2>TOP 10 - Drama Genre</h2>
+        <div id="drama" class="movies"></div>
+        <h2>TOP 10 - Comedy Genre</h2>
+        <div id="comedy" class="movies"></div>
+    </main>
 </body>
 </html>

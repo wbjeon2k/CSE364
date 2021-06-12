@@ -44,35 +44,33 @@
       color: red;
       background-color: #4d4d4d;
     }
-    h1{
-      padding-top:50px;
+    body {
+      padding-top: 50px;
+      margin: 0;
+    }
+    main {
+      margin: 8px;
+    }
+    .movies {
+      margin-bottom: 50px;
     }
   </style>
-  <nav id="top_menu">
-    <span><a class="menuLink" href="../index.html">Home</a></span>
-    <span><a class="menuLink" href="../users/users.html">User information</a></span>
-    <span><a class="menuLink" href="movies.html">favorite movie</a></span>
-  </nav>
 </head>
 <body bgcolor="gray">
-<h1>Favorite movie</h1>
-<!--<form action = "recommendations.html"> -->
-<form>
-  <b>Favorite Movie Title:</b>
-  <input type="text" name="title" value="">
-  <b>Limit:</b>
-  <input type="number" name="limit" value="" min="10" style="width:50px">
-  <input type="submit" id="movies_button" value="Search" id="title">
-</form>
-<h2>Recommended Movies</h2>
-<script language="JavaScript">
-  var poster = [];
-  var imdb = [];
-  poster[0] = 'https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@..jpg';
-  imdb[0] = 'https://www.imdb.com/title/tt0435761/?ref_=nv_sr_srsg_6';
-  for(i=0;i<10;i++){
-    document.write("<a href='imdb[i]' target='_blank'><img src='poster[i]' width=19% border='2'></a>")
-  }
-</script>
+  <nav id="top_menu">
+    <span><a class="menuLink" href="index.html">Home</a></span>
+    <span><a class="menuLink" href="users.html">User information</a></span>
+    <span><a class="menuLink" href="movies.html">favorite movie</a></span>
+  </nav>
+  <main>
+    <h1>Favorite movie</h1>
+    <b>Favorite Movie Title:</b>
+    <input type="text" id="title" value="">
+    <b>Limit:</b>
+    <input type="number" id="limit" value="" min="10" style="width:50px">
+    <input type="button" id="submit" value="Search">
+    <h2>Recommended Movies</h2>
+    <div id="movies" class="movies"></div>
+  </main>
 </body>
 </html>

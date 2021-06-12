@@ -19,4 +19,4 @@ mongod &
 cd ./CSE364
 pwd
 mvn clean package
-java -jar target/cse364-project-1.0-SNAPSHOT-allinone.jar
+java -Xms1g -Xmx4g -jar target/cse364-project-1.0-SNAPSHOT-allinone.jar
