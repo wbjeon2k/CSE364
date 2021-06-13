@@ -16,7 +16,7 @@ RUN cd /tmp && tar xvfz tomcat.tar.gz
 RUN cp -Rv /tmp/apache-tomcat-*/* /usr/local/tomcat/
 RUN rm -rf /tmp/*tomcat*
 EXPOSE 8080
-COPY TWwW*.war /usr/local/tomcat/webapps/
+COPY TWwW.war /usr/local/tomcat/webapps/
 CMD /usr/local/tomcat/bin/catalina.sh run &
 
 # 3.Create /root/project folder
