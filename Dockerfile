@@ -40,6 +40,6 @@ RUN chmod a+x /root/project/run.sh
 RUN sed -i 's/\r$//' /root/project/run.sh
 
 # 5. The container should execute a bash shell by default when the built image is launched.
-ENTRYPOINT /bin/bash
+#ENTRYPOINT /bin/bash
 
-CMD /usr/local/tomcat/bin/catalina.sh run
+ENTRYPOINT ["/usr/local/tomcat/bin/catalina.sh", "run"]
