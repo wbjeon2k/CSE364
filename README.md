@@ -1,3 +1,5 @@
+[![Github Actions](https://github.com/wbjeon2k/CSE364/actions/workflows/actions.yml/badge.svg?branch=master)](https://github.com/wbjeon2k/CSE364/actions/workflows/actions.yml)
+
 CSE364 Group 4, Team Woongbae without Woongbae (TWwW)
 ===
 # [Milestone 3] Readme
