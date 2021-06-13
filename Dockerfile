@@ -5,7 +5,7 @@ FROM ubuntu:20.04
 RUN apt-get clean
 RUN apt-get update
 RUN apt-get update --fix-missing
-RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install openjdk-11-jdk maven vim git curl wget gnupg systemctl net-tools
+RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install openjdk-11-jdk maven vim git curl wget gnupg systemctl net-tools unzip
 
 # tomcat
 RUN mkdir /usr/local/tomcat
