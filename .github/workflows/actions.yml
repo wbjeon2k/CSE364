@@ -16,29 +16,18 @@ jobs:
       name: Checkout
       uses: actions/checkout@v2
     -
-      name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-    -
       name: Build docker image
-      uses: docker/build-push-action@v2
-      with:
-        load: true
-        tags: test-image:latest
-        push: false
+      run: docker build -t test-image ${{ github.workspace }}
     -
-      name: Run and test
-      uses: kohlerdominik/docker-run-action@v1
-      with:
-        image: test-image:latest
-        shell: /bin/bash
-        volumes: |
-          ${{ github.workspace }}:/root/project/CSE364
-        run: |
-          cp ./CSE364/mongod_install.sh ./
-          sed -i 's/\r$//' ./mongod_install.sh
-          chmod a+x mongod_install.sh
-          ./mongod_install.sh
-          mongod &
-          cd ./CSE364
-          mvn clean test
-          
+      name: Run docker
+      run: docker run -d --name test test-image
+    -
+      name: Run tests
+      run: |
+        docker exec test bash -c 'cp ./CSE364/mongod_install.sh ./'
+        docker exec test bash -c 'sed -i 's/\r$//' ./mongod_install.sh'
+        docker exec test bash -c 'chmod a+x mongod_install.sh'
+        docker exec test bash -c './mongod_install.sh'
+        docker exec test bash -c 'mongod &'
+        docker exec test bash -c 'cd ./CSE364'
+        docker exec test bash -c 'mvn clean test'
