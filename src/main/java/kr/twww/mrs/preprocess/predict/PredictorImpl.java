@@ -30,7 +30,7 @@ import java.util.List;
 public class PredictorImpl extends PredictorBase implements Predictor, InitializingBean, DisposableBean
 {
 //    private final String PATH_DATA = "./data/";
-    private final String PATH_DATA = "/root/project/CSE364/data/";
+    private final String PATH_DATA = "/data/";
     private final String PATH_DATA_CHECKSUM = PATH_DATA + "checksum";
     private final String PATH_DATA_MODEL = PATH_DATA + "model";
 

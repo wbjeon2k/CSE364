@@ -25,7 +25,7 @@ import static kr.twww.mrs.data.DataType.*;
 public class DataReaderImpl extends DataReaderBase implements DataReader
 {
 //    private final String PATH_DATA = "./data/";
-    private final String PATH_DATA = "/root/project/CSE364/data/";
+    private final String PATH_DATA = "/data/";
     private final String SUFFIX = "s.dat";
     private final String SUFFIX_CSV = ".csv";
 
