@@ -16,9 +16,6 @@ jobs:
       name: Checkout
       uses: actions/checkout@v2
     -
-      name: Create dummy file
-      run: touch TWwW.war
-    -
       name: Build docker image
       run: docker build -t test-image ${{ github.workspace }}
     -
