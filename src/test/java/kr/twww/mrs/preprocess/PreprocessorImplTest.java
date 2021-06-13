@@ -7,7 +7,6 @@ import kr.twww.mrs.preprocess.predict.PredictorImpl;
 import mockit.Mock;
 import mockit.MockUp;
 import org.apache.spark.mllib.recommendation.Rating;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PreprocessorImplTest

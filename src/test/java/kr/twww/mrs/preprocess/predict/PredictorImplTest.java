@@ -11,7 +11,6 @@ import org.apache.spark.mllib.recommendation.MatrixFactorizationModel;
 import org.apache.spark.mllib.recommendation.Rating;
 import org.apache.spark.rdd.RDD;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,6 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 @SuppressWarnings("ConstantConditions")
-@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PredictorImplTest

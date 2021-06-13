@@ -10,7 +10,7 @@ public class LinkTest
     public void TestGetURL()
     {
         var link = new Link();
-        link.imdbId = "TEST FAIL";
+        link.imdbId = "TEST";
 
         assertEquals("http://www.imdb.com/title/ttTEST", link.GetURL());
     }

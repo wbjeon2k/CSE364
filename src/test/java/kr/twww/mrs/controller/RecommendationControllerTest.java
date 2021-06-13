@@ -8,7 +8,6 @@ import kr.twww.mrs.preprocess.object.Score;
 import mockit.Mock;
 import mockit.MockUp;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 
-@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class RecommendationControllerTest
