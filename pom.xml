@@ -10,7 +10,7 @@
         <relativePath/>
     </parent>
 
-    <packaging>war</packaging>
+<!--    <packaging>war</packaging>-->
 
     <groupId>kr.twww.mrs</groupId>
     <artifactId>cse364-project</artifactId>
