@@ -22,8 +22,8 @@ jobs:
       name: Build docker image
       run: docker build -t test-image ${{ github.workspace }}
     -
-      name: Run docker
-      run: docker run -d --name test test-image
+      name: Run docker container
+      run: docker run -d --rm --name test test-image
     -
       name: Run tests
       run: |
@@ -34,3 +34,6 @@ jobs:
         docker exec test bash -c 'mongod &'
         docker exec test bash -c 'cd ./CSE364'
         docker exec test bash -c 'mvn clean test'
+    -
+      name: Kill docker container
+      run: docker kill test
