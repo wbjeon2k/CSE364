@@ -19,6 +19,9 @@ jobs:
       name: Build docker image
       run: docker build -t test-image ${{ github.workspace }}
     -
+      name: Create dummy TWwW.war
+      run: touch TWwW.war
+    -
       name: Run docker
       run: docker run -d --name test test-image
     -
