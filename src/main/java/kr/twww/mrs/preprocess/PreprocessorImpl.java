@@ -1,6 +1,7 @@
 package kr.twww.mrs.preprocess;
 
 import kr.twww.mrs.data.DataReader;
+import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.User;
 import kr.twww.mrs.preprocess.object.Score;
@@ -9,6 +10,7 @@ import org.apache.spark.mllib.recommendation.Rating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -17,13 +19,62 @@ import java.util.stream.Collectors;
 public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 {
     @Autowired
-    private DataReader dataReader;
+    public DataReader dataReader;
 
     @Autowired
-    private Predictor predictor;
+    public Predictor predictor;
+
+    //@Autowired
+    //public static ArrayList<Score> indexhtmlScoreList;
+
+    //index.html 에서 사용하는 전체 scorelist.
+    public ArrayList<Score> indexhtmlScoreList;
 
     private final int MAX_PAIR_COUNT = 624000;
     private final int MIN_RATING_COUNT = 10;
+
+    /*
+    main 실행 되고나서 초기화 루틴.
+    GetScoreListByUserAll 로 전체 scorelist 를 구하면서,
+    model 생성/학습, user/movie 등 전체 db에 업로드.
+     */
+    @PostConstruct
+    public void PreprocessorImplstart() throws Exception {
+        var gender = User.ConvertGender("");
+        var occupation = User.ConvertOccupationByText("");
+        var age = User.ConvertAge("");
+        var category = GetCategoryList("");
+        indexhtmlScoreList = GetScoreListByUserAll(gender,age,occupation,category);
+        System.out.println("\n" +
+                "\n" +
+                "=============================================================\n" +
+                "   ______                                   _    _    \n" +
+                " .' ___  |                                 | |  | |   \n" +
+                "/ .'   \\_| _ .--.   .--.   __   _  _ .--.  | |__| |_  \n" +
+                "| |   ____[ `/'`\\]/ .'`\\ \\[  | | |[ '/'`\\ \\|____   _| \n" +
+                "\\ `.___]  || |    | \\__. | | \\_/ |,| \\__/ |    _| |_  \n" +
+                " `._____.'[___]    '.__.'  '.__.'1`_/| ;.__/    |_____| \n" +
+                "                                  [__|                \n" +
+                "=============================================================\n" +
+                " ******* Initialization complete. Ready to run. *******\n" +
+                " MongoDB log is on, to show that this program is using MongoDB.\n"+
+                " Disable MongoDB log manually if you wish.\n" +
+                "=============================================================\n" +
+                "\n");
+    }
+
+    @Override
+    public ArrayList<Score> getindexhtmlScoreList() throws Exception {
+        if(indexhtmlScoreList.isEmpty()){
+            var gender = User.ConvertGender("");
+            var occupation = User.ConvertOccupationByText("");
+            var age = User.ConvertAge("");
+            var category = GetCategoryList("");
+            indexhtmlScoreList = GetScoreListByUserAll(gender,age,occupation,category);
+        }
+        var tmpScoreList = indexhtmlScoreList;
+        return tmpScoreList;
+    }
 
     @Override
     public ArrayList<Score> GetRecommendList(
@@ -104,17 +155,23 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     @Override
     public Movie GetMovieFromTitle( String _title ) throws Exception
     {
-        if ( _title == null )
+        if ( _title == null || _title.isEmpty() )
         {
             throw new Exception("Invalid title string");
         }
 
+        /*
+        curl http://localhost:8080/movies/recommendations.html?title=Toy_Story_\(1995\)
+        형태로 받을 때 "Toy Story" 형태로 바로 받을 수 없음.
+        '_' 나 '%20' 형태로 변환해야함.
+         */
+        var b = _title
+                .toLowerCase()
+                .replaceAll("_", "")
+                .replaceAll("\\s+", "");
+
         var result = dataReader.GetMovieList().stream().filter(movie -> {
             var a = movie.title
-                    .toLowerCase()
-                    .replaceAll("\\s+", "");
-
-            var b = _title
                     .toLowerCase()
                     .replaceAll("\\s+", "");
 
@@ -162,55 +219,135 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             ArrayList<Movie.Genre> genreList
     ) throws Exception
     {
-        System.out.println("Info: Loading data ...");
+        try{
+            System.out.println("Info: Loading data ...");
 
-        var userList = dataReader.GetUserList();
-        var movieList = dataReader.GetMovieList();
-        var ratingList = dataReader.GetRatingList();
+            var userList = dataReader.GetUserList();
+            var movieList = dataReader.GetMovieList();
+            var ratingList = dataReader.GetRatingList();
 
-        System.out.println("Info: Preprocessing ...");
+            System.out.println("Info: Preprocessing ...");
 
-        // 1. 조건에 해당하는 유저 필터
-        var filteredUserList = GetFilteredUserList(
-                gender,
-                age,
-                occupation,
-                userList
-        );
+            // 1. 조건에 해당하는 유저 필터
+            var filteredUserList = GetFilteredUserList(
+                    gender,
+                    age,
+                    occupation,
+                    userList
+            );
 
-        // 2. 조건에 해당하는 영화 필터 (최소 평가 개수 필터)
-        var filteredMovieList = GetFilteredMovieList(
-                genreList,
-                movieList,
-                ratingList
-        );
+            // 2. 조건에 해당하는 영화 필터 (최소 평가 개수 필터)
+            var filteredMovieList = GetFilteredMovieList(
+                    genreList,
+                    movieList,
+                    ratingList
+            );
 
-        // 3. 상위 최대 N명 유저 선택
-        filteredUserList = SelectFilteredUser(
-                ratingList,
-                filteredUserList,
-                filteredMovieList
-        );
+            // 3. 상위 최대 N명 유저 선택
+            filteredUserList = SelectFilteredUser(
+                    ratingList,
+                    filteredUserList,
+                    filteredMovieList
+            );
 
-        // 4. 해당유저-해당영화 -> 평점 예측
-        var predictList = GetPredictList(
-                filteredUserList,
-                filteredMovieList,
-                ratingList
-        );
+            // 4. 해당유저-해당영화 -> 평점 예측
+            var predictList = GetPredictList(
+                    filteredUserList,
+                    filteredMovieList,
+                    ratingList
+            );
 
-        // 5. Score 리스트 작성
-        var scoreList = ToScoreList(
-                filteredMovieList,
-                predictList
-        );
+            // 5. Score 리스트 작성
+            var scoreList = ToScoreList(
+                    filteredMovieList,
+                    predictList
+            );
 
-        // 6. 내림차순 정렬 및 상위 10개 선택
-        var result = SortingTopList(scoreList);
+            // 6. 내림차순 정렬 및 상위 10개 선택
+            var result = SortingTopList(scoreList);
 
-        System.out.println("Info: Done");
+            // 7. poster 추가?
+            for(var ith : result ){
+                ith.poster = dataReader.GetPoster(ith.movie.movieId);
+            }
 
-        return result;
+            System.out.println("Info: Done");
+
+            return result;
+        }
+        catch (Exception e){
+            throw new Exception("Error in GetScoreListByUser : " + e.getMessage());
+        }
+    }
+
+    public ArrayList<Score> GetScoreListByUserAll(
+            User.Gender gender,
+            User.Age age,
+            User.Occupation occupation,
+            ArrayList<Movie.Genre> genreList
+    ) throws Exception
+    {
+        try{
+            System.out.println("Info: Loading data ...");
+
+            var userList = dataReader.GetUserList();
+            var movieList = dataReader.GetMovieList();
+            var ratingList = dataReader.GetRatingList();
+
+            System.out.println("Info: Preprocessing ...");
+
+            // 1. 조건에 해당하는 유저 필터
+            var filteredUserList = GetFilteredUserList(
+                    gender,
+                    age,
+                    occupation,
+                    userList
+            );
+
+            // 2. 조건에 해당하는 영화 필터 (최소 평가 개수 필터)
+            var filteredMovieList = GetFilteredMovieList(
+                    genreList,
+                    movieList,
+                    ratingList
+            );
+
+            // 3. 상위 최대 N명 유저 선택
+            filteredUserList = SelectFilteredUser(
+                    ratingList,
+                    filteredUserList,
+                    filteredMovieList
+            );
+
+            // 4. 해당유저-해당영화 -> 평점 예측
+            var predictList = GetPredictList(
+                    filteredUserList,
+                    filteredMovieList,
+                    ratingList
+            );
+
+            // 5. Score 리스트 작성
+            var scoreList = ToScoreList(
+                    filteredMovieList,
+                    predictList
+            );
+
+            // 7. poster 추가?
+            for(var ith : scoreList ){
+                ith.poster = dataReader.GetPoster(ith.movie.movieId);
+            }
+
+            //다른점: 전체 score return.
+            scoreList.sort(
+                    (o1, o2) -> Double.compare(o2.score, o1.score)
+            );
+
+            System.out.println("Info: Done");
+
+            return scoreList;
+        }
+        catch (Exception e){
+            throw new Exception("Error in GetScoreListByUser : " + e.getMessage());
+        }
     }
 
     @Override
@@ -219,74 +356,87 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
             int limit
     ) throws Exception
     {
-        System.out.println("Info: Loading data ...");
+        try{
+            System.out.println("Info: Loading data ...");
 
-        var userList = dataReader.GetUserList();
-        var movieList = dataReader.GetMovieList();
-        var ratingList = dataReader.GetRatingList();
+            var userList = dataReader.GetUserList();
+            System.out.println("Info: user load success ...");
+            var movieList = dataReader.GetMovieList();
+            System.out.println("Info: movie load success ...");
+            var ratingList = dataReader.GetRatingList();
+            System.out.println("Info: rating load success ...");
 
-        System.out.println("Info: Preprocessing ...");
+            System.out.println("Info: Preprocessing ...");
 
-        // 0. 주어진 영화 제외
-        movieList.removeIf(
-                _movie -> _movie.movieId == movie.movieId
-        );
+            // 0. 주어진 영화 제외
+            movieList.removeIf(
+                    _movie -> _movie.movieId == movie.movieId
+            );
 
-        // 1. 전체유저-주어진영화 -> 평점 예측
-        var predictList = GetPredictList(
-                userList,
-                Collections.singletonList(movie),
-                ratingList
-        );
-        
-        // 2. 전체 영화 필터 (최소 평가 개수 필터)
-        var filteredMovieList = GetFilteredMovieList(
-                new ArrayList<>(),
-                movieList,
-                ratingList
-        );
+            // 1. 전체유저-주어진영화 -> 평점 예측
+            var predictList = GetPredictList(
+                    userList,
+                    Collections.singletonList(movie),
+                    ratingList
+            );
 
-        // 3. 높게 평가한 상위 최대 N개 선택
-        predictList = SelectPredict(
-                predictList,
-                filteredMovieList
-        );
+            // 2. 전체 영화 필터 (최소 평가 개수 필터)
+            var filteredMovieList = GetFilteredMovieList(
+                    new ArrayList<>(),
+                    movieList,
+                    ratingList
+            );
 
-        // 4-1. 유저 리스트 매핑
-        var selectedUserList = predictList
-                .stream()
-                .map(rating -> {
-                    var user = new User();
-                    user.userId = rating.user();
+            // 3. 높게 평가한 상위 최대 N개 선택
+            predictList = SelectPredict(
+                    predictList,
+                    filteredMovieList
+            );
 
-                    return user;
-                }).collect(Collectors.toList());
+            // 4-1. 유저 리스트 매핑
+            var selectedUserList = predictList
+                    .stream()
+                    .map(rating -> {
+                        var user = new User();
+                        user.userId = rating.user();
 
-        // 4-2. 해당유저-해당영화 -> 평점 예측
-        predictList = GetPredictList(
-                selectedUserList,
-                filteredMovieList,
-                ratingList
-        );
+                        return user;
+                    }).collect(Collectors.toList());
 
-        // 5. Score 리스트 작성
-        var scoreList = ToScoreList(
-                filteredMovieList,
-                predictList
-        );
+            // 4-2. 해당유저-해당영화 -> 평점 예측
+            predictList = GetPredictList(
+                    selectedUserList,
+                    filteredMovieList,
+                    ratingList
+            );
 
-        // 6. 동일 장르 영화 상위 최대 절반(반올림) 선택
-        //    + 나머지 다른 장르 상위 선택
-        //    (동일 장르 > 평점 순으로 정렬)
-        var result = GetCandidateScoreList(
-                movie,
-                limit,
-                scoreList
-        );
+            // 5. Score 리스트 작성
+            var scoreList = ToScoreList(
+                    filteredMovieList,
+                    predictList
+            );
 
-        System.out.println("Info: Done");
+            // 6. 동일 장르 영화 상위 최대 절반(반올림) 선택
+            //    + 나머지 다른 장르 상위 선택
+            //    (동일 장르 > 평점 순으로 정렬)
+            var result = GetCandidateScoreList(
+                    movie,
+                    limit,
+                    scoreList
+            );
 
-        return result;
+            // 7. poster 추가?
+            for(var ith : result ){
+                ith.poster = dataReader.GetPoster(ith.movie.movieId);
+            }
+
+            System.out.println("Info: Done");
+
+            return result;
+        }
+        catch (Exception e){
+            throw new Exception("Error in GetScoreListByMovie : " + e.getMessage());
+        }
     }
 
     private List<User> GetFilteredUserList(
@@ -509,19 +659,35 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
 
         var linkList = dataReader.GetLinkList();
 
-        linkList.forEach(link -> {
+        for (Link link : linkList) {
             var movieId = link.movieId;
 
-            if ( movieId > max ) return;
+            if (movieId > max) continue;
 
             var score = scoreFullList.get(movieId);
 
-            if ( score.movie == null ) return;
+            if (score.movie == null) continue;
 
             score.link = link;
+            /*
+            try {
+                var tmpPoster = dataReader.GetPoster(movieId);
+                if(tmpPoster.equals(Optional.empty())){
+                    var p = new Poster();
+                    p.movID = movieId;
+                    p.posterLink = "";
+                    score.poster = p;
+                }
+                else score.poster = tmpPoster;
+            } catch (Exception e) {
+                throw new Exception("ToScoreList error: error in adding poster + " + e.getMessage());
+            }
+
+             */
 
             scoreList.add(score);
-        });
+        }
+
 
         return scoreList;
     }

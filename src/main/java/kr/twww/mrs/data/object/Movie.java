@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class Movie
 {
-    public enum Genre
+    public enum
+    Genre
     {
         ACTION,
         ADVENTURE,
@@ -26,30 +27,32 @@ public class Movie
         WESTERN
     }
 
-    private final String[] GENRE_TEXT = new String[] {
-            "Action",
-            "Adventure",
-            "Animation",
-            "Children's",
-            "Comedy",
-            "Crime",
-            "Documentary",
-            "Drama",
-            "Fantasy",
-            "Film-Noir",
-            "Horror",
-            "Musical",
-            "Mystery",
-            "Romance",
-            "Sci-Fi",
-            "Thriller",
-            "War",
-            "Western"
-    };
-
     public int movieId;
     public String title;
     public ArrayList<Genre> genres;
+    public String posterLink;
+
+    public Movie(){}
+
+    public Movie(int mov_id, String title, String genrelist) throws Exception {
+        this.title = title;
+        this.movieId = mov_id;
+        this.genres = getGenreListInit(genrelist);
+        this.posterLink = "";
+    }
+
+    private ArrayList<Movie.Genre> getGenreListInit( String genresText ) throws Exception
+    {
+        var genreList = new ArrayList<Movie.Genre>();
+        var splitGenre = genresText.split("\\|");
+
+        for ( String j : splitGenre )
+        {
+            genreList.add(Movie.ConvertGenre(j));
+        }
+
+        return genreList;
+    }
 
     public static Genre ConvertGenre( String _genre ) throws Exception
     {
@@ -73,6 +76,28 @@ public class Movie
 
     public String GetGenresText()
     {
+        final String[] GENRE_TEXT = new String[] {
+                "Action",
+                "Adventure",
+                "Animation",
+                "Children's",
+                "Comedy",
+                "Crime",
+                "Documentary",
+                "Drama",
+                "Fantasy",
+                "Film-Noir",
+                "Horror",
+                "Musical",
+                "Mystery",
+                "Romance",
+                "Sci-Fi",
+                "Thriller",
+                "War",
+                "Western"
+        };
+
+
         var genreTextList = new ArrayList<String>();
 
         genres.forEach(genre ->
@@ -83,4 +108,5 @@ public class Movie
 
         return String.join("|", genreTextList);
     }
+
 }

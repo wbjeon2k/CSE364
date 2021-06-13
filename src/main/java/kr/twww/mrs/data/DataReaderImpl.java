@@ -1,14 +1,22 @@
 package kr.twww.mrs.data;
 
+import com.opencsv.CSVReader;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
+import kr.twww.mrs.data.object.Poster;
 import kr.twww.mrs.data.object.User;
+import kr.twww.mrs.data.repository.*;
 import org.apache.spark.mllib.recommendation.Rating;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 
 import static kr.twww.mrs.data.DataType.*;
 
@@ -16,8 +24,27 @@ import static kr.twww.mrs.data.DataType.*;
 @Service
 public class DataReaderImpl extends DataReaderBase implements DataReader
 {
-    private final String PATH_DATA = "./data/";
+//    private final String PATH_DATA = "./data/";
+    private final String PATH_DATA = "/data/";
     private final String SUFFIX = "s.dat";
+    private final String SUFFIX_CSV = ".csv";
+
+    boolean movieRepoInit = false;
+    boolean posterRepoInit = false;
+    boolean ratingRepoInit = false;
+    boolean userRepoInit = false;
+    boolean linkRepoInit = false;
+
+    @Autowired
+    public MovieRepository movieRepository;
+    @Autowired
+    public PosterRepository posterRepository;
+    @Autowired
+    public RatingRepository ratingRepository;
+    @Autowired
+    public UserRepository userRepository;
+    @Autowired
+    public LinkRepository linkRepository;
 
     @Override
     public String GetPathFromDataType( DataType dataType ) throws Exception
@@ -59,27 +86,124 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         }
     }
 
+
+
+    public void readCsvToPoster() throws Exception {
+        var readChk = new int[10000];
+        Arrays.fill(readChk, 0);
+
+        try{
+            String filePath = PATH_DATA + "movie_poster" + SUFFIX_CSV;
+            CSVReader reader = new CSVReader(new FileReader(filePath)); // 1
+            CsvToBean<Poster> CTB = new CsvToBeanBuilder(reader)
+                    .withType(Poster.class)
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .build();
+
+            Iterator<Poster> csvIterator = CTB.iterator();
+
+            while(csvIterator.hasNext()){
+                Poster poster = csvIterator.next();
+
+                assert(poster.movID >= 0);
+                if(readChk[poster.movID] == 1) continue;
+                else readChk[poster.movID] = 1;
+
+                posterRepository.save(poster);
+            }
+        }
+        catch (Exception e){
+            throw new Exception("Error in readCsvToPoster: "+ e.getMessage());
+        }
+    }
+
+    @Override
+    public Poster GetPoster(int movID) throws Exception {
+        try{
+
+            if(posterRepoInit == false){
+                var initrepo = posterRepository.findAll();
+                if(initrepo.size() > 0){
+                    posterRepository.deleteAll();
+                }
+                readCsvToPoster();
+                posterRepoInit = true;
+            }
+
+            var posterList = posterRepository.findAll();
+            for(var p : posterList){
+                if(p.getMovID() == movID){
+                    return p;
+                }
+            }
+
+            //if there is no match
+            var tmpPoster = new Poster();
+            tmpPoster.movID = movID;
+            tmpPoster.posterLink = "";
+            return tmpPoster;
+        }
+        catch (Exception e){
+            throw new Exception("Error in GetPoster : "+ e.getMessage());
+        }
+
+    }
+
     @Override
     public ArrayList<User> GetUserList() throws Exception
     {
-        var path = GetPathFromDataType(USER);
-        var text = ReadTextFromFile(path);
+        if(userRepoInit == false){
+            userRepository.deleteAll();
+            var path = GetPathFromDataType(USER);
+            var text = ReadTextFromFile(path);
 
-        return ToUserList(text);
+            var result =  ToUserList(text);
+            for(int i=0;i< result.size();++i){
+                userRepository.save(result.get(i));
+            }
+            userRepoInit = true;
+            return result;
+        }
+        return (ArrayList<User>) userRepository.findAll();
     }
 
     @Override
     public ArrayList<Movie> GetMovieList() throws Exception
     {
-        var path = GetPathFromDataType(MOVIE);
-        var text = ReadTextFromFile(path);
-
-        return ToMovieList(text);
+        //if(movieRepoInit || !movieRepoInit){
+        if(movieRepoInit == false){
+            movieRepository.deleteAll();
+            var path = GetPathFromDataType(MOVIE);
+            var text = ReadTextFromFile(path);
+            var result =ToMovieList(text);
+            for(int i=0;i< result.size();++i){
+                movieRepository.save(result.get(i));
+            }
+            movieRepoInit = true;
+            return result;
+        }
+        return (ArrayList<Movie>) movieRepository.findAll();
     }
 
     @Override
     public ArrayList<Rating> GetRatingList() throws Exception
     {
+        /*
+        if(ratingRepoInit == false){
+            var path = GetPathFromDataType(RATING);
+            var text = ReadTextFromFile(path);
+
+            var result = ToRatingList(text);
+            for(int i=0;i< result.size();++i){
+                ratingRepository.save(result.get(i));
+            }
+            ratingRepoInit = true;
+            return result;
+        }
+        return (ArrayList<Rating>) ratingRepository.findAll();
+         */
+
+        //mongodb query 1M calls are too slow. direct read is faster.
         var path = GetPathFromDataType(RATING);
         var text = ReadTextFromFile(path);
 
@@ -89,11 +213,22 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
     @Override
     public ArrayList<Link> GetLinkList() throws Exception
     {
-        var path = GetPathFromDataType(LINK);
-        var text = ReadTextFromFile(path);
+        if(linkRepoInit == false){
+            linkRepository.deleteAll();
+            var path = GetPathFromDataType(LINK);
+            var text = ReadTextFromFile(path);
 
-        return ToLinkList(text);
+            var result =  ToLinkList(text);
+            for(int i=0;i< result.size();++i){
+                linkRepository.save(result.get(i));
+            }
+            linkRepoInit = true;
+            return result;
+        }
+        return (ArrayList<Link>) linkRepository.findAll();
     }
+
+
 
     @Override
     public ArrayList<User> ToUserList( String text ) throws Exception
@@ -159,10 +294,10 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
         }
         catch ( Exception exception )
         {
-            throw new Exception("Invalid movie data");
+            throw new Exception("ToMovieList error : Invalid movie data" + exception.getMessage());
         }
 
-            return result;
+        return result;
     }
 
     private ArrayList<Movie.Genre> GetGenreList( String genresText ) throws Exception
@@ -215,7 +350,7 @@ public class DataReaderImpl extends DataReaderBase implements DataReader
             throw new Exception("Invalid rating data");
         }
 
-            return result;
+        return result;
     }
 
     @Override

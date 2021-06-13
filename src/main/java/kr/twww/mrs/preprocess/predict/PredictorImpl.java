@@ -25,12 +25,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings({"SpringJavaAutowiredFieldsWarningInspection", "FieldCanBeLocal", "ResultOfMethodCallIgnored"})
+@SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Service
 public class PredictorImpl extends PredictorBase implements Predictor, InitializingBean, DisposableBean
 {
-    private final String PATH_DATA = "./data/";
-    private final String PATH_DATA_CHECKPOINT = PATH_DATA + "checkpoint";
+//    private final String PATH_DATA = "./data/";
+    private final String PATH_DATA = "/data/";
     private final String PATH_DATA_CHECKSUM = PATH_DATA + "checksum";
     private final String PATH_DATA_MODEL = PATH_DATA + "model";
 
@@ -66,23 +66,38 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
     @Override
     public boolean CreateModel( ArrayList<Rating> ratingList ) throws Exception
     {
-        var modelHadoopPath = "file:///" + Paths.get(PATH_DATA_MODEL).toAbsolutePath();
+        try{
+            var modelHadoopPath = "file:///" + Paths.get(PATH_DATA_MODEL).toAbsolutePath();
 
-        var ratingRDD = javaSparkContext
-                .parallelize(ratingList);
+            var ratingRDD = javaSparkContext
+                    .parallelize(ratingList);
 
-        System.out.println("Info: Creating model ...");
+            System.out.println("Info: Creating model ...");
 
-        model = ALS.train(JavaRDD.toRDD(ratingRDD), 10, 20, 0.01);
+            model = ALS.train(JavaRDD.toRDD(ratingRDD), 15, 11, 0.01);
 
-        if ( model == null ) return false;
+            System.out.println("Info: Finish training ...");
 
-        DeleteModel();
-        model.save(javaSparkContext.sc(), modelHadoopPath);
+            if ( model == null ){
+                //System.out.println("Info: Creating model failed ...");
+                return false;
+            }
 
-        SaveChecksum(GetChecksum());
+            System.out.println("Info: Deletemodel() in Creating model ...");
+            DeleteModel();
 
-        return true;
+            System.out.println("Info: Creating model model.save start ...");
+            model.save(javaSparkContext.sc(), modelHadoopPath);
+
+            System.out.println("Info: Creating model savechecksum start ...");
+            SaveChecksum(GetChecksum());
+
+            System.out.println("Info: Creating model end ...");
+            return true;
+        }
+        catch (Exception e){
+            throw new Exception("Error in CreateModel : " + e.getMessage());
+        }
     }
 
     private void DeleteModel() throws Exception
@@ -167,7 +182,6 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
         );
 
         javaSparkContext.setLogLevel("OFF");
-        javaSparkContext.setCheckpointDir(PATH_DATA_CHECKPOINT);
 
         model = null;
     }
@@ -202,6 +216,7 @@ public class PredictorImpl extends PredictorBase implements Predictor, Initializ
         return dataReader.ReadTextFromFile(PATH_DATA_CHECKSUM);
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     public void SaveChecksum( String checksum ) throws Exception
     {

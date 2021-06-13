@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSE364</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="MovieRecommendation.js"></script>
+
+  <meta charset="utf-8">
+  <style>
+    a:link{
+      color: black;
+    }
+    a:visited{
+      color: black;
+    }
+    #top_menu {
+      height: 75px;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+    #top_menu span {
+      list-style: none;
+      color: white;
+      background-color: #2d2d2d;
+      float: left;
+      width: 33.3%;
+      line-height: 50px;
+      vertical-align: middle;
+      text-align: center;
+    }
+    #top_menu .menuLink {
+      text-decoration:none;
+      color: white;
+      display: block;
+      width: 100%;
+      font-size: 150%;
+      font-weight: bold;
+      font-family: "Trebuchet MS", Dotum, Arial;
+    }
+    #top_menu .menuLink:hover {
+      color: red;
+      background-color: #4d4d4d;
+    }
+    body {
+      padding-top: 50px;
+      margin: 0;
+    }
+    main {
+      margin: 8px;
+    }
+    .movies {
+      margin-bottom: 50px;
+    }
+  </style>
+</head>
+<body bgcolor="gray">
+  <nav id="top_menu">
+    <span><a class="menuLink" href="index.html">Home</a></span>
+    <span><a class="menuLink" href="users.html">User information</a></span>
+    <span><a class="menuLink" href="movies.html">favorite movie</a></span>
+  </nav>
+  <main>
+    <h1>Favorite movie</h1>
+    <b>Favorite Movie Title:</b>
+    <input type="text" id="title" value="">
+    <b>Limit:</b>
+    <input type="number" id="limit" value="" min="10" style="width:50px">
+    <input type="button" id="submit" value="Search">
+    <h2>Recommended Movies</h2>
+    <div id="movies" class="movies"></div>
+  </main>
+</body>
+</html>

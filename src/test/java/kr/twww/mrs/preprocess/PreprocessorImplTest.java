@@ -28,8 +28,10 @@ public class PreprocessorImplTest
     @Test
     public void TestGetRecommendList() throws Exception
     {
+        System.out.println("TestGetRecommendList start");
         try
         {
+            System.out.println("TestGetRecommendList 1 start");
             preprocessor.GetRecommendList(
                     null,
                     null,
@@ -62,6 +64,7 @@ public class PreprocessorImplTest
                 ""
         );
 
+        System.out.println("TestGetRecommendList 2 start");
         assertNotNull(result);
         assertTrue(result.isEmpty());
 
@@ -81,6 +84,8 @@ public class PreprocessorImplTest
                 "10"
         );
 
+        System.out.println("TestGetRecommendList 3 start");
+
         assertNotNull(result2);
         assertTrue(result2.isEmpty());
     }
@@ -88,8 +93,10 @@ public class PreprocessorImplTest
     @Test
     public void TestGetCategoryList() throws Exception
     {
+        System.out.println("TestGetCategoryList start");
         try
         {
+            System.out.println("TestGetCategoryList 1 start");
             preprocessor.GetCategoryList(
                     null
             );
@@ -103,18 +110,21 @@ public class PreprocessorImplTest
         var result = preprocessor.GetCategoryList(
                 ""
         );
+        System.out.println("TestGetCategoryList 2 start");
         assertNotNull(result);
         assertTrue(result.isEmpty());
 
         var result2 = preprocessor.GetCategoryList(
                 "action"
         );
+        System.out.println("TestGetCategoryList 3 start");
         assertNotNull(result2);
         assertEquals(1, result2.size());
         assertEquals(Movie.Genre.ACTION, result2.get(0));
 
         try
         {
+            System.out.println("TestGetCategoryList 4 start");
             preprocessor.GetCategoryList("TEST");
             fail();
         }
@@ -198,6 +208,7 @@ public class PreprocessorImplTest
     @Test
     public void TestGetScoreListByUser() throws Exception
     {
+        System.out.println("TestGetScoreListByUser start");
         var genreList = new ArrayList<Movie.Genre>();
         genreList.add(Movie.Genre.ACTION);
         genreList.add(Movie.Genre.COMEDY);
@@ -219,11 +230,13 @@ public class PreprocessorImplTest
                             >= result.get(i + 1).score
             );
         }
+        System.out.println("TestGetScoreListByUser end");
     }
 
     @Test
     public void TestGetScoreListByMovie() throws Exception
     {
+        System.out.println("TestGetScoreListByMovie start");
         var movie = new Movie();
         movie.movieId = 1;
         movie.title = "Toy Story (1995)";
@@ -246,6 +259,7 @@ public class PreprocessorImplTest
                     score.movie.movieId
                 )
         );
+        System.out.println("TestGetScoreListByMovie end");
     }
 
     @Test

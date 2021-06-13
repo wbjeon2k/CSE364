@@ -2,6 +2,7 @@ package kr.twww.mrs.controller;
 
 import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
+import kr.twww.mrs.data.object.Poster;
 import kr.twww.mrs.preprocess.PreprocessorImpl;
 import kr.twww.mrs.preprocess.object.Score;
 import mockit.Mock;
@@ -59,6 +60,9 @@ public class RecommendationControllerTest
                 score.link = new Link();
                 score.link.imdbId = "";
 
+                score.poster = new Poster();
+                score.poster.posterLink = "";
+
                 scoreList.add(score);
 
                 return scoreList;
@@ -67,7 +71,7 @@ public class RecommendationControllerTest
 
         mvc.perform(
                 MockMvcRequestBuilders
-                        .get("/users/recommendations")
+                        .get("/users/recommendations.html")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}")
         ).andExpect(
@@ -97,6 +101,9 @@ public class RecommendationControllerTest
                 score.link = new Link();
                 score.link.imdbId = "";
 
+                score.poster = new Poster();
+                score.poster.posterLink = "";
+
                 scoreList.add(score);
 
                 return scoreList;
@@ -105,7 +112,7 @@ public class RecommendationControllerTest
 
         mvc.perform(
                 MockMvcRequestBuilders
-                        .get("/movies/recommendations")
+                        .get("/movies/recommendations.html")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}")
         ).andExpect(

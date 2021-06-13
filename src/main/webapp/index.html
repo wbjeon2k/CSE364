@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<!--
+https://rwd337.tistory.com/172
+https://stackoverflow.com/questions/4935632/parse-json-in-javascript?noredirect=1&lq=1
+https://stackoverflow.com/questions/5289078/parse-json-from-jquery-ajax-success-data
+-->
+
+<html>
+<head>
+    <title>CSE364</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="hello.js"></script>
+    <meta charset="utf-8">
+    <style>
+        a:link{
+            color: black;
+        }
+        a:visited{
+            color: black;
+        }
+        #top_menu {
+            height: 75px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+        #top_menu span {
+            list-style: none;
+            color: white;
+            background-color: #2d2d2d;
+            float: left;
+            width: 33.3%;
+            line-height: 50px;
+            vertical-align: middle;
+            text-align: center;
+        }
+        #top_menu .menuLink {
+            text-decoration:none;
+            color: white;
+            display: block;
+            width: 100%;
+            font-size: 150%;
+            font-weight: bold;
+            font-family: "Trebuchet MS", Dotum, Arial;
+        }
+        #top_menu .menuLink:hover {
+            color: red;
+            background-color: #4d4d4d;
+        }
+        body {
+            padding-top: 50px;
+            margin: 0;
+        }
+        main {
+            margin: 8px;
+        }
+        .movies {
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body bgcolor="gray">
+    <nav id="top_menu">
+        <span><a class="menuLink" href="index.html">Home</a></span>
+        <span><a class="menuLink" href="users.html">User information</a></span>
+        <span><a class="menuLink" href="movies.html">favorite movie</a></span>
+    </nav>
+    <main>
+        <h2>TOP 10 - All Genre</h2>
+        <div id="all" class="movies"></div>
+        <h2>TOP 10 - Action Genre</h2>
+        <div id="action" class="movies"></div>
+        <h2>TOP 10 - Adventure Genre</h2>
+        <div id="adventure" class="movies"></div>
+        <h2>TOP 10 - Drama Genre</h2>
+        <div id="drama" class="movies"></div>
+        <h2>TOP 10 - Comedy Genre</h2>
+        <div id="comedy" class="movies"></div>
+    </main>
+</body>
+</html>
