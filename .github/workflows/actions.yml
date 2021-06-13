@@ -23,7 +23,7 @@ jobs:
       run: docker build -t test-image ${{ github.workspace }}
     -
       name: Run docker container
-      run: docker run -d --rm --name test test-image
+      run: docker run -d --rm --name test -v ${{ github.workspace }}:/root/project/CSE364 test-image
     -
       name: Run tests
       run: |
