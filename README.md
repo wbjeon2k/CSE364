@@ -1,4 +1,4 @@
-[![Github Actions](https://github.com/wbjeon2k/CSE364/actions/workflows/actions.yml/badge.svg?branch=master)](https://github.com/wbjeon2k/CSE364/actions/workflows/actions.yml)
+[![Build-Test-Action](https://github.com/wbjeon2k/CSE364/actions/workflows/build-test-action.yml/badge.svg)](https://github.com/wbjeon2k/CSE364/actions/workflows/build-test-action.yml)
 
 CSE364 Group 4, Team Woongbae without Woongbae (TWwW)
 ===
