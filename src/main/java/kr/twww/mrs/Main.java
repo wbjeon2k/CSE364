@@ -7,12 +7,12 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import sun.misc.Unsafe;
 
 @SpringBootApplication
-public class Main extends SpringBootServletInitializer
+public class Main //extends SpringBootServletInitializer
 {
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(Main.class);
-    }
+//    @Override
+//    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+//        return builder.sources(Main.class);
+//    }
 
     public static void main(String[] args )
     {
