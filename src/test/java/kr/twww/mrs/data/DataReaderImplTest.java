@@ -19,6 +19,7 @@ public class DataReaderImplTest
     @Autowired
     private DataReaderImpl dataReader;
 
+    @Ignore
     @Test
     public void TestGetPathFromDataType() throws Exception
     {

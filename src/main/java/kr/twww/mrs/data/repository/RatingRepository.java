@@ -1,16 +1,10 @@
 package kr.twww.mrs.data.repository;
 
-import kr.twww.mrs.data.object.Movie;
-import org.apache.spark.ml.recommendation.ALS;
 import org.apache.spark.mllib.recommendation.Rating;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Repository
+@RepositoryRestResource(collectionResourceRel = "rating", path = "rating")
 public interface RatingRepository extends MongoRepository<Rating, Long> {
 
     //Movie findBytitle(String Title);

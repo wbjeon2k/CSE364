@@ -6,8 +6,11 @@ import kr.twww.mrs.preprocess.Preprocessor;
 import kr.twww.mrs.preprocess.object.Score;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -18,6 +21,12 @@ public class IndexhtmlController {
     private Preprocessor preprocessor;
 
     ArrayList<Score> allscoreList;
+
+    @RequestMapping("/")
+    public void Index( HttpServletResponse response ) throws IOException
+    {
+        response.sendRedirect("index.html");
+    }
 
     /*
     index.html 전용 controller.

@@ -1,13 +1,9 @@
 package kr.twww.mrs.controller;
 
 import kr.twww.mrs.controller.object.Recommendation;
-import kr.twww.mrs.controller.object.RequestByMovie;
-import kr.twww.mrs.controller.object.RequestByUser;
-import kr.twww.mrs.data.repository.*;
 import kr.twww.mrs.preprocess.Preprocessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -71,7 +67,7 @@ public class RecommendationController
 
     @GetMapping("/movies/recommendations.html")
     public ArrayList<Recommendation> Recommend(
-            @RequestParam(name = "title", required = true) String title,
+            @RequestParam(name = "title", required = false, defaultValue = "") String title,
             @RequestParam(name = "limit", required = false, defaultValue = "10") String limits
     ) throws Exception
     {

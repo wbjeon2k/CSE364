@@ -9,6 +9,15 @@ RUN apt-get update
 RUN apt-get update --fix-missing
 RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install openjdk-11-jdk maven vim git curl wget gnupg systemctl net-tools
 
+# tomcat
+RUN mkdir /usr/local/tomcat
+RUN wget https://mirror.navercorp.com/apache/tomcat/tomcat-9/v9.0.46/bin/apache-tomcat-9.0.46.tar.gz -O /tmp/tomcat.tar.gz
+RUN cd /tmp && tar xvfz tomcat.tar.gz
+RUN cp -Rv /tmp/apache-tomcat-*/* /usr/local/tomcat/
+RUN rm -rf /tmp/*tomcat*
+EXPOSE 8080
+COPY TWwW.war /usr/local/tomcat/webapps/
+CMD /usr/local/tomcat/bin/catalina.sh run &
 
 # 3.Create /root/project folder
 # /data/db 디렉토리 없으면 mongodb-org 설치 오류가 나는 버그가 있음.
@@ -29,6 +38,7 @@ WORKDIR /root/project
 
 COPY run.sh /root/project/run.sh
 RUN chmod a+x /root/project/run.sh
+RUN sed -i 's/\r$//' /root/project/run.sh
 
 # 5. The container should execute a bash shell by default when the built image is launched.
 ENTRYPOINT /bin/bash

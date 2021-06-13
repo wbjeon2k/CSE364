@@ -6,20 +6,43 @@ function getURLParams(url) {
 
 $(document).ready(function() {
     $("#submit").click(function () {
-        let title = $("#title").val();
-        let limit = $("#limit").val();
+        let gender = $("#gender").val();
+        let age = $("#age").val();
+        let occupation = $("#occupation").val();
+        let genres = [];
 
-        location = "movies.html?title=" + title + "&limit=" + limit;
+        $("input:checkbox[name='genres']").each(function() {
+            if ( this.checked )
+            {
+                genres.push(this.value);
+            }
+        });
+
+        genres = genres.join("%7C");
+
+        location = "users.html?gender=" + gender + "&age=" + age + "&occupation=" + occupation + "&genres=" + genres;
     });
 });
 
 $(document).ready(function() {
     let params = getURLParams(location.search);
 
-    if ( (("title", "limit") in params) )
+    if ( (("gender", "age", "occupation", "genres") in params) )
     {
         for ( let i in params ) {
-            $("#" + i).val(params[i]);
+            if ( i === "genres" )
+            {
+                if ( params["genres"] === "" ) continue;
+
+                let genres = params["genres"].split("|");
+                genres.forEach(genre => {
+                    $("input:checkbox[value='" + genre + "']").prop("checked", true);
+                });
+            }
+            else
+            {
+                $("#" + i).val(params[i]);
+            }
         }
 
         $('.movies').append("<p>Please wait for recommendation ...</p>");
@@ -31,8 +54,8 @@ $(document).ready(function() {
     }
 
     $.ajax({
-        url: "http://localhost:8080/movies/recommendations.html",
-        data: {title: params["title"], limit: params["limit"]},
+        url: "users/recommendations.html",
+        data: {gender: params["gender"], age: params["age"], occupation: params["occupation"], genres: params["genres"]},
         method: "GET",
         dataType: "json"
     }).then(function(data) {

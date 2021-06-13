@@ -3,7 +3,6 @@ package kr.twww.mrs.preprocess;
 import kr.twww.mrs.data.DataReader;
 import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
-import kr.twww.mrs.data.object.Poster;
 import kr.twww.mrs.data.object.User;
 import kr.twww.mrs.preprocess.object.Score;
 import kr.twww.mrs.preprocess.predict.Predictor;
@@ -156,7 +155,7 @@ public class PreprocessorImpl extends PreprocessorBase implements Preprocessor
     @Override
     public Movie GetMovieFromTitle( String _title ) throws Exception
     {
-        if ( _title == null )
+        if ( _title == null || _title.isEmpty() )
         {
             throw new Exception("Invalid title string");
         }

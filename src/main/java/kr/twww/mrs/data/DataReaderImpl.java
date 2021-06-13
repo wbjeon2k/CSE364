@@ -3,24 +3,20 @@ package kr.twww.mrs.data;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import com.opencsv.exceptions.CsvValidationException;
 import kr.twww.mrs.data.object.Link;
 import kr.twww.mrs.data.object.Movie;
 import kr.twww.mrs.data.object.Poster;
 import kr.twww.mrs.data.object.User;
 import kr.twww.mrs.data.repository.*;
-import org.apache.hadoop.yarn.webapp.hamlet.Hamlet;
 import org.apache.spark.mllib.recommendation.Rating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import scala.Array;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Optional;
 
 import static kr.twww.mrs.data.DataType.*;
 
@@ -28,7 +24,8 @@ import static kr.twww.mrs.data.DataType.*;
 @Service
 public class DataReaderImpl extends DataReaderBase implements DataReader
 {
-    private final String PATH_DATA = "./data/";
+//    private final String PATH_DATA = "./data/";
+    private final String PATH_DATA = "/root/project/CSE364/data/";
     private final String SUFFIX = "s.dat";
     private final String SUFFIX_CSV = ".csv";
 

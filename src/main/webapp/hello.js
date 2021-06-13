@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $.ajax({
-        url: "http://localhost:8080/homepageContents"
+        url: "homepageContents"
     }).then(function(data) {
         if ( ("statusCode", "message") in data )
         {
