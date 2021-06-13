@@ -27,13 +27,12 @@ jobs:
     -
       name: Run tests
       run: |
-        docker exec test bash -c 'cp ./CSE364/mongod_install.sh ./'
-        docker exec test bash -c 'sed -i 's/\r$//' ./mongod_install.sh'
-        docker exec test bash -c 'chmod a+x mongod_install.sh'
-        docker exec test bash -c './mongod_install.sh'
+        docker exec test bash -c 'cd /root/project/ && cp ./CSE364/mongod_install.sh ./'
+        docker exec test bash -c 'cd /root/project/ && sed -i 's/\r$//' ./mongod_install.sh'
+        docker exec test bash -c 'cd /root/project/ && chmod a+x ./mongod_install.sh'
+        docker exec test bash -c 'cd /root/project/ && ./mongod_install.sh'
         docker exec test bash -c 'mongod &'
-        docker exec test bash -c 'cd ./CSE364'
-        docker exec test bash -c 'mvn clean test'
+        docker exec test bash -c 'cd /root/project/CSE364/ && mvn clean test'
     -
       name: Kill docker container
       run: docker kill test
