@@ -1,4 +1,4 @@
-name: Github Actions
+name: Build-Test-Action
 
 on:
   push:
@@ -7,10 +7,13 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  main:
+    name: Build and test
     runs-on: ubuntu-latest
-
+    if: >-
+      ${{ !contains(github.event.head_commit.message, '[ci skip]') &&
+      !contains(github.event.head_commit.message, '[skip ci]')
+      }}
     steps:
     -
       name: Checkout
@@ -25,9 +28,8 @@ jobs:
       name: Run docker container
       run: docker run -d --rm --name test -v ${{ github.workspace }}:/root/project/CSE364 test-image
     -
-      name: Run tests
-      run: |
-        docker exec test bash -c 'cd /root/project/CSE364/ && mvn clean test'
+      name: Maven test
+      run: docker exec test bash -c 'cd /root/project/CSE364/ && mvn clean test'
     -
       name: Kill docker container
       run: docker kill test
