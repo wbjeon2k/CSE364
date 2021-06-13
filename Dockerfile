@@ -17,7 +17,6 @@ RUN cp -Rv /tmp/apache-tomcat-*/* /usr/local/tomcat/
 RUN rm -rf /tmp/*tomcat*
 EXPOSE 8080
 COPY TWwW.war /usr/local/tomcat/webapps/
-CMD /usr/local/tomcat/bin/catalina.sh run &
 
 # 3.Create /root/project folder
 # /data/db 디렉토리 없으면 mongodb-org 설치 오류가 나는 버그가 있음.
@@ -42,3 +41,5 @@ RUN sed -i 's/\r$//' /root/project/run.sh
 
 # 5. The container should execute a bash shell by default when the built image is launched.
 ENTRYPOINT /bin/bash
+
+CMD /usr/local/tomcat/bin/catalina.sh run
