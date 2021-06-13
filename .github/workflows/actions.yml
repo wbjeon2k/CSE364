@@ -16,11 +16,11 @@ jobs:
       name: Checkout
       uses: actions/checkout@v2
     -
-      name: Build docker image
-      run: docker build -t test-image ${{ github.workspace }}
-    -
       name: Create dummy TWwW.war
       run: touch TWwW.war
+    -
+      name: Build docker image
+      run: docker build -t test-image ${{ github.workspace }}
     -
       name: Run docker
       run: docker run -d --name test test-image
