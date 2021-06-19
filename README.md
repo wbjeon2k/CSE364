@@ -9,13 +9,20 @@ CSE364 Group 4, Team Woongbae without Woongbae (TWwW)
 ### 1.1 What TWwW is about
 
 Hi everyone, welcome to TWwW service, new kind of movie recommendation system for improving quality of your life.
-Are you sick and tired of existing movie recommedation systems? They used to show just the list of famous Hollywood movies and similar series of movies regardless of who you are.
+Are you sick and tired of existing movie recommedation systems?
+They used to show just the list of famous Hollywood movies and similar series of movies regardless of __who you are__.
 But, don't worry about it anymore. Our new movie recommendation system is going to solve these information asymmetries and provide special personalized system.
-In this guideline, we are going to introduce how to use our serve in terms of general users and how the TWwW system works.
+In this guideline, we are going to introduce __how to use our service__ in terms of general users and __how the TWwW system works__.
 
 ### 1.2 How to use TWwW
 
+TWwW recommendation system is based on __Web Service__. So, you will approach web pages when you use this recommendation service.
+There are three kinds of html pages, which are `index.html`, `users.html` and `movies.html`.
+And let me explain each pages one by one, and how to use these pages.
 
+- index.html
+- users.html
+- movies.html
 
 ### 1.3 Home page
 
