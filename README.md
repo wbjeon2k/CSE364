@@ -20,40 +20,40 @@ And let me explain each pages one by one, and how to use these pages.
 
 ### 2.1 index.html
     
-    This page is the first page you can see when you start this program.
-    Basically, each page has a common navigation bar, which is composed of `Home`, `User Information`, `Favorite Movie`.
-    If you click one of them, you can go to the page connected with navigation bar buttons.
+   This page is the first page you can see when you start this program.
+   Basically, each page has a common navigation bar, which is composed of `Home`, `User Information`, `Favorite Movie`.
+   If you click one of them, you can go to the page connected with navigation bar buttons.
     
-    This page show that the lists of movie recommendation based on just __genre__, including `all`,`action`,`adventure`,`drama`, and `comedy`.
-    Each genre has 10 kinds recommended movies, which are shown as the 10 images of movie posters.
-    If you click one of the posters in a certain genre, you can go to the corresponding IMDB webpage.
+   This page show that the lists of movie recommendation based on just __genre__, including `all`,`action`,`adventure`,`drama`, and `comedy`.
+   Each genre has 10 kinds recommended movies, which are shown as the 10 images of movie posters.
+   If you click one of the posters in a certain genre, you can go to the corresponding IMDB webpage.
     
-    Therefore, if you want to watch a specific gerne of popular movies that many people enjoyed, just __scroll down to the genre you want in this page__.
+   Therefore, if you want to watch a specific gerne of popular movies that many people enjoyed, just __scroll down to the genre you want in this page__.
     
 ### 2.2 users.html
     
-    If you click `User Information` button on the navigation bar on the top of the page, you can come to this page.
-    In this page, you can get your own recommendation list when you put your information into the page, which are `Gender`,`Age`,`Occupation`, and `Genres`.
+   If you click `User Information` button on the navigation bar on the top of the page, you can come to this page.
+   In this page, you can get your own recommendation list when you put your information into the page, which are `Gender`,`Age`,`Occupation`, and `Genres`.
     
-    Follow these steps:
+   Follow these steps:
         
-        1. Put your information using selecting tools and check boxes.
-        2. You don't need fill out all the information.
-        3. Press the submit button.
-        4. You can figure out 10 kinds of movies recommended from your personal information.
+       1. Put your information using selecting tools and check boxes.
+       2. You don't need fill out all the information.
+       3. Press the submit button.
+       4. You can figure out 10 kinds of movies recommended from your personal information.
     
 ### 2.3 movies.html
+        
+   If you click `Favorite Movie` button on the navigation bar, you can come to this page.
+   In this page, you can have your own recommendation list when you type movie `title` you enjoyed to watch and limit, the number of recommended movies.
+   TWwW service figures out your tastes and recommend new movies for you.
     
-    If you click `Favorite Movie` button on the navigation bar, you can come to this page.
-    In this page, you can have your own recommendation list when you type movie `title` you enjoyed to watch and limit, the number of recommended movies.
-    TWwW service figures out your tastes and recommend new movies for you.
+   Follow these steps:
     
-    Follow these steps:
-    
-        1. Type the type of movie and limit
-        2. You don't have to fill out all the inputs.
-        3. Press the submit button
-        4. You can find N-numbers recommended movies. The default value of limit is 10.
+       1. Type the type of movie and limit
+       2. You don't have to fill out all the inputs.
+       3. Press the submit button
+       4. You can find N-numbers recommended movies. The default value of limit is 10.
 
 # [Milestone 3] Readme
 
