@@ -64,14 +64,35 @@ So, many similar services used to misunderstand some users' tastes.
 For example, they just recommended popular movies, trusted the rating from small numbers of users, or could not introduce the movies that have not been rated yet.
 In addition, recommendation system can be used for not only OTT but also any kind of field, so system need to have flexiability and keep maintenance.
 
-Therefore, TWwW service use machine learning and well-defined service architecture.
-This program can make personalized user models using machine learning to find out meaningful users' features and the weights of each factor.
-Moreover, 4 kinds of ser
+Therefore, TWwW service provide the accurate prediction from machine learning and the opportunities to customize the entire service using powerful architectures.
 
+And let me move on how TWwW works to achieve these goals.
 
-### 3.1 What's difference
+### 3.1 Workflow
 
-### 3.2 Workflow
+TWwW systems has 4 kinds of system architectures, which are __Data Manager__, __Preprocessor Engine__, __Web Engine__, and __ML model Manager__.
+
+Let's see how it works
+
+- Data Manager
+
+It uses `Mongo DB` to process big sized of data efficiently and automatically.
+
+- ML model Manager
+
+The `Spark` is used for training the input data and making the model using machine learning.
+
+- Preprocessor Engine
+
+This is the main part of recommendation system. It brings the data from the `Mongo DB` and builds the ML model from the `Spark`,
+and makes the recommeded movie lists based on the input data from web pages.
+
+- Web Engine
+
+It is the front-end of users, and has many direct interaction with the people who use the TWww system. The information that users put in is moved into controllers
+and receive the response from the server by using `Jquery` and `Rest API`.
+
+Each part of architectures has great capsulation functionality, so they can achieve good maintanence as well as their goals 
 
 # [Milestone 3] Readme
 
