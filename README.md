@@ -2,6 +2,20 @@
 
 CSE364 Group 4, Team Woongbae without Woongbae (TWwW)
 ===
+# [Milestone 4] Readme
+
+## 1. Milestone 4 General user guide
+
+### 1.1 What TWwW is about
+
+### 1.2 How to use
+
+### 1.3 Home page
+
+### 1.4 UserInformation page
+
+### 1.5 Favorite Movie page
+
 # [Milestone 3] Readme
 
 ## 1. Milestone 3 Design for Part 1 and Part 2
