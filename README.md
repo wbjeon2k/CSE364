@@ -2,11 +2,9 @@
 
 CSE364 Group 4, Team Woongbae without Woongbae (TWwW)
 ===
-# [Milestone 4] Readme
+# [Milestone 4] Readme (General user guide)
 
-## 1. Milestone 4 General user guide
-
-### 1.1 What TWwW is about
+## 1. What TWwW is about
 
 Hi everyone, welcome to TWwW service, new kind of movie recommendation system for improving quality of your life.
 Are you sick and tired of existing movie recommedation systems?
@@ -14,13 +12,13 @@ They used to show just the list of famous Hollywood movies and similar series of
 But, don't worry about it anymore. Our new movie recommendation system is going to solve these information asymmetries and provide special personalized system.
 In this guideline, we are going to introduce __how to use our service__ in terms of general users and __how the TWwW system works__.
 
-### 1.2 How to use TWwW
+## 2. How to use TWwW
 
 TWwW recommendation system is based on __Web Service__. So, you will approach web pages when you use this recommendation service.
 There are three kinds of html pages, which are `index.html`, `users.html` and `movies.html`.
 And let me explain each pages one by one, and how to use these pages.
 
-- index.html
+### 2.1 index.html
     
     This page is the first page you can see when you start this program.
     Basically, each page has a common navigation bar, which is composed of `Home`, `User Information`, `Favorite Movie`.
@@ -32,10 +30,10 @@ And let me explain each pages one by one, and how to use these pages.
     
     Therefore, if you want to watch a specific gerne of popular movies that many people enjoyed, just __scroll down to the genre you want in this page__.
     
-- users.html
+### 2.2 users.html
     
     If you click `User Information` button on the navigation bar on the top of the page, you can come to this page.
-    In this page, you can have your own recommendation list when you put your information into the page, which are `Gender`,`Age`,`Occupation`, and `Genres`.
+    In this page, you can get your own recommendation list when you put your information into the page, which are `Gender`,`Age`,`Occupation`, and `Genres`.
     
     Follow these steps:
         
@@ -44,18 +42,18 @@ And let me explain each pages one by one, and how to use these pages.
         3. Press the submit button.
         4. You can figure out 10 kinds of movies recommended from your personal information.
     
-- movies.html
+### 2.3 movies.html
     
-    If you click `Favorite Movie` button on the navigation bar on the top of the page, you can come to this page.
-    In this page, you can have your own recommendation list when you put your information into the page, which are `Gender`,`Age`,`Occupation`, and `Genres`.
+    If you click `Favorite Movie` button on the navigation bar, you can come to this page.
+    In this page, you can have your own recommendation list when you type movie `title` you enjoyed to watch and limit, the number of recommended movies.
+    TWwW service figures out your tastes and recommend new movies for you.
     
+    Follow these steps:
     
-
-### 1.3 Home page
-
-### 1.4 UserInformation page
-
-### 1.5 Favorite Movie page
+        1. Type the type of movie and limit
+        2. You don't have to fill out all the inputs.
+        3. Press the submit button
+        4. You can find N-numbers recommended movies. The default value of limit is 10.
 
 # [Milestone 3] Readme
 
