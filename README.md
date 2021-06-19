@@ -54,6 +54,24 @@ And let me explain each pages one by one, and how to use these pages.
        2. You don't have to fill out all the inputs.
        3. Press the submit button
        4. You can find N-numbers recommended movies. The default value of limit is 10.
+       
+## 3. How TWwW works
+
+Before talking about how it works, let me tell you why TWwW service has different workflow with any other recommendation system first.
+
+One of the important problems of recommendation systems is to find a balance from many kinds of factors, user informaton, history and so on.
+So, many similar services used to misunderstand some users' tastes.
+For example, they just recommended popular movies, trusted the rating from small numbers of users, or could not introduce the movies that have not been rated yet.
+In addition, recommendation system can be used for not only OTT but also any kind of field, so system need to have flexiability and keep maintenance.
+
+Therefore, TWwW service use machine learning and well-defined service architecture.
+This program can make personalized user models using machine learning to find out meaningful users' features and the weights of each factor.
+Moreover, 4 kinds of ser
+
+
+### 3.1 What's difference
+
+### 3.2 Workflow
 
 # [Milestone 3] Readme
 
