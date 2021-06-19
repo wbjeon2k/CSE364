@@ -27,16 +27,29 @@ And let me explain each pages one by one, and how to use these pages.
     If you click one of them, you can go to the page connected with navigation bar buttons.
     
     This page show that the lists of movie recommendation based on just __genre__, including `all`,`action`,`adventure`,`drama`, and `comedy`.
-    Each genre has 10 kinds movies list, which are shown as the images of movie posters.
+    Each genre has 10 kinds movies recommendation, which are shown as the 10 images of movie posters.
     If you click one of the posters in a certain genre, you can go to the corresponding IMDB webpage.
     
-    Therefore, if you want to watch a specific gerne of popular movies that many people enjoyed, just scroll down to the genre you want in this page.
+    Therefore, if you want to watch a specific gerne of popular movies that many people enjoyed, just __scroll down to the genre you want in this page__.
     
 - users.html
     
     If you click `User Information` button on the navigation bar on the top of the page, you can come to this page.
+    In this page, you can have your own recommendation list when you put your information into the page, which are `Gender`,`Age`,`Occupation`, and `Genres`.
+    
+    Follow these steps:
+        
+        1. Put your information using selecting tools and check boxes.
+        2. You don't need fill out all the information.
+        3. Press the submit button.
+        4. You can figure out 10 kinds of movies recommended from your personal information.
     
 - movies.html
+    
+    If you click `Favorite Movie` button on the navigation bar on the top of the page, you can come to this page.
+    In this page, you can have your own recommendation list when you put your information into the page, which are `Gender`,`Age`,`Occupation`, and `Genres`.
+    
+    
 
 ### 1.3 Home page
 
