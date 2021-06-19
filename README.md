@@ -27,7 +27,7 @@ And let me explain each pages one by one, and how to use these pages.
     If you click one of them, you can go to the page connected with navigation bar buttons.
     
     This page show that the lists of movie recommendation based on just __genre__, including `all`,`action`,`adventure`,`drama`, and `comedy`.
-    Each genre has 10 kinds movies recommendation, which are shown as the 10 images of movie posters.
+    Each genre has 10 kinds recommended movies, which are shown as the 10 images of movie posters.
     If you click one of the posters in a certain genre, you can go to the corresponding IMDB webpage.
     
     Therefore, if you want to watch a specific gerne of popular movies that many people enjoyed, just __scroll down to the genre you want in this page__.
