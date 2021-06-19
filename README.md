@@ -8,7 +8,14 @@ CSE364 Group 4, Team Woongbae without Woongbae (TWwW)
 
 ### 1.1 What TWwW is about
 
-### 1.2 How to use
+Hi everyone, welcome to TWwW service, new kind of movie recommendation system for improving quality of your life.
+Are you sick and tired of existing movie recommedation systems? They used to show just the list of famous Hollywood movies and similar series of movies regardless of who you are.
+But, don't worry about it anymore. Our new movie recommendation system is going to solve these information asymmetries and provide special personalized system.
+In this guideline, we are going to introduce how to use our serve in terms of general users and how the TWwW system works.
+
+### 1.2 How to use TWwW
+
+
 
 ### 1.3 Home page
 
