@@ -21,6 +21,15 @@ There are three kinds of html pages, which are `index.html`, `users.html` and `m
 And let me explain each pages one by one, and how to use these pages.
 
 - index.html
+    
+    This page is the first page you can see when you start this program.
+    Basically, each page has a common navigation bar, which is composed of `Home`, `User Information`, `Favorite Movie`.
+    If you click one of them, you can go to the page connected with navigation bar button.
+    
+    This page show that the lists of movie recommendation based on genre, including `all`,`action`,`adventure`,`drama`, and `comedy`.
+    Each genre has 10 kinds movies list, which are shown as the images of movie posters.
+    If you click one of the posters in a certain genre, you can go to the corresponding IMDB webpage.
+    
 - users.html
 - movies.html
 
