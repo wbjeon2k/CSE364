@@ -69,25 +69,24 @@ Follow these steps:
 If ERROR is coming out, check your inner code and input data using the ERROR messages from the web browser.
 
 - Invalid input
-    
-For example, 
-1. genre
-2. limit
-3. Age
+
+        For example,
+        1. If you have "Invalid genre string", you should check movie genre inputs on the users.html page or URL.
+        2. "Invalid occupation string" message tell you to modify your occupation input data.
     
 - Inner server ERROR
 
-For example,
-1. 500
-2. 501
+        For example,
+        1. 
+        2. 501
     
 ### 2.6 User Tips
 
-You can share your own movie lists using URL, add them to your bookmarks
+You can `share` your own movie lists using URL, add them to your bookmarks
 
 For example,
     
-if you insert personal information into the pages, you can find http://localhost:8080/TWwW/users.html?gender=M&age=20&occupation=&genres=Acition on the browser address bar.
+If you insert personal information into the pages, you can find http://localhost:8080/TWwW/users.html?gender=M&age=20&occupation=&genres=Acition on the browser address bar.
 You can share the recommended movie lists with your friends using this URL
 
        
