@@ -18,7 +18,16 @@ TWwW recommendation system is based on __Web Service__. So, you will approach we
 There are three kinds of html pages, which are `index.html`, `users.html` and `movies.html`.
 And let me explain each pages one by one, and how to use these pages.
 
-### 2.1 index.html
+### 2.1 how to start TWwW
+
+Follow these steps:
+    
+    1. Download _Dockerfile_ and _TWwW.war_ from the https://github.com/wbjeon2k/CSE364
+    2. `$ docker build -t image_name /path/to/Dockerfile`
+    3. `$ docker run -d -p 8080:8080 image_name`
+    4. In your host machine, you can access the application in a web browser by visiting http://localhost:8080/TWwW
+
+### 2.2 index.html
     
    This page is the first page you can see when you start this program.
    Basically, each page has a common navigation bar, which is composed of `Home`, `User Information`, `Favorite Movie`.
@@ -30,7 +39,7 @@ And let me explain each pages one by one, and how to use these pages.
     
    Therefore, if you want to watch a specific gerne of popular movies that many people enjoyed, just __scroll down to the genre you want in this page__.
     
-### 2.2 users.html
+### 2.3 users.html
     
    If you click `User Information` button on the navigation bar on the top of the page, you can come to this page.
    In this page, you can get your own recommendation list when you put your information into the page, which are `Gender`,`Age`,`Occupation`, and `Genres`.
@@ -42,7 +51,7 @@ And let me explain each pages one by one, and how to use these pages.
        3. Press the submit button.
        4. You can figure out 10 kinds of movies recommended from your personal information.
     
-### 2.3 movies.html
+### 2.4 movies.html
         
    If you click `Favorite Movie` button on the navigation bar, you can come to this page.
    In this page, you can have your own recommendation list when you type movie `title` you enjoyed to watch and limit, the number of recommended movies.
@@ -54,6 +63,21 @@ And let me explain each pages one by one, and how to use these pages.
        2. You don't have to fill out all the inputs.
        3. Press the submit button
        4. You can find N-numbers recommended movies. The default value of limit is 10.
+
+### 2.5 ERROR CODE
+
+오류가 발생할 경우, 오류메세지를 참고하여 내부코드 수정 및 인풋 데이터 확인
+
+    1. invalid input
+    2. 서버 오류
+    3. ...
+
+### 2.6 Tips
+
+URL을 이용하여 나의 취향 영화 리스트를 공유할 수 있음
+
+예시: http://localhost:8080/TWwW/users.html?gender=M&age=20&occupation=&genres=Acition 
+
        
 ## 3. How TWwW works
 
