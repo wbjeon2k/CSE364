@@ -66,12 +66,15 @@ Follow these steps:
 
 ### 2.5 ERROR CODE
 
-오류가 발생할 경우, 오류메세지를 참고하여 내부코드 수정 및 인풋 데이터 확인
+If ERROR is coming out, check your inner code and input data using the ERROR messages from the web browser.
 
-    1. invalid input
-    2. 서버 오류
-    3. ...
-
+    - Invalid input
+    
+    For example, 
+    1. 
+    
+    - Inner server ERROR
+    
 ### 2.6 Tips
 
 URL을 이용하여 나의 취향 영화 리스트를 공유할 수 있음
