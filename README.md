@@ -22,7 +22,7 @@ And let me explain each pages one by one, and how to use these pages.
 
 Follow these steps:
     
-    1. Download Dockerfile and TWwW.war from the https://github.com/wbjeon2k/CSE364
+    1. Download Dockerfile and TWwW.war, and put them together within same folder.
     2. $ docker build -t image_name /path/to/Dockerfile
     3. $ docker run -d -p 8080:8080 image_name
     4. In your host machine, you can access the application in a web browser by visiting http://localhost:8080/TWwW
