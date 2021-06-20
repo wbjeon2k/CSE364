@@ -72,16 +72,17 @@ If ERROR is coming out, check your inner code and input data using the ERROR mes
 
     For example:
     
-        1. If you have "Invalid genre string", you should check movie genre inputs on the users.html page or URL.
-        2. "Limit must be positive integer greater than zero" message tell that your limit input data is smaller than 0.
-        3. You can meet "Cannot find movie title" message if you type wrong movie title on the movies.html page or URL.
+        1. "Invalid genre string": you should check movie genre inputs on the users.html page or URL.
+        2. "Limit must be positive integer greater than zero": your limit input data were smaller than 0.
+        3. "Cannot find movie title": you typed wrong movie title on the movies.html page or URL.
     
 - Inner server ERROR
 
     For example:
     
         1. 5XX ERROR code: you should check your code added to the TWwW service when customizing.
-        2. 
+        2. "Error in CreateModel : ...": there were some problems when building recommendation model.
+        3. "No movies to recommend": you should check your movie dataset. 
     
 ### 2.6 User Tips
 
