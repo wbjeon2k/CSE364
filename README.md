@@ -70,24 +70,25 @@ If ERROR is coming out, check your inner code and input data using the ERROR mes
 
 - Invalid input
     
-    For example, 
-    1. genre
-    2. limit
-    3. Age
+For example, 
+1. genre
+2. limit
+3. Age
     
 - Inner server ERROR
 
-    For example,
-    1. 500
-    2. 501
+For example,
+1. 500
+2. 501
     
 ### 2.6 User Tips
 
 You can share your own movie lists using URL, add them to your bookmarks
 
-    For example,
-    if you insert personal information into the pages, you can find http://localhost:8080/TWwW/users.html?gender=M&age=20&occupation=&genres=Acition on the browser address bar.
-    You can share the recommended movie lists with your friends using this URL
+For example,
+    
+if you insert personal information into the pages, you can find http://localhost:8080/TWwW/users.html?gender=M&age=20&occupation=&genres=Acition on the browser address bar.
+You can share the recommended movie lists with your friends using this URL
 
        
 ## 3. How TWwW works
@@ -101,7 +102,7 @@ So, many similar services used to misunderstand some users' tastes.
 For example, they just recommended popular movies, trusted the rating from small numbers of users, or could not introduce the movies that have not been rated yet.
 In addition, recommendation system can be used for not only OTT but also any kind of field, so system need to have flexiability and keep maintenance.
 
-Therefore, TWwW service provide __the accurate prediction__ from machine learning and the __opportunities to customize the entire service__ using powerful architectures.
+Therefore, TWwW service provide `the personalized recommendation` from machine learning and the opportunities `easy to customize` the entire service using powerful architectures.
 
 And let me move on how TWwW works to achieve these goals.
 
