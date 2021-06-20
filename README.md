@@ -81,8 +81,8 @@ If ERROR is coming out, check your inner code and input data using the ERROR mes
     For example:
     
         1. 5XX ERROR code: you should check your code added to the TWwW service when customizing.
-        2. "Error in CreateModel : ...": there were some problems when building recommendation model.
-        3. "No movies to recommend": you should check your movie dataset. 
+        2. "No movies to recommend": you should check your movie dataset.
+        3. "Error in CreateModel : ...": there were some problems when building recommendation model. 
     
 ### 2.6 User Tips
 
