@@ -68,34 +68,40 @@ Follow these steps:
 
 If ERROR is coming out, check your inner code and input data using the ERROR messages from the web browser.
 
-    - Invalid input
+- Invalid input
     
     For example, 
-    1. 
+    1. genre
+    2. limit
+    3. Age
     
-    - Inner server ERROR
+- Inner server ERROR
+
+    For example,
+    1. 500
+    2. 501
     
-### 2.6 Tips
+### 2.6 User Tips
 
-URL을 이용하여 나의 취향 영화 리스트를 공유할 수 있음
+You can share your own movie lists using URL, add them to your bookmarks
 
-예시: http://localhost:8080/TWwW/users.html?gender=M&age=20&occupation=&genres=Acition 
+    For example,
+    if you insert personal information into the pages, you can find http://localhost:8080/TWwW/users.html?gender=M&age=20&occupation=&genres=Acition on the browser address bar.
+    You can share the recommended movie lists with your friends using this URL
 
        
 ## 3. How TWwW works
 
 Before talking about how it works, let me tell you why TWwW service has different workflow with any other recommendation system first.
 
+### 3.1 What's difference?
+
 One of the important problems of recommendation systems is to find a balance from many kinds of factors, user informaton, history and so on.
 So, many similar services used to misunderstand some users' tastes.
 For example, they just recommended popular movies, trusted the rating from small numbers of users, or could not introduce the movies that have not been rated yet.
 In addition, recommendation system can be used for not only OTT but also any kind of field, so system need to have flexiability and keep maintenance.
 
-Therefore, TWwW service provide the accurate prediction from machine learning and the opportunities to customize the entire service using powerful architectures.
-
-### 3.1 What's difference?
-
-유지보수 
+Therefore, TWwW service provide __the accurate prediction__ from machine learning and the __opportunities to customize the entire service__ using powerful architectures.
 
 And let me move on how TWwW works to achieve these goals.
 
