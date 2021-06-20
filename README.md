@@ -73,7 +73,7 @@ If ERROR is coming out, check your inner code and input data using the ERROR mes
     For example:
     
         1. "Invalid genre string": you should check movie genre inputs on the users.html page or URL.
-        2. "Limit must be positive integer greater than zero": your limit input data were smaller than 0.
+        2. "Limit must be positive integer greater than zero": your limit input was smaller than 0.
         3. "Cannot find movie title": you typed wrong movie title on the movies.html page or URL.
     
 - Inner server ERROR
